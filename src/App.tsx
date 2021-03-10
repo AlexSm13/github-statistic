@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import Search from "./components/Search/Search";
+import UserInfo from "./components/UserInfo/UserInfo";
+import {getStartData} from "./api/startInfo";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [login, setLogin] = useState<string>("");
+    const [data, setData] = useState<any>("");
+
+    const loginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLogin(event.target.value);
+    }
+
+    const getData = async (e: React.FormEvent<EventTarget>) => {
+        e.preventDefault();
+        const data = await getStartData(login);
+        setData(data);
+    }
+
+    return (
+
+        <div className={'container'}>
+            <Search getData={getData} login={login} loginChange={loginChange}/>
+            {data ?
+                <>
+                    <UserInfo imgURL={data.avatar_url} login={data.login}/>
+                </>
+                :
+                "Нет данный"
+            }
+
+        </div>
+    )
 }
 
 export default App;
