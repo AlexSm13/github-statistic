@@ -1,25 +1,24 @@
-import {useRef, useState} from "react";
+import React, {FormEventHandler, useRef, useState} from "react";
 import UserInfo from "../UserInfo/UserInfo";
+import {getStartData} from "../../api/startInfo";
 
-function Search() {
-    const [login, setLogin] = useState("")
-    let inputRef = useRef<HTMLInputElement | null>(null)
+type searchType = {
+    login: string;
+    loginChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    getData: (event: React.FormEvent<EventTarget>) => void;
+}
 
-    function handleChange(e: any) {
-        e.preventDefault();
-        setLogin(inputRef.current?.value || '');
-    }
-
+const Search: React.FC<searchType> = ({login, loginChange, getData}) => {
     return (
-        <div>
+        <div className={'userinfo'}>
             <h2>Введите логин Github</h2>
-            <form>
-                <input ref={inputRef} type="text"/>
-                <button onClick={handleChange}>Искать</button>
+            <form onSubmit={getData}>
+                <input onChange={loginChange} value={login} type="text"/>
+                <button type={'submit'}>Искать</button>
             </form>
 
             <div>
-                <UserInfo login={login}/>
+
             </div>
         </div>
     );
