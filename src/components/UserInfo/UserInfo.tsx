@@ -12,19 +12,21 @@ const UserInfo: React.FC<userInfoType> = ({login, imgURL}) => {
     }
 
     return (
-        <div className={'user-info__container'}>
-            <div className={'login-avatar__container'}>
+        <div className={'user-info-container'}>
+            <div className={'loginAvatar-container'}>
                 <div className={'avatar'}>
                     <img src={imgURL} alt=""/>
                 </div>
                 <h1>{login}</h1>
             </div>
             <div className={'user-start-info'}>
-                <label><p>Имя</p><p>{login}</p></label>
-                <label><p>Организация</p><p>{login}</p></label>
-                <label><p>Местоположение</p><p>{login}</p></label>
-                <label><p>Email</p><p>{login}</p></label>
-                <label><p>Сайт</p><p>{login}</p></label>
+                <h1 className={'title'}>Основная информация</h1>
+
+                <label><p className={'user-info-description'}>Имя:</p><p>{login}</p></label>
+                <label><p className={'user-info-description'}>Организация:</p><p>{login}</p></label>
+                <label><p className={'user-info-description'}>Страна:</p><p>{login}</p></label>
+                <label><p className={'user-info-description'}>Email:</p><p>{login}</p></label>
+                <label><p className={'user-info-description'}>Сайт:</p><p>{login}</p></label>
             </div>
 
         </div>

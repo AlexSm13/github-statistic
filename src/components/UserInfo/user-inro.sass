@@ -1,9 +1,8 @@
-.user-info__container
+.user-info-container
   margin-top: 30px
   display: flex
-  justify-content: space-around
 
-  .login-avatar__container
+  .loginAvatar-container
     padding: 30px
     justify-content: center
     align-items: center
@@ -11,11 +10,12 @@
     flex-direction: column
 
     .avatar
-      box-shadow: 2px 2px 12px #cccccc
+      box-shadow: $box-shadow
       border-radius: 50%
       width: 240px
       height: 240px
       overflow: hidden
+      flex: 1
       //border: 3px solid #cfcfcf
 
       img
@@ -24,8 +24,8 @@
 
     h1
       display: block
-      border: 2px solid #cccccc
-      box-shadow: 2px 2px 5px #cccccc
+      border: $border
+      box-shadow: $box-shadow
       padding: 5px
       transform: translateY(-40px)
       background-color: #fff
@@ -34,14 +34,21 @@
 
   .user-start-info
     display: flex
+    flex: 2
     flex-direction: column
     padding: 30px
 
     label
       display: inline-flex
-      padding: 5px
+      padding: 5px 0
+
+      .user-info-description
+        display: block
+        width: 170px
+        opacity: .6
 
       p
         padding: 5px
-        font-size: 22px
+        font-size: 18px
+
 
