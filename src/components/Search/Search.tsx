@@ -1,6 +1,4 @@
-import React, {FormEventHandler, useRef, useState} from "react";
-import UserInfo from "../UserInfo/UserInfo";
-import {getStartData} from "../../api/startInfo";
+import searchIcon from "../../images/search.svg"
 
 type searchType = {
     login: string;
@@ -10,16 +8,12 @@ type searchType = {
 
 const Search: React.FC<searchType> = ({login, loginChange, getData}) => {
     return (
-        <div className={'userinfo'}>
-            <h2>Введите логин Github</h2>
-            <form onSubmit={getData}>
-                <input onChange={loginChange} value={login} type="text"/>
-                <button type={'submit'}>Искать</button>
+        <div className={'search__container'}>
+            <h2>Поисковик пользователей </h2>
+            <form className={'search__form'} onSubmit={getData}>
+                <input placeholder={'login Github'} className={'search__form-input'} onChange={loginChange} value={login} type="text"/>
+                <button type={'submit'}><img src={searchIcon} alt=""/></button>
             </form>
-
-            <div>
-
-            </div>
         </div>
     );
 }
