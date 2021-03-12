@@ -26,7 +26,7 @@ function App() {
                     <UserInfo imgURL={data.avatar_url} login={data.login}/>
                 </>
                 :
-                "Нет данный"
+                null
             }
 
         </div>

@@ -1,0 +1,71 @@
+
+
+.search-container
+  width: 442px
+  margin: 0 auto
+  text-align: center
+
+  h2
+    font-size: 36px
+    font-weight: 300
+
+  .search-form
+    margin-top: 30px
+    display: flex
+    position: relative
+
+    &-input
+      flex: 5
+      padding: 5px 0
+      outline: none
+      font-size: 20px
+      font-weight: 400
+      font-family: $font-monserat
+      letter-spacing: 1px
+      border: none
+      transition: $form-transition
+      border-bottom: 2px groove rgba(136, 101, 39, .3)
+
+      &::placeholder
+        color: $font-color-black
+        opacity: .5
+
+      &:hover, button
+        border-bottom: 2px groove rgba(136, 101, 39, 0.5)
+
+      &:focus
+        border-bottom: 2px groove rgba(136, 101, 39, 0.8)
+
+
+    button
+      position: absolute
+      flex: 1
+      outline: none
+      border: none
+      background-color: transparent
+      transition: $form-transition
+      opacity: .3
+      right: 5px
+      top: 5px
+
+      &:hover
+        cursor: pointer
+        background-color: #000000
+
+
+
+      img
+        width: 24px
+        height: 24px
+
+
+
+      &:hover
+        background-color: $backgroung
+
+
+
+
+
+
+
