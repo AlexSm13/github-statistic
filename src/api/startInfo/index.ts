@@ -1,31 +1,44 @@
-import axios from "axios";
+import gql from 'graphql-tag';
 
-const baseUrl = 'https://api.github.com/';
-// export default class Api {
-//
-//     baseUrl: string;
-//
-//     constructor() {
-//
-//     }
-//
-//     getUserInfo(login: string) {
-//         return fetch(this.baseUrl + ``)
-//             .then(res => res.json())
-//             .then(
-//                 (result) => {
-//                     return result || {};
-//                 },
-//                 (error) => {
-//                     console.log(error)
-//                 }
-//             )
-//     }
-// }
+const userInfoQuery = gql`
+    query($login: String!){
+      user(login: $login) {
+        login,
+        name,
+        avatarUrl,
+        company,
+        location,
+        url,
+        websiteUrl,
+        organization(login: $login) {
+          name
+        },
+        email,
+        bio,
+        repositories(last: 100, orderBy: {field: UPDATED_AT, direction: DESC}) {
+          totalCount,
+          nodes {
+            updatedAt
+            createdAt,
+            name,
+            description,
+            stargazerCount,
+            forkCount,
+            isFork,
+            languages(last: 10) {
+              totalSize,
+              totalCount,
+              edges {
+                size,
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+`
 
-export async function getStartData (login: string) {
-    const {data} = await axios.get(`${baseUrl}users/${login}`);
-    console.log(data);
-    console.log(data.avatar_url)
-    return data;
-}
+export { userInfoQuery };
