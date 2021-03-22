@@ -5,7 +5,7 @@ import App from './App';
 import { ApolloProvider } from '@apollo/client';
 import { ApolloClient } from '@apollo/client';
 import { InMemoryCache } from '@apollo/client';
-import { token } from "./environment";
+import token from './token/Index';
 
 const client = new ApolloClient({
   uri: 'https://api.github.com/graphql',

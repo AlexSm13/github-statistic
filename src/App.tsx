@@ -4,6 +4,7 @@ import UserInfo from "./components/UserInfo/UserInfo";
 import { userInfoQuery } from "./api/startInfo";
 import { useLazyQuery } from "@apollo/client";
 
+
 function App() {
     const [login, setLogin] = useState<string>("");
 
