@@ -31,16 +31,29 @@
 
       border-radius: 10px
       margin-bottom: 20px
-      box-shadow: 1px 1px 6px #e3e3e3
+      box-shadow: 4px 6px 6px #e3e3e3
       transition: $form-transition
       text-align: center
       z-index: 2
+
+      .info-container
+        display: flex
+        align-items: center
+
+        img
+          width: 20px
+          height: 20px
+
+        img,
+        .label
+          margin: 3px 8px
 
       h3
         font-family: $font-monserat
         font-weight: 500
         font-size: 24px
         color: $font-color-black
+        margin-left: 8px
 
       &:hover
         cursor: pointer
@@ -56,15 +69,45 @@
   bottom: 0
   left: 0
   right: 0
-  background-color: rgba(0, 0, 0, .3)
+  background-color: rgba(0, 0, 0, .5)
+
   //filter: blur(2px)
 
   .more-info
     z-index: 1001
     position: fixed
+    border-radius: 10px
+    padding: 15px 25px
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-    width: 1080px
+    max-width: 1080px
+    width: 90%
     height: 500px
     background-color: #fff
+    box-sizing: border-box
+
+.repository-container
+  display: flex
+  padding-top: 15px
+
+  .repository-info
+    flex: 1.5
+    padding-right: 10px
+
+  .repository-statistic
+    flex: 2.5
+
+  .rep-info
+    display: flex
+    width: 100%
+    align-items: center
+    margin: 7px 0
+
+    .label
+      opacity: .6
+      margin-right: 10px
+      flex: 80px 2 1
+
+    .data
+      flex: 100px 2 1

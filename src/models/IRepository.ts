@@ -22,7 +22,7 @@ export interface IRepository {
       node: {
         name: string;
       };
-    };
+    }[];
   };
   pullRequests: {
     totalCount: number;
@@ -32,7 +32,7 @@ export interface IRepository {
       };
       closedAt: string;
       createdAt: string;
-    };
+    }[];
   };
   issues: {
     totalCount: number;
@@ -42,6 +42,6 @@ export interface IRepository {
       };
       closedAt: string;
       createdAt: string;
-    };
+    }[];
   };
 }

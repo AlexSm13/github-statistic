@@ -15,17 +15,17 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   const [repoName, setRepoName] = useState<string>("");
 
   const getRepositories = () => {
+    let sortRepositories = repositories;
     if (name) {
-      const sortRepositories = repositories.filter((repos) => {
+      sortRepositories = repositories.filter((repos) => {
         return repos.name.toLowerCase().includes(repoName.toLowerCase());
       });
-      return sortRepositories.map((repo) => {
+    }
+    return sortRepositories
+      .sort((a, b) => (a.stargazerCount < b.stargazerCount ? 1 : -1))
+      .map((repo) => {
         return <Repository key={repo.createdAt} info={repo} />;
       });
-    }
-    return repositories.map((repo) => {
-      return <Repository key={repo.createdAt} info={repo} />;
-    });
   };
 
   return (

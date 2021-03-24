@@ -66,17 +66,11 @@ const UserInfo: React.FC<userInfoType> = ({
       </section>
     </div>
   );
-
-  // if (!isLoaded) {
-  //     return <div>Загрузка...</div>;
-  // } else {
-  //     return ();
-  // }
 };
-//
+
 export default UserInfo;
 
-function infoParse(data: string = "Не указано") {
+export function infoParse(data: string = "Не указано") {
   if (!data) {
     return "Не указано";
   }
