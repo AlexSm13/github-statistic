@@ -4,7 +4,7 @@ import UserInfo from "./components/UserInfo/UserInfo";
 import { userInfoQuery } from "./api/startInfo";
 import { useLazyQuery } from "@apollo/client";
 import { IUserInfo } from "./models/IUserInfo";
-import { RepositoriesInfo } from "./components/RepositoryInfo/RepositoriesInfo";
+import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 
 type GtHubData = {
   user: IUserInfo;
@@ -18,7 +18,7 @@ export function App() {
   useEffect(() => {
     getDataInfo({
       //пока так чтобы каждый раз не вбивать
-      variables: { login: "VladislavLavrov" },
+      variables: { login: "AlexSm13" },
     });
   }, []);
 
@@ -37,7 +37,14 @@ export function App() {
 
   return (
     <div className={"container"}>
-      <Search getData={getData} login={login} loginChange={loginChange} />
+      <Search
+        width={"442px"}
+        title={"Поисковик пользователей"}
+        placeholder={"login Github"}
+        getData={getData}
+        value={login}
+        valueChange={loginChange}
+      />
       {data ? (
         <>
           <UserInfo
@@ -50,7 +57,7 @@ export function App() {
             imgURL={data.user.avatarUrl}
             login={data.user.login}
           />
-          <RepositoriesInfo
+          <MainStatistics
             repositories={data.user.repositories.nodes}
             name={data.user.name}
           />

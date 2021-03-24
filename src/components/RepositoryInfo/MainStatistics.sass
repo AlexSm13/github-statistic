@@ -1,0 +1,70 @@
+.statistic-info-container
+  display: flex
+  padding-top: 20px
+  align-items: stretch
+
+
+  .repositories-info
+    flex: 2
+
+
+
+  .repositories
+    background-color: #f7fff8
+    border: 1px solid #c8c8c8
+    border-radius: 10px
+    margin-left: 20px
+    padding: 15px
+    box-shadow: inset 1px 1px 6px #e3e3e3
+
+    width: 100%
+    min-height: 500px
+    flex: 5
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-around
+
+    .repository
+      width: 45%
+      height: 120px
+      background-color: #ffffff
+
+      border-radius: 10px
+      margin-bottom: 20px
+      box-shadow: 1px 1px 6px #e3e3e3
+      transition: $form-transition
+      text-align: center
+      z-index: 2
+
+      h3
+        font-family: $font-monserat
+        font-weight: 500
+        font-size: 24px
+        color: $font-color-black
+
+      &:hover
+        cursor: pointer
+        transform: scale(1.1) translate(-10px, -10px)
+        box-shadow: $box-shadow
+
+
+
+.more-info-wrapper
+  z-index: 1000
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background-color: rgba(0, 0, 0, .3)
+  //filter: blur(2px)
+
+  .more-info
+    z-index: 1001
+    position: fixed
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    width: 1080px
+    height: 500px
+    background-color: #fff

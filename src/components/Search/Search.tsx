@@ -2,21 +2,31 @@ import searchIcon from "../../images/search.svg";
 import React from "react";
 
 type SearchType = {
-  login: string;
-  loginChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  valueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   getData: (event: React.FormEvent<EventTarget>) => void;
+  title?: string;
+  placeholder: string;
+  width?: string;
 };
 
-const Search: React.FC<SearchType> = ({ login, loginChange, getData }) => {
+const Search: React.FC<SearchType> = ({
+  value,
+  width = "100%",
+  valueChange,
+  getData,
+  title,
+  placeholder,
+}) => {
   return (
-    <div className={"search-container"}>
-      <h2>Поисковик пользователей </h2>
+    <div className={"search-container"} style={{ width }}>
+      <h2>{title}</h2>
       <form className={"search-form"} onSubmit={getData}>
         <input
-          placeholder={"login Github"}
+          placeholder={placeholder}
           className={"search-form-input"}
-          onChange={loginChange}
-          value={login}
+          onChange={valueChange}
+          value={value}
           type="text"
         />
         <button type={"submit"}>
