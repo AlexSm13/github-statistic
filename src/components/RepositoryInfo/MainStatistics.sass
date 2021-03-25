@@ -70,13 +70,6 @@
             border: 2px solid $font-color-white
             transform: translateY(-25%)
 
-
-
-
-
-
-
-
         img,
         .label
           margin: 3px 8px
@@ -107,7 +100,7 @@
   //filter: blur(2px)
 
   .more-info
-    z-index: 1001
+    z-index: 10
     position: fixed
     border-radius: 10px
     padding: 15px 25px
@@ -116,9 +109,29 @@
     transform: translate(-50%, -50%)
     max-width: 1080px
     width: 90%
-    height: 500px
+    min-height: 300px
     background-color: #fff
     box-sizing: border-box
+
+    .title-flex
+      display: flex
+      align-items: center
+      justify-content: space-between
+      border-bottom: $border
+
+      .title-repos-name
+        font-weight: 300
+        font-family: $font-monserat
+        font-size: 26px
+
+      .title-exit
+        transform: scaleX(1.3)
+        cursor: pointer
+        transition: $form-transition
+
+        &:hover
+          color: grey
+
 
 .repository-container
   display: flex
@@ -126,10 +139,12 @@
 
   .repository-info
     flex: 1.5
-    padding-right: 10px
 
   .repository-statistic
     flex: 2.5
+    display: flex
+    flex-direction: column
+    justify-content: center
 
   .rep-info
     display: flex

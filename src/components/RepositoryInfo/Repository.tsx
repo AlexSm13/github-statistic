@@ -3,8 +3,9 @@ import { IRepository } from "../../models/IRepository";
 import starIcon from "../../images/star.svg";
 import forkIcon from "../../images/fork.svg";
 import copyIcon from "../../images/copy.svg";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { infoParse } from "../UserInfo/UserInfo";
+import { getBGColors } from "../../consts/consts";
 
 type RepositoryInfoType = {
   info: IRepository;
@@ -21,38 +22,11 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
     e.stopPropagation();
     setIsCloned(true);
-    setTimeout(() => setIsCloned(false), 2000)
+    setTimeout(() => setIsCloned(false), 2000);
     navigator.clipboard.writeText(info.sshUrl);
   };
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-
-    return color;
-  };
-
   const getLanguages = () => {
-    const labels = info.languages.edges.map((lan) => lan.node.name);
-    const dataArr = info.languages.edges.map((lan) => lan.size);
-    const backgroundColors = Array(dataArr.length)
-      .fill(0)
-      .map(() => getRandomColor());
-
-    const data = {
-      datasets: [
-        {
-          data: dataArr,
-          backgroundColor: backgroundColors,
-          label: "# of Votes",
-        },
-      ],
-      labels: labels,
-    };
-
     return (
       <>
         {info.languages.edges.map((data) => {
@@ -65,9 +39,26 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
             </div>
           );
         })}
-        <Pie data={data} />
       </>
     );
+  };
+
+  const getGraph = () => {
+    const labels = info.languages.edges.map((lan) => lan.node.name);
+    const dataArr = info.languages.edges.map((lan) => lan.size);
+    const backgroundColors = getBGColors(info.languages.edges.length);
+
+    const data = {
+      datasets: [
+        {
+          data: dataArr,
+          backgroundColor: backgroundColors,
+          label: "# of Votes",
+        },
+      ],
+      labels: labels,
+    };
+    return <Doughnut data={data} />;
   };
 
   return (
@@ -75,11 +66,13 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
       <div className={"repository"} onClick={modalToggle}>
         <div className={"info-container info-flex"}>
           <h3>{info.name}</h3>
-          <div className={'copy-url-container'}>
+          <div className={"copy-url-container"}>
             <img src={copyIcon} alt="Copy" onClick={copyToClipboard} />
-            {isCloned
-                ? <span className={'copy-url'}>Склонированно&#10003;</span>
-                : <span className={'copy-url'}>Клонировать</span>}
+            {isCloned ? (
+              <span className={"copy-url"}>Склонированно&#10003;</span>
+            ) : (
+              <span className={"copy-url"}>Клонировать</span>
+            )}
           </div>
         </div>
         <div className={"info-container"}>
@@ -98,7 +91,12 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
       {moreInfo ? (
         <div className={"more-info-wrapper"} onClick={modalToggle}>
           <div className={"more-info"} onClick={(e) => e.stopPropagation()}>
-            <h1>Информация о репозитории {info.name}</h1>
+            <div className={"title-flex"}>
+              <h3 className={"title-repos-name"}>Репозиторий {info.name}</h3>
+              <div onClick={modalToggle} className={"title-exit"}>
+                X
+              </div>
+            </div>
             <div className={"repository-container"}>
               <div className={"repository-info"}>
                 <h3>Информация</h3>
@@ -115,10 +113,6 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
                   </span>
                 </div>
                 <div className={"rep-info"}>
-                  <span className={"label"}>Описание:</span>
-                  <span className={"data"}>{infoParse(info.description)}</span>
-                </div>
-                <div className={"rep-info"}>
                   <span className={"label"}>Является форком:</span>
                   <span className={"data"}>{info.isFork ? "Да" : "Нет"}</span>
                 </div>
@@ -130,16 +124,25 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
                   <span className={"label"}>Всего issue:</span>
                   <span className={"data"}>{info.issues.totalCount}</span>
                 </div>
-              </div>
-              <div className={"repository-statistic"}>
-                <h3>Статистика</h3>
+                <hr />
+                <h3>Языки</h3>
                 {info.languages.totalCount > 0 ? (
                   getLanguages()
                 ) : (
                   <span>Информации по языкам нету(((</span>
                 )}
               </div>
+              <div className={"repository-statistic"}>
+                {info.languages.totalCount > 0 ? (
+                  getGraph()
+                ) : (
+                  <span>И с графиком тоже(((</span>
+                )}
+              </div>
             </div>
+            <hr />
+            <h3>Описание </h3>
+            <span className={"data"}>{infoParse(info.description)}</span>
           </div>
         </div>
       ) : null}
