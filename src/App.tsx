@@ -18,7 +18,7 @@ export function App() {
   useEffect(() => {
     getDataInfo({
       //пока так чтобы каждый раз не вбивать
-      variables: { login: "AlexSm13" },
+      variables: { login: "KuzmichAlexander" },
     });
   }, []);
 

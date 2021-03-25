@@ -12,6 +12,7 @@ type RepositoryInfoType = {
 
 export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const [moreInfo, setMoreInfo] = useState<boolean>(false);
+  const [isCloned, setIsCloned] = useState<boolean>(false);
 
   const modalToggle = () => {
     setMoreInfo(!moreInfo);
@@ -19,6 +20,8 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
 
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
     e.stopPropagation();
+    setIsCloned(true);
+    setTimeout(() => setIsCloned(false), 2000)
     navigator.clipboard.writeText(info.sshUrl);
   };
 
@@ -70,9 +73,14 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   return (
     <>
       <div className={"repository"} onClick={modalToggle}>
-        <div className={"info-container"}>
+        <div className={"info-container info-flex"}>
           <h3>{info.name}</h3>
-          <img src={copyIcon} alt="Copy" onClick={copyToClipboard} />
+          <div className={'copy-url-container'}>
+            <img src={copyIcon} alt="Copy" onClick={copyToClipboard} />
+            {isCloned
+                ? <span className={'copy-url'}>Склонированно&#10003;</span>
+                : <span className={'copy-url'}>Клонировать</span>}
+          </div>
         </div>
         <div className={"info-container"}>
           <img src={starIcon} alt="Star" />

@@ -15,7 +15,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   const [repoName, setRepoName] = useState<string>("");
 
   const getRepositories = () => {
-    let sortRepositories = repositories;
+    let sortRepositories = [...repositories];
     if (name) {
       sortRepositories = repositories.filter((repos) => {
         return repos.name.toLowerCase().includes(repoName.toLowerCase());
