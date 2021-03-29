@@ -1,15 +1,30 @@
-import { log } from "util";
+import React from "react";
 
 type userInfoType = {
   login: any;
   imgURL: string;
+  name: string;
+  location: string;
+  email: string;
+  websiteUrl: string;
+  organization: { name: string };
+  company: string;
 };
 
-const UserInfo: React.FC<userInfoType> = ({ login, imgURL }) => {
-  console.log(login);
+const UserInfo: React.FC<userInfoType> = ({
+  websiteUrl,
+  login,
+  imgURL,
+  company,
+  organization,
+  name,
+  email,
+  location,
+}) => {
   if (!login) {
     return <div>Нет данных</div>;
   }
+  console.log(email);
 
   return (
     <div className={"user-info-container"}>
@@ -24,33 +39,40 @@ const UserInfo: React.FC<userInfoType> = ({ login, imgURL }) => {
 
         <label>
           <p className={"user-info-description"}>Имя:</p>
-          <p>{login}</p>
+          <p>{infoParse(name)}</p>
         </label>
         <label>
           <p className={"user-info-description"}>Организация:</p>
-          <p>{login}</p>
+          <p style={{ display: "flex" }}>
+            {organization
+              ? infoParse(organization.name)
+              : company
+              ? infoParse(company)
+              : infoParse()}
+          </p>
         </label>
         <label>
-          <p className={"user-info-description"}>Страна:</p>
-          <p>{login}</p>
+          <p className={"user-info-description"}>Местоположение:</p>
+          <p>{infoParse(location)}</p>
         </label>
         <label>
           <p className={"user-info-description"}>Email:</p>
-          <p>{login}</p>
+          <p>{infoParse(email)}</p>
         </label>
         <label>
           <p className={"user-info-description"}>Сайт:</p>
-          <p>{login}</p>
+          <p>{infoParse(websiteUrl)}</p>
         </label>
       </section>
     </div>
   );
-
-  // if (!isLoaded) {
-  //     return <div>Загрузка...</div>;
-  // } else {
-  //     return ();
-  // }
 };
-//
+
 export default UserInfo;
+
+export function infoParse(data: string = "Не указано") {
+  if (!data) {
+    return "Не указано";
+  }
+  return data;
+}
