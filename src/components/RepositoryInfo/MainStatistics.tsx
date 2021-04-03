@@ -36,7 +36,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
           <h3>Всего репозиториев: {repositories.length}</h3>
           <code>(публичных)</code>
           <Search
-            width={"100%"}
+            maxWidth={"100%"}
             placeholder={"Имя репозитория"}
             getData={getRepositories}
             value={repoName}

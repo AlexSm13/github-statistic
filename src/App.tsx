@@ -5,6 +5,7 @@ import { userInfoQuery } from "./api/startInfo";
 import { useLazyQuery } from "@apollo/client";
 import { IUserInfo } from "./models/IUserInfo";
 import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
+import NotFound from "./components/NotFound/NotFound";
 
 type GtHubData = {
   user: IUserInfo;
@@ -13,7 +14,7 @@ type GtHubData = {
 export function App() {
   const [login, setLogin] = useState<string>("");
 
-  const [getDataInfo, { data }] = useLazyQuery<GtHubData>(userInfoQuery);
+  const [getDataInfo, { data, error }] = useLazyQuery<GtHubData>(userInfoQuery);
 
   useEffect(() => {
     getDataInfo({
@@ -38,14 +39,20 @@ export function App() {
   return (
     <div className={"container"}>
       <Search
-        width={"442px"}
+        maxWidth={"442px"}
         title={"Поисковик пользователей"}
         placeholder={"login Github"}
         getData={getData}
         value={login}
         valueChange={loginChange}
       />
-      {data ? (
+      {login && (error || !data) ? (
+        <>
+          <NotFound />
+        </>
+      ) : null}
+
+      {data && data.user ? (
         <>
           <UserInfo
             websiteUrl={data.user.websiteUrl}

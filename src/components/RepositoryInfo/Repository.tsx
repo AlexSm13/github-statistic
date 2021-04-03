@@ -3,9 +3,10 @@ import { IRepository } from "../../models/IRepository";
 import starIcon from "../../images/star.svg";
 import forkIcon from "../../images/fork.svg";
 import copyIcon from "../../images/copy.svg";
-import { Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import { infoParse } from "../UserInfo/UserInfo";
 import { getBGColors } from "../../consts/consts";
+import IssueAndPullStatistic from "./IssueAndPullStatistic";
 
 type RepositoryInfoType = {
   info: IRepository;
@@ -101,6 +102,10 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
               <div className={"repository-info"}>
                 <h3>Информация</h3>
                 <div className={"rep-info"}>
+                  <span className={"label"}>Владелец:</span>
+                  <span className={"data"}>{info.owner.login}</span>
+                </div>
+                <div className={"rep-info"}>
                   <span className={"label"}>Создан:</span>
                   <span className={"data"}>
                     {new Date(info.createdAt).toLocaleDateString()}
@@ -138,6 +143,20 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
                 ) : (
                   <span>И с графиком тоже(((</span>
                 )}
+                {info.issues.totalCount > 0 ? (
+                  <IssueAndPullStatistic
+                    info={info.issues}
+                    label={"issue"}
+                    durationIn={"hour"}
+                  />
+                ) : null}
+                {info.pullRequests.totalCount > 0 ? (
+                  <IssueAndPullStatistic
+                    info={info.pullRequests}
+                    label={"pullRequest"}
+                    durationIn={"minute"}
+                  />
+                ) : null}
               </div>
             </div>
             <hr />

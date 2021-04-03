@@ -3,11 +3,8 @@
   padding-top: 20px
   align-items: stretch
 
-
   .repositories-info
     flex: 2
-
-
 
   .repositories
     background-color: #f7fff8
@@ -26,7 +23,8 @@
 
     .repository
       width: 45%
-      height: 120px
+      min-width: 260px
+      min-height: 120px
       background-color: #ffffff
       padding: 10px
 
@@ -80,6 +78,7 @@
         font-size: 24px
         color: $font-color-black
         margin-left: 8px
+        text-align: left
 
       &:hover
         cursor: pointer
@@ -109,9 +108,11 @@
     transform: translate(-50%, -50%)
     max-width: 1080px
     width: 90%
+    max-height: 90%
     min-height: 300px
     background-color: #fff
     box-sizing: border-box
+    overflow-y: auto
 
     .title-flex
       display: flex
@@ -136,6 +137,7 @@
 .repository-container
   display: flex
   padding-top: 15px
+  flex-wrap: wrap
 
   .repository-info
     flex: 1.5
@@ -159,3 +161,32 @@
 
     .data
       flex: 100px 2 1
+
+  .statistic-container
+    padding-top: 20px
+
+@media (max-width: 1200px)
+  .statistic-info-container
+    flex-wrap: wrap
+
+    & > div
+      flex: auto !important
+
+    .repositories-info
+      padding-bottom: 20px
+
+    .repositories
+      margin-left: 0
+
+    .copy-url
+      right: -10px
+      bottom: 20px
+
+@media (max-width: 650px)
+  .statistic-info-container
+    .repositories
+      .repository
+        width: 95%
+
+  .repository-statistic
+    margin: 15px auto
