@@ -3,7 +3,7 @@ import { IRepository } from "../../models/IRepository";
 import starIcon from "../../images/star.svg";
 import forkIcon from "../../images/fork.svg";
 import copyIcon from "../../images/copy.svg";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { infoParse } from "../UserInfo/UserInfo";
 import { getBGColors } from "../../consts/consts";
 import IssueAndPullStatistic from "./IssueAndPullStatistic";
@@ -143,25 +143,31 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
                 ) : (
                   <span>И с графиком тоже(((</span>
                 )}
-                {info.issues.totalCount > 0 ? (
-                  <IssueAndPullStatistic
-                    info={info.issues}
-                    label={"issue"}
-                    durationIn={"hour"}
-                  />
-                ) : null}
-                {info.pullRequests.totalCount > 0 ? (
-                  <IssueAndPullStatistic
-                    info={info.pullRequests}
-                    label={"pullRequest"}
-                    durationIn={"minute"}
-                  />
-                ) : null}
               </div>
             </div>
             <hr />
             <h3>Описание </h3>
             <span className={"data"}>{infoParse(info.description)}</span>
+            {info.issues.totalCount > 0 ? (
+              <>
+                <hr />
+                <IssueAndPullStatistic
+                  info={info.issues}
+                  label={"issue"}
+                  durationIn={"hour"}
+                />
+              </>
+            ) : null}
+            {info.pullRequests.totalCount > 0 ? (
+              <>
+                <hr />
+                <IssueAndPullStatistic
+                  info={info.pullRequests}
+                  label={"pullRequest"}
+                  durationIn={"minute"}
+                />
+              </>
+            ) : null}
           </div>
         </div>
       ) : null}

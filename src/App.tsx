@@ -14,7 +14,9 @@ type GtHubData = {
 export function App() {
   const [login, setLogin] = useState<string>("");
 
-  const [getDataInfo, { data, error }] = useLazyQuery<GtHubData>(userInfoQuery);
+  const [getDataInfo, { loading, error, data }] = useLazyQuery<GtHubData>(
+    userInfoQuery
+  );
 
   useEffect(() => {
     getDataInfo({
@@ -46,7 +48,15 @@ export function App() {
         value={login}
         valueChange={loginChange}
       />
-      {login && (error || !data) ? (
+      {loading ? (
+        <>
+          <div className={"spinner"}>
+            <div className={"ball"} />
+            <p>LOADING</p>
+          </div>
+        </>
+      ) : null}
+      {login && error ? (
         <>
           <NotFound />
         </>
@@ -66,6 +76,7 @@ export function App() {
           />
           <MainStatistics
             repositories={data.user.repositories.nodes}
+            totalCount={data.user.repositories.totalCount}
             name={data.user.name}
           />
         </>

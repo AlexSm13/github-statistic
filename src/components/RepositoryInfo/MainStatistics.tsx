@@ -5,11 +5,13 @@ import Search from "../Search/Search";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
+  totalCount: number;
   name: string;
 };
 
 export const MainStatistics: React.FC<RepositoryInfoData> = ({
   repositories,
+  totalCount,
   name,
 }) => {
   const [repoName, setRepoName] = useState<string>("");
@@ -33,7 +35,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
       <h1 className={"title"}>Статистика пользователя:</h1>
       <div className={"statistic-info-container"}>
         <div className={"repositories-info"}>
-          <h3>Всего репозиториев: {repositories.length}</h3>
+          <h3>Всего репозиториев: {totalCount}</h3>
           <code>(публичных)</code>
           <Search
             maxWidth={"100%"}
