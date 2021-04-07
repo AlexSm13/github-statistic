@@ -32,7 +32,7 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
       <>
         {info.languages.edges.map((data) => {
           return (
-            <div className={"rep-info"}>
+            <div key={data.node.name} className={"rep-info"}>
               <span className={"label"}>{data.node.name}</span>
               <span className={"data"}>
                 {((data.size / info.languages.totalSize) * 100).toFixed(2)} %
