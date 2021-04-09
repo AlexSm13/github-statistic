@@ -93,7 +93,6 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
         return ourMap;
       }, {});
     const reposCount = repos.length;
-    // @ts-ignore
     const values = Object.values(languages);
     return values
       .sort((a, b) => b.count - a.count)
