@@ -14,17 +14,23 @@ type AllRepositoriesType = {
   repos: RepositoryInfoType[];
 };
 
-type LangType = {
-  name: string;
-  count: number;
-  repos: string[];
+type OurMapType = {
+  [id: string]: {
+    count: number;
+    size: number;
+    repos: string[];
+    langName: string;
+  };
 };
 
-type ValuesType = {
+type CurrentRepType = {
   name: string;
-  reposes: string[];
-  count: number;
-  langname: string;
+  languages: MapLanguage[];
+};
+
+type MapLanguage = {
+  size: number;
+  node: { name: string };
 };
 
 const medals = [firstPlace, secondPlace, thirdPlace];
@@ -49,8 +55,6 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
       });
     });
 
-    console.log(allLangs);
-
     const data = {
       labels: Object.keys(allLangs),
       datasets: [
@@ -70,40 +74,24 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
       .map((repository) => {
         return { name: repository.name, languages: repository.langs.edges };
       })
-      .reduce(
-        (
-          ourMap: {
-            [id: string]: {
-              count: number;
-              size: number;
-              repos: string[];
-              langName: string;
+      .reduce((ourMap: OurMapType, currentRep: CurrentRepType) => {
+        currentRep.languages.forEach((language) => {
+          if (ourMap[language.node.name]) {
+            ourMap[language.node.name].count += 1;
+            ourMap[language.node.name].size += language.size;
+            ourMap[language.node.name].repos.push(currentRep.name);
+          } else {
+            ourMap[language.node.name] = {
+              count: 1,
+              size: language.size,
+              repos: [currentRep.name],
+              langName: language.node.name,
             };
-          },
-          current: {
-            name: string;
-            languages: { size: number; node: { name: string } }[];
           }
-        ) => {
-          current.languages.forEach((language) => {
-            if (ourMap[language.node.name]) {
-              ourMap[language.node.name].count += 1;
-              ourMap[language.node.name].size += language.size;
-              ourMap[language.node.name].repos.push(current.name);
-            } else {
-              ourMap[language.node.name] = {
-                count: 1,
-                size: language.size,
-                repos: [current.name],
-                langName: language.node.name,
-              };
-            }
-          });
+        });
 
-          return ourMap;
-        },
-        {}
-      );
+        return ourMap;
+      }, {});
     const reposCount = repos.length;
     // @ts-ignore
     const values = Object.values(languages);
