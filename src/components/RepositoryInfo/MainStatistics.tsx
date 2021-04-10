@@ -30,8 +30,6 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
       return <p>Подгружаем...</p>;
     }
     let sortRepositories = repositories.slice(indexOfFirstRep, indexOfLastRep);
-    console.log(indexOfFirstRep, indexOfLastRep, sortRepositories);
-    console.log(repoName, repositories);
 
     if (repoName) {
       sortRepositories = [
