@@ -25,8 +25,6 @@ export function App() {
     });
   }, []);
 
-  console.log(data);
-
   const loginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLogin(event.target.value);
   };
@@ -56,11 +54,7 @@ export function App() {
           </div>
         </>
       ) : null}
-      {login && error ? (
-        <>
-          <NotFound />
-        </>
-      ) : null}
+      {login && error ? <NotFound /> : null}
 
       {data && data.user ? (
         <>

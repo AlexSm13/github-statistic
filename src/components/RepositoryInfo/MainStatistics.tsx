@@ -3,6 +3,8 @@ import { IRepository } from "../../models/IRepository";
 import { Repository } from "./Repository";
 import Search from "../Search/Search";
 import { Languages } from "../LanguagesStats/Languages";
+import { Pagination } from "../Pagination/Pagination";
+import { log } from "util";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
@@ -16,19 +18,37 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   name,
 }) => {
   const [repoName, setRepoName] = useState<string>("");
+  const [repPerPage] = useState<number>(20);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const getRepositories = () => {
-    let sortRepositories = [...repositories];
-    if (name) {
-      sortRepositories = repositories.filter((repos) => {
-        return repos.name.toLowerCase().includes(repoName.toLowerCase());
-      });
+    const indexOfLastRep = currentPage * repPerPage;
+    const indexOfFirstRep = indexOfLastRep - repPerPage;
+
+    //console.log(repositories.sort((a, b) => (a.stargazerCount < b.stargazerCount ? -1 : 1)))
+    if (!repositories.length) {
+      return <p>Подгружаем...</p>;
+    }
+    let sortRepositories = repositories.slice(indexOfFirstRep, indexOfLastRep);
+    console.log(indexOfFirstRep, indexOfLastRep, sortRepositories);
+    console.log(repoName, repositories);
+
+    if (repoName) {
+      sortRepositories = [
+        ...repositories.filter((repos) => {
+          return repos.name.toLowerCase().includes(repoName.toLowerCase());
+        }),
+      ];
     }
     return sortRepositories
       .sort((a, b) => (a.stargazerCount < b.stargazerCount ? 1 : -1))
       .map((repo) => {
         return <Repository key={repo.createdAt} info={repo} />;
       });
+  };
+
+  const paginate = (num: number) => {
+    setCurrentPage(num);
   };
 
   return (
@@ -54,6 +74,12 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
           />
         </div>
         <div className={"repositories"}>
+          <Pagination
+            totalRep={repositories.length}
+            repPerPage={repPerPage}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
           {repositories.length ? (
             getRepositories()
           ) : (

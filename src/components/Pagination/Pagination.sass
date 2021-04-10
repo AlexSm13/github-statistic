@@ -1,0 +1,47 @@
+.pagination-container
+  width: 100%
+
+  ul
+    display: flex
+    justify-content: center
+
+
+    .pagination-item
+      width: 40px
+      height: 40px
+      list-style: none
+      color: $font-color-white
+      border: 2px solid $main-color-green
+      border-right: none
+      transition: $form-transition
+      position: relative
+      cursor: pointer
+
+      &:last-child
+        border-right: 2px solid $main-color-green
+
+
+      &:hover
+        background-color: #f5fff4
+
+      .pagination-link
+        display: block
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        color: $main-color-green
+
+
+
+
+
+.active-link
+  background-color: #49bb36
+  &:hover
+    background-color: #7bc26d !important
+
+  p
+    color: $font-color-white
+
+
