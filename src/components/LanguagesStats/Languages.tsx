@@ -115,7 +115,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
               <p className={"font-weight-bold"}>Репозитории</p>
               <hr />
               {lang.repos.map((rep, ind) => (
-                <p key={rep}>
+                <p key={ind}>
                   {ind + 1}. {rep}
                 </p>
               ))}
