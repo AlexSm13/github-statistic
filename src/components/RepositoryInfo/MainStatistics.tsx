@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { IRepository } from "../../models/IRepository";
 import { Repository } from "./Repository";
 import Search from "../Search/Search";
+import { Languages } from "../LanguagesStats/Languages";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
+  totalCount: number;
   name: string;
 };
 
 export const MainStatistics: React.FC<RepositoryInfoData> = ({
   repositories,
+  totalCount,
   name,
 }) => {
   const [repoName, setRepoName] = useState<string>("");
@@ -31,12 +34,19 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   return (
     <section>
       <h1 className={"title"}>Статистика пользователя:</h1>
+      <Languages
+        repos={repositories.map((rep) => ({
+          name: rep.name,
+          langs: rep.languages,
+        }))}
+      />
+
       <div className={"statistic-info-container"}>
         <div className={"repositories-info"}>
-          <h3>Всего репозиториев: {repositories.length}</h3>
+          <h3>Всего репозиториев: {totalCount}</h3>
           <code>(публичных)</code>
           <Search
-            width={"100%"}
+            maxWidth={"100%"}
             placeholder={"Имя репозитория"}
             getData={getRepositories}
             value={repoName}

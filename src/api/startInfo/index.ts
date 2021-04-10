@@ -25,6 +25,10 @@ const userInfoQuery = gql`
           sshUrl
           description
           stargazerCount
+          owner {
+            login
+            url
+          }
           forkCount
           forks(last: 60) {
             totalCount
@@ -49,6 +53,8 @@ const userInfoQuery = gql`
               author {
                 login
               }
+              number
+              title
               closedAt
               createdAt
             }
@@ -59,6 +65,8 @@ const userInfoQuery = gql`
               author {
                 login
               }
+              number
+              title
               closedAt
               createdAt
             }

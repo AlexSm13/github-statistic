@@ -6,6 +6,8 @@ import copyIcon from "../../images/copy.svg";
 import { Doughnut } from "react-chartjs-2";
 import { infoParse } from "../UserInfo/UserInfo";
 import { getBGColors } from "../../consts/consts";
+import IssueAndPullStatistic from "./IssueAndPullStatistic";
+import { RepoModal } from "./RepoModal";
 
 type RepositoryInfoType = {
   info: IRepository;
@@ -31,7 +33,7 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
       <>
         {info.languages.edges.map((data) => {
           return (
-            <div className={"rep-info"}>
+            <div key={data.node.name} className={"rep-info"}>
               <span className={"label"}>{data.node.name}</span>
               <span className={"data"}>
                 {((data.size / info.languages.totalSize) * 100).toFixed(2)} %
@@ -89,62 +91,12 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
         </div>
       </div>
       {moreInfo ? (
-        <div className={"more-info-wrapper"} onClick={modalToggle}>
-          <div className={"more-info"} onClick={(e) => e.stopPropagation()}>
-            <div className={"title-flex"}>
-              <h3 className={"title-repos-name"}>Репозиторий {info.name}</h3>
-              <div onClick={modalToggle} className={"title-exit"}>
-                X
-              </div>
-            </div>
-            <div className={"repository-container"}>
-              <div className={"repository-info"}>
-                <h3>Информация</h3>
-                <div className={"rep-info"}>
-                  <span className={"label"}>Создан:</span>
-                  <span className={"data"}>
-                    {new Date(info.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className={"rep-info"}>
-                  <span className={"label"}>Последнее обновление:</span>
-                  <span className={"data"}>
-                    {new Date(info.updatedAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className={"rep-info"}>
-                  <span className={"label"}>Является форком:</span>
-                  <span className={"data"}>{info.isFork ? "Да" : "Нет"}</span>
-                </div>
-                <div className={"rep-info"}>
-                  <span className={"label"}>Всего pull-request:</span>
-                  <span className={"data"}>{info.pullRequests.totalCount}</span>
-                </div>
-                <div className={"rep-info"}>
-                  <span className={"label"}>Всего issue:</span>
-                  <span className={"data"}>{info.issues.totalCount}</span>
-                </div>
-                <hr />
-                <h3>Языки</h3>
-                {info.languages.totalCount > 0 ? (
-                  getLanguages()
-                ) : (
-                  <span>Информации по языкам нету(((</span>
-                )}
-              </div>
-              <div className={"repository-statistic"}>
-                {info.languages.totalCount > 0 ? (
-                  getGraph()
-                ) : (
-                  <span>И с графиком тоже(((</span>
-                )}
-              </div>
-            </div>
-            <hr />
-            <h3>Описание </h3>
-            <span className={"data"}>{infoParse(info.description)}</span>
-          </div>
-        </div>
+        <RepoModal
+          getLanguages={getLanguages}
+          getGraph={getGraph}
+          info={info}
+          modalToggle={modalToggle}
+        />
       ) : null}
     </>
   );

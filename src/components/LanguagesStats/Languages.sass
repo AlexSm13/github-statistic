@@ -1,0 +1,113 @@
+.languages-info-container
+    display: flex
+    margin: 20px 0
+    align-items: stretch
+
+
+.languages-numbers
+    flex: 2.5
+    min-height: 100px
+    box-shadow: $box-shadow
+    margin-right: 10px
+    border-radius: 15px
+
+    .languages-numbers-stats-header
+        display: flex
+        padding: 5px
+
+
+    &-stats
+        display: flex
+        position: relative
+        cursor: pointer
+        padding: 5px
+        transition: $form-transition
+        box-sizing: border-box
+        border-radius: 15px
+
+        &:hover
+            outline: 2px solid #48d061
+
+
+
+        &:hover .languages-repositories
+            transform: translateX(100%)
+            opacity: 1
+
+        .languages-repositories
+            opacity: 0
+            position: absolute
+            right: 0
+            top: 0
+            transform: translateX(50%)
+
+            padding: 10px
+            outline: 2px solid #48d061
+            background-color: #fff
+            transition: $form-transition
+
+
+        &-name-header
+            font-weight: 400
+            font-size: 20px
+            flex: 2
+            padding: 4px
+
+        &-count-header
+            font-weight: 400
+            font-size: 20px
+            flex: 1
+            padding: 4px
+            text-align: center
+
+        &-percent-header
+            font-weight: 400
+            font-size: 20px
+            flex: 1
+            padding: 4px
+            text-align: center
+
+        &-name
+            flex: 2
+            padding: 4px
+            display: flex
+
+            align-items: center
+            text-align: center
+
+        &-count
+            flex: 1
+            padding: 4px
+            text-align: center
+            align-self: center
+            width: 80px
+
+        &-percent
+            flex: 1
+            padding: 4px
+            text-align: center
+            align-self: center
+            width: 80px
+
+
+
+
+
+
+.languages-graph
+    flex: 5
+    min-height: 100px
+
+
+
+.font-weight-bold
+    font-weight: 500
+
+
+.top-lang-medal
+    width: 40px
+    height: 40px
+
+    img
+        width: 100%
+        background-size: contain

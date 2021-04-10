@@ -7,19 +7,19 @@ type SearchType = {
   getData: (event: React.FormEvent<EventTarget>) => void;
   title?: string;
   placeholder: string;
-  width?: string;
+  maxWidth?: string;
 };
 
 const Search: React.FC<SearchType> = ({
   value,
-  width = "100%",
+  maxWidth = "100%",
   valueChange,
   getData,
   title,
   placeholder,
 }) => {
   return (
-    <div className={"search-container"} style={{ width }}>
+    <div className={"search-container"} style={{ maxWidth }}>
       <h2>{title}</h2>
       <form className={"search-form"} onSubmit={getData}>
         <input
