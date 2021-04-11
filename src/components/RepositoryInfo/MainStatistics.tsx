@@ -4,7 +4,7 @@ import { Repository } from "./Repository";
 import Search from "../Search/Search";
 import { Languages } from "../LanguagesStats/Languages";
 import { Pagination } from "../Pagination/Pagination";
-import { log } from "util";
+import {Collaborators} from "./Collaborators/Collaborators";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
@@ -25,7 +25,6 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
     const indexOfLastRep = currentPage * repPerPage;
     const indexOfFirstRep = indexOfLastRep - repPerPage;
 
-    //console.log(repositories.sort((a, b) => (a.stargazerCount < b.stargazerCount ? -1 : 1)))
     if (!repositories.length) {
       return <p>Подгружаем...</p>;
     }
@@ -49,6 +48,8 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
     setCurrentPage(num);
   };
 
+  console.log(repositories)
+
   return (
     <section>
       <h1 className={"title"}>Статистика пользователя:</h1>
@@ -70,6 +71,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
             value={repoName}
             valueChange={(e) => setRepoName(e.target.value)}
           />
+          <Collaborators collaborators={repositories.map(rep => ({edges: rep.collaborators.edges, repName: rep.name}))} />
         </div>
         <div className={"repositories"}>
           <Pagination
@@ -82,7 +84,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
             getRepositories()
           ) : (
             <h1 className={"title"}>
-              Пользвователь {name} как-то выживет без репозиториев :(
+              Пользователь {name} как-то выживет без репозиториев :(
             </h1>
           )}
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-type userInfoType = {
+type UserInfoType = {
   login: any;
   imgURL: string;
   name: string;
@@ -11,7 +11,7 @@ type userInfoType = {
   company: string;
 };
 
-const UserInfo: React.FC<userInfoType> = ({
+const UserInfo: React.FC<UserInfoType> = ({
   websiteUrl,
   login,
   imgURL,
@@ -24,7 +24,6 @@ const UserInfo: React.FC<userInfoType> = ({
   if (!login) {
     return <div>Нет данных</div>;
   }
-  console.log(email);
 
   return (
     <div className={"user-info-container"}>
