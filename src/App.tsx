@@ -7,14 +7,14 @@ import { IUserInfo } from "./models/IUserInfo";
 import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 
-type GtHubData = {
+type GitHubData = {
   user: IUserInfo;
 };
 
 export function App() {
   const [login, setLogin] = useState<string>("");
 
-  const [getDataInfo, { loading, error, data }] = useLazyQuery<GtHubData>(
+  const [getDataInfo, { loading, error, data }] = useLazyQuery<GitHubData>(
     userInfoQuery
   );
 

@@ -15,18 +15,18 @@ const userInfoQuery = gql`
       }
       email
       bio
-      repositories(last: 100, orderBy: { field: UPDATED_AT, direction: ASC }) {
+      repositories(last: 100, orderBy: { field: UPDATED_AT, direction: DESC }) {
         totalCount
         nodes {
           updatedAt
           createdAt
           name
-          collaborators { 
-          edges {
-            node {
-              login
-              name
-              avatarUrl
+          collaborators {
+            edges {
+              node {
+                login
+                name
+                avatarUrl
               }
             }
           }
