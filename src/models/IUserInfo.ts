@@ -13,7 +13,7 @@ export interface IUserInfo {
   };
   email: string;
   bio: string;
- // repositories: IRepositories
+  // repositories: IRepositories
 }
 
 export interface IRepositories {
@@ -21,6 +21,6 @@ export interface IRepositories {
   pageInfo: {
     endCursor: string;
     hasNextPage: boolean;
-  }
+  };
   nodes: IRepository[];
 }

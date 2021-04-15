@@ -108,7 +108,9 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
               ) : null}
               {lang.langName}
             </div>
-            <div className={"languages-numbers-stats-count"}><CountUp start={lang.count / 10} end={lang.count}/></div>
+            <div className={"languages-numbers-stats-count"}>
+              <CountUp start={lang.count / 10} end={lang.count} />
+            </div>
             <div className={"languages-numbers-stats-percent"}>
               {Math.trunc((lang.count / reposCount) * 100)}
             </div>
