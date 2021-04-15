@@ -39,7 +39,6 @@ export const getOthersRepositories = gql`
         stargazerCount
         owner {
           login
-          url
         }
         forkCount
         forks(last: 60) {
@@ -87,7 +86,4 @@ export const getOthersRepositories = gql`
     }
     }
     }
-`
-
-
-
+`;

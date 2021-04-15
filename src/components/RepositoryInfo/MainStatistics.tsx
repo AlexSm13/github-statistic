@@ -4,7 +4,7 @@ import { Repository } from "./Repository";
 import Search from "../Search/Search";
 import { Languages } from "../LanguagesStats/Languages";
 import { Pagination } from "../Pagination/Pagination";
-import {Collaborators} from "./Collaborators/Collaborators";
+import { Collaborators } from "./Collaborators/Collaborators";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
@@ -28,7 +28,16 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
     if (!repositories.length) {
       return <p>Подгружаем...</p>;
     }
-    let sortRepositories = repositories.slice(indexOfFirstRep, indexOfLastRep);
+
+    let sortRepositories = [...repositories]
+      .sort((a, b) =>
+        new Date(a.updatedAt) < new Date(b.updatedAt)
+          ? 1
+          : -1 || a.stargazerCount < b.stargazerCount
+          ? 1
+          : -1
+      )
+      .slice(indexOfFirstRep, indexOfLastRep);
 
     if (repoName) {
       sortRepositories = [
@@ -37,18 +46,16 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
         }),
       ];
     }
-    return sortRepositories
-      .sort((a, b) => (a.stargazerCount < b.stargazerCount ? 1 : -1))
-      .map((repo) => {
-        return <Repository key={`${repo.createdAt}${repo.name}`} info={repo} />;
-      });
+    return sortRepositories.map((repo) => {
+      return <Repository key={`${repo.createdAt}${repo.name}`} info={repo} />;
+    });
   };
 
   const paginate = (num: number) => {
     setCurrentPage(num);
   };
 
-  console.log(repositories)
+  console.log(repositories);
 
   return (
     <section>

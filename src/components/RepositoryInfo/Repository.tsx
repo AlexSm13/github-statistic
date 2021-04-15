@@ -4,9 +4,7 @@ import starIcon from "../../images/star.svg";
 import forkIcon from "../../images/fork.svg";
 import copyIcon from "../../images/copy.svg";
 import { Doughnut } from "react-chartjs-2";
-import { infoParse } from "../UserInfo/UserInfo";
 import { getBGColors } from "../../consts/consts";
-import IssueAndPullStatistic from "./IssueAndPullStatistic";
 import { RepoModal } from "./RepoModal";
 
 type RepositoryInfoType = {

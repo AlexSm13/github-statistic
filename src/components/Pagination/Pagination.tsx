@@ -16,7 +16,9 @@ export const Pagination: React.FC<PaginationType> = ({
   const repNumbers: number[] = [];
   const parts = Math.ceil(totalRep / repPerPage);
 
-  for (let i = 1; i <= parts; i++) repNumbers.push(i);
+  if (parts > 1) {
+    for (let i = 1; i <= parts; i++) repNumbers.push(i);
+  }
 
   return (
     <nav className={"pagination-container"}>
