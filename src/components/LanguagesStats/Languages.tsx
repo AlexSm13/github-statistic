@@ -4,6 +4,7 @@ import { Bar } from "react-chartjs-2";
 import firstPlace from "../../images/topLangs/medal-1.svg";
 import secondPlace from "../../images/topLangs/medal-2.svg";
 import thirdPlace from "../../images/topLangs/medal-3.svg";
+import CountUp from "react-countup";
 
 type RepositoryInfoType = {
   name: string;
@@ -107,7 +108,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
               ) : null}
               {lang.langName}
             </div>
-            <div className={"languages-numbers-stats-count"}>{lang.count}</div>
+            <div className={"languages-numbers-stats-count"}><CountUp start={lang.count / 10} end={lang.count}/></div>
             <div className={"languages-numbers-stats-percent"}>
               {Math.trunc((lang.count / reposCount) * 100)}
             </div>

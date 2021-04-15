@@ -71,7 +71,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
             value={repoName}
             valueChange={(e) => setRepoName(e.target.value)}
           />
-          <Collaborators collaborators={repositories.map(rep => ({edges: rep.collaborators.edges, repName: rep.name}))} />
+          {/*<Collaborators collaborators={repositories.map(rep => ({edges: rep.collaborators.edges, repName: rep.name}))} />*/}
         </div>
         <div className={"repositories"}>
           <Pagination

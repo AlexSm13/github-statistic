@@ -13,8 +13,14 @@ export interface IUserInfo {
   };
   email: string;
   bio: string;
-  repositories: {
-    totalCount: number;
-    nodes: IRepository[];
-  };
+ // repositories: IRepositories
+}
+
+export interface IRepositories {
+  totalCount: number;
+  pageInfo: {
+    endCursor: string;
+    hasNextPage: boolean;
+  }
+  nodes: IRepository[];
 }
