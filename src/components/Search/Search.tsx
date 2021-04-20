@@ -4,7 +4,7 @@ import React from "react";
 type SearchType = {
   value: string;
   valueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  getData: (event: React.FormEvent<EventTarget>) => void;
+  getData?: (event: React.FormEvent<EventTarget>) => void;
   title?: string;
   placeholder: string;
   maxWidth?: string;

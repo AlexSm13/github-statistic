@@ -7,6 +7,7 @@ import { IRepositories, IUserInfo } from "./models/IUserInfo";
 import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
+import { UserSearch } from "./components/UserSearch/UserSearch";
 
 type GitHubData = {
   user: IUserInfo;
@@ -20,7 +21,11 @@ type OthersReposes = {
 
 const myLogin = "KuzmichAlexander";
 
-export function App() {
+type AppType = {
+  setAccessToken: (t1?: string, t2?: string) => void;
+};
+
+export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [login, setLogin] = useState<string>("");
   const [allRepos, setAllRepos] = useState<IRepository[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -34,15 +39,16 @@ export function App() {
     { data: repData, loading: loadingRepos },
   ] = useLazyQuery<OthersReposes>(getOthersRepositories);
 
-  useEffect(() => {
-    getDataInfo({
-      //пока так чтобы каждый раз не вбивать
-      variables: { login: myLogin },
-    });
-    getOtherDataInfo({
-      variables: { login: myLogin, cursor: null },
-    });
-  }, []);
+  // useEffect(() => {
+  //   getDataInfo({
+  //     //пока так чтобы каждый раз не вбивать
+  //     // этого в будущем не будет (ахаххахахах), поэтому норм
+  //     variables: { login: myLogin },
+  //   });
+  //   getOtherDataInfo({
+  //     variables: { login: myLogin, cursor: null },
+  //   });
+  // }, []);
 
   useEffect(() => {
     console.log(repData);
@@ -65,8 +71,13 @@ export function App() {
     setLogin(event.target.value);
   };
 
-  const getData = (e: React.FormEvent<EventTarget>) => {
-    e.preventDefault();
+  const getData = (
+    login: string,
+    token?: string,
+    secondLogin?: string,
+    secondToken?: string
+  ) => {
+    setAccessToken(token, secondToken);
     setAllRepos([]);
     getDataInfo({
       variables: { login },
@@ -76,52 +87,53 @@ export function App() {
     });
   };
 
-  console.log(allRepos);
   return (
-    <div className={"container"}>
-      <Search
-        maxWidth={"442px"}
-        title={"Поисковик пользователей"}
-        placeholder={"login Github"}
-        getData={getData}
-        value={login}
-        valueChange={loginChange}
+    <div className={"bg-wrapper"}>
+      <UserSearch
+        classContainer={
+          data
+            ? "search-users-wrapper search-users-wrapper-withUserInfo"
+            : "search-users-wrapper"
+        }
+        getUserInfo={getData}
       />
-      {loading ? (
-        <div className={"spinner"}>
-          <div className={"ball"} />
-          <p>LOADING</p>
-        </div>
-      ) : null}
-      {login && error ? <NotFound /> : null}
+      <div style={{ display: data ? "block" : "none" }} className={"container"}>
+        {loading ? (
+          <div className={"spinner"}>
+            <div className={"ball"} />
+            <p>LOADING</p>
+          </div>
+        ) : null}
+        {login && error ? <NotFound /> : null}
 
-      {data && data.user ? (
-        <>
-          <UserInfo
-            websiteUrl={data.user.websiteUrl}
-            company={data.user.company}
-            organization={data.user.organization}
-            location={data.user.location}
-            email={data.user.email}
-            name={data.user.name}
-            imgURL={data.user.avatarUrl}
-            login={data.user.login}
-          />
-          {loadingRepos ? (
-            <div className={"spinner"}>
-              <div className={"ball"} />
-              <p>LOADING</p>
-            </div>
-          ) : null}
-          {allRepos.length ? (
-            <MainStatistics
-              repositories={allRepos}
-              totalCount={totalCount}
+        {data && data.user ? (
+          <>
+            <UserInfo
+              websiteUrl={data.user.websiteUrl}
+              company={data.user.company}
+              organization={data.user.organization}
+              location={data.user.location}
+              email={data.user.email}
               name={data.user.name}
+              imgURL={data.user.avatarUrl}
+              login={data.user.login}
             />
-          ) : null}
-        </>
-      ) : null}
+            {loadingRepos ? (
+              <div className={"spinner"}>
+                <div className={"ball"} />
+                <p>LOADING</p>
+              </div>
+            ) : null}
+            {allRepos.length ? (
+              <MainStatistics
+                repositories={allRepos}
+                totalCount={totalCount}
+                name={data.user.name}
+              />
+            ) : null}
+          </>
+        ) : null}
+      </div>
     </div>
   );
-}
+};

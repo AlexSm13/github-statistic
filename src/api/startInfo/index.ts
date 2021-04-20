@@ -20,70 +20,70 @@ export const userInfoQuery = gql`
 `;
 
 export const getOthersRepositories = gql`
-    query($login: String!, $cursor:String) {
-     user(login: $login) {
-         repositories(first: 100, after:$cursor) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-      totalCount
-      nodes {
-        updatedAt
-        createdAt
-        name
-        
-        url
-        sshUrl
-        description
-        stargazerCount
-        owner {
-          login
+  query($login: String!, $cursor: String) {
+    user(login: $login) {
+      repositories(first: 100, after: $cursor) {
+        pageInfo {
+          endCursor
+          hasNextPage
         }
-        forkCount
-        forks(last: 60) {
-          totalCount
-          nodes {
-            name
+        totalCount
+        nodes {
+          updatedAt
+          createdAt
+          name
+
+          url
+          sshUrl
+          description
+          stargazerCount
+          owner {
+            login
           }
-        }
-        isFork
-        languages(last: 10) {
-          totalSize
-          totalCount
-          edges {
-            size
-            node {
+          forkCount
+          forks(last: 60) {
+            totalCount
+            nodes {
               name
             }
           }
-        }
-        pullRequests(last: 50) {
-          totalCount
-          nodes {
-            author {
-              login
+          isFork
+          languages(last: 10) {
+            totalSize
+            totalCount
+            edges {
+              size
+              node {
+                name
+              }
             }
-            number
-            title
-            closedAt
-            createdAt
           }
-        }
-        issues(last: 50) {
-          totalCount
-          nodes {
-            author {
-              login
+          pullRequests(last: 50) {
+            totalCount
+            nodes {
+              author {
+                login
+              }
+              number
+              title
+              closedAt
+              createdAt
             }
-            number
-            title
-            closedAt
-            createdAt
+          }
+          issues(last: 50) {
+            totalCount
+            nodes {
+              author {
+                login
+              }
+              number
+              title
+              closedAt
+              createdAt
+            }
           }
         }
       }
     }
-    }
-    }
+  }
 `;

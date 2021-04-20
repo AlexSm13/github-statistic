@@ -7,7 +7,7 @@ $border: 2px solid #cccccc
 $form-transition: all .1s linear
 $font-color-white: #fffcfc
 $main-color-red: #e85884
-$main-color-green: #339933
+$main-color-green: #1b9320
 
 
 
@@ -24,10 +24,12 @@ body
 .container
   margin: 40px auto
   max-width: 1080px
-  background-color: #fff
+  backdrop-filter: blur(10px)
+  background-color: rgba(255, 255, 255, 0.75)
+
   padding: 20px
   border: 1px solid #ccc
-  box-shadow: 2px 2px 10px #ccc
+  //box-shadow: 2px 2px 10px #ccc
   border-radius: 15px
 
 .title
@@ -35,6 +37,11 @@ body
   font-family: $font-monserat
   border-bottom: $border
   font-size: 26px
+
+.bg-wrapper
+  background-image: url('./images/background/desert-part2.jpg')
+  width: 100%
+  height: 3000px
 
 .spinner
   width: 100px
@@ -82,3 +89,4 @@ body
 @import "components/LanguagesStats/Languages"
 @import "components/Pagination/Pagination"
 @import "components/RepositoryInfo/Collaborators/Collaborators"
+@import "components/UserSearch/UserSearch"
