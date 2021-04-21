@@ -17,9 +17,11 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   getUserInfo,
   classContainer,
 }) => {
-  const [userLogin, setUserLogin] = useState<string>("");
+  const [userLogin, setUserLogin] = useState<string>("KuzmichAlexander");
   const [secondUserLogin, setSecondUserLogin] = useState<string>("");
-  const [userToken, setUserToken] = useState<string>("");
+  const [userToken, setUserToken] = useState<string>(
+    "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"
+  );
   const [secondUserToken, setSecondUserToken] = useState<string>("");
   const [secondUserRequirement, setSecondUserRequirement] = useState<boolean>(
     false
@@ -36,18 +38,30 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   };
 
   return (
-    <div className={classContainer}>
+    <div
+      className={`${classContainer} ${
+        secondUserRequirement ? "search-two-users-wrapper" : ""
+      }`}
+    >
       <h1>GitHub-Statistic</h1>
       <p>
         Здесь можно посмотреть подробную статистику по любому аккаунту github-a,
         для этого просто вбей логин в поле ниже :)
       </p>
       <form onSubmit={formSubmit}>
-        <div className={"search-users-container"}>
-          <div className={"search-container"}>
+        <div
+          className={
+            "search-user-container" + secondUserRequirement
+              ? "search-two-users-container"
+              : ""
+          }
+        >
+          <div className={"search-container search-main-form"}>
             <div className={"search-form"}>
               <input
-                placeholder={"login Github"}
+                placeholder={
+                  secondUserRequirement ? "first-login" : "login Github"
+                }
                 className={"user-search-input"}
                 onChange={(e) => setUserLogin(e.target.value)}
                 value={userLogin}
@@ -58,21 +72,31 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
               </button>
             </div>
           </div>
+          {secondUserRequirement ? (
+            <div className={"search-container"}>
+              <div className={"search-form"}>
+                <input
+                  placeholder={"second-login"}
+                  className={"user-search-input"}
+                  onChange={(e) => setSecondUserLogin(e.target.value)}
+                  value={secondUserLogin}
+                  type="text"
+                />
+                <button type={"submit"}>
+                  <img src={searchIcon} alt="Поиск" />
+                </button>
+              </div>
+            </div>
+          ) : null}
 
           {/*<Search*/}
+
           {/*    maxWidth={"442px"}*/}
           {/*    title={"Поисковик статистики"}*/}
           {/*    placeholder={"login Github"}*/}
           {/*    value={userLogin}*/}
           {/*    valueChange={(e) => setUserLogin(e.target.value)}*/}
           {/*/>*/}
-          {/*{secondUserRequirement ? <Search*/}
-          {/*    maxWidth={"442px"}*/}
-          {/*    title={"Второй пользователь"}*/}
-          {/*    placeholder={"login Github"}*/}
-          {/*    value={userLogin}*/}
-          {/*    valueChange={(e) => setUserLogin(e.target.value)}*/}
-          {/*/> : null}*/}
         </div>
 
         <input
@@ -100,28 +124,48 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
             Расширенные настройки (premium status)
           </p>
         </div>
-        {moreOptions ? (
-          <div>
-            <p>
-              Чтобы получить дополнительную информацию по аккаунту, вы можете
-              вставить access-токен в поле ниже
-            </p>
+        <div
+          className={`more-options-info-wrapper ${
+            moreOptions ? "more-options-info-wrapper-active" : ""
+          }`}
+        >
+          <p>
+            Чтобы получить дополнительную информацию по аккаунту, вы можете
+            вставить access-токен в поле ниже
+          </p>
+          <div className={"users-access-tokens-container"}>
             <input
-              placeholder={"access-token"}
-              className={"user-search-input"}
+              placeholder={"first-access-token"}
+              className={`user-search-input ${
+                secondUserRequirement
+                  ? "two-users-access-token-input-width"
+                  : ""
+              }`}
               onChange={(e) => setUserToken(e.target.value)}
               value={userToken}
               type="text"
             />
-            <a target={"_blank"} href="https://github.com/settings/tokens/new">
-              Получить токен можно по ссылке
-            </a>
-            <p>
-              *проставь все галочки в полях, чтобы можно было получить приватные
-              репозитории, участников репозиториев и активности
-            </p>
+            {secondUserRequirement ? (
+              <input
+                placeholder={"second-access-token"}
+                className={
+                  "user-search-input two-users-access-token-input-width"
+                }
+                onChange={(e) => setSecondUserToken(e.target.value)}
+                value={secondUserToken}
+                type="text"
+              />
+            ) : null}
           </div>
-        ) : null}
+
+          <a target={"_blank"} href="https://github.com/settings/tokens/new">
+            Получить токен можно по ссылке
+          </a>
+          <p>
+            *проставь все галочки в полях, чтобы можно было получить приватные
+            репозитории, участников репозиториев и активности
+          </p>
+        </div>
       </form>
     </div>
   );

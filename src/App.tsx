@@ -92,8 +92,8 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
       <UserSearch
         classContainer={
           data
-            ? "search-users-wrapper search-users-wrapper-withUserInfo"
-            : "search-users-wrapper"
+            ? "search-user-wrapper search-users-wrapper-withUserInfo"
+            : "search-user-wrapper"
         }
         getUserInfo={getData}
       />
