@@ -6,6 +6,7 @@ import copyIcon from "../../../images/copy.svg";
 import { Doughnut } from "react-chartjs-2";
 import { getBGColors } from "../../../consts/consts";
 import { RepoModal } from "./RepoModal";
+import CountUp from "react-countup";
 
 type RepositoryInfoType = {
   info: IRepository;
@@ -16,7 +17,13 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const [isCloned, setIsCloned] = useState<boolean>(false);
 
   const modalToggle = () => {
-    setMoreInfo(!moreInfo);
+    const showModal = document.querySelector(".more-info");
+    const modalWrapper = document.querySelector(".more-info-wrapper");
+    if (showModal && modalWrapper) {
+      showModal.classList.remove("modal-show-animation");
+      modalWrapper.classList.remove("modal-wrapper-animation");
+    }
+    setTimeout(() => setMoreInfo(!moreInfo), 100);
   };
 
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
@@ -30,11 +37,15 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
     return (
       <>
         {info.languages.edges.map((data) => {
+          const langPersent = parseFloat(
+            ((data.size / info.languages.totalSize) * 100).toFixed(2)
+          );
+          if (langPersent < 1) return;
           return (
             <div key={data.node.name} className={"rep-info"}>
               <span className={"label"}>{data.node.name}</span>
               <span className={"data"}>
-                {((data.size / info.languages.totalSize) * 100).toFixed(2)} %
+                <CountUp end={langPersent} decimals={2} />%
               </span>
             </div>
           );

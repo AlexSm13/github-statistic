@@ -1,6 +1,6 @@
 import React from "react";
 import { Collaborator } from "../../../models/IRepository";
-import {UserShortInfo} from "./UserShortInfo";
+import { UserShortInfo } from "./UserShortInfo";
 
 type CollaboratorsType = {
   collaborators: {
@@ -49,13 +49,17 @@ export const Collaborators: React.FC<CollaboratorsType> = ({
 
     return Object.values(allHomies).map((homie) => {
       return (
-       <UserShortInfo userLogin={homie.userLogin} userName={homie.userName} avatarUrl={homie.avatarUrl} />
+        <UserShortInfo
+          userLogin={homie.userLogin}
+          userName={homie.userName}
+          avatarUrl={homie.avatarUrl}
+        />
       );
     });
   };
 
   return (
-    <div className={'repositories-info'}>
+    <div className={"repositories-info"}>
       <button>Посмотреть на Homies</button>
       {/*<div className={"homies-container"}>{getHomies()}</div>*/}
     </div>

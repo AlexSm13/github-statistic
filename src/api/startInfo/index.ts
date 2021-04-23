@@ -19,6 +19,75 @@ export const userInfoQuery = gql`
   }
 `;
 
+//сделать 2 вариант запроса без колабораторов
+export const getOthersRepositoriesWithoutToken = gql`
+  query($login: String!, $cursor: String) {
+    user(login: $login) {
+      repositories(first: 100, after: $cursor) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        totalCount
+        nodes {
+          updatedAt
+          createdAt
+          name
+          url
+          sshUrl
+          description
+          stargazerCount
+          owner {
+            login
+          }
+          forkCount
+          forks(last: 60) {
+            totalCount
+            nodes {
+              name
+            }
+          }
+          isFork
+          languages(last: 10) {
+            totalSize
+            totalCount
+            edges {
+              size
+              node {
+                name
+              }
+            }
+          }
+          pullRequests(last: 50) {
+            totalCount
+            nodes {
+              author {
+                login
+              }
+              number
+              title
+              closedAt
+              createdAt
+            }
+          }
+          issues(last: 50) {
+            totalCount
+            nodes {
+              author {
+                login
+              }
+              number
+              title
+              closedAt
+              createdAt
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const getOthersRepositories = gql`
   query($login: String!, $cursor: String) {
     user(login: $login) {
@@ -32,12 +101,12 @@ export const getOthersRepositories = gql`
           updatedAt
           createdAt
           name
-          collaborators { 
-          edges {
-            node {
-              login
-              name
-              avatarUrl
+          collaborators {
+            edges {
+              node {
+                login
+                name
+                avatarUrl
               }
             }
           }

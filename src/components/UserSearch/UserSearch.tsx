@@ -22,7 +22,9 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   const [userToken, setUserToken] = useState<string>(
     "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"
   );
-  const [secondUserToken, setSecondUserToken] = useState<string>("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");
+  const [secondUserToken, setSecondUserToken] = useState<string>(
+    "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"
+  );
   const [secondUserRequirement, setSecondUserRequirement] = useState<boolean>(
     false
   );
@@ -130,8 +132,8 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
           }`}
         >
           <p>
-            Чтобы получить информацию о приватных репозиториях, их участниках и активностях по аккаунту, вы можете
-            вставить access-токен в поле ниже
+            Чтобы получить информацию о приватных репозиториях, их участниках и
+            активностях по аккаунту, вы можете вставить access-токен в поле ниже
           </p>
           <div className={"users-access-tokens-container"}>
             <input
@@ -161,9 +163,7 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
           <a target={"_blank"} href="https://github.com/settings/tokens/new">
             Получить токен можно по ссылке
           </a>
-          <p>
-            *введи свой пароль и проставь все галочки в полях
-          </p>
+          <p>*введи свой пароль и проставь все галочки в полях</p>
         </div>
       </form>
     </div>

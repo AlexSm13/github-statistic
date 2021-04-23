@@ -8,8 +8,8 @@ import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
-import {Token} from "graphql";
-import {log} from "util";
+import { Token } from "graphql";
+import { log } from "util";
 
 type GitHubData = {
   user: IUserInfo;
@@ -59,12 +59,18 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
   //---------Для второго юзера------------//
   const [secondLogin, setSecondLogin] = useState<string>("");
-  const [allSecondUserRepos, setSecondUserAllRepos] = useState<IRepository[]>([]);
-  const [totalSecondUserRepCount, setSecondUserTotalRepCount] = useState<number>(0);
-
-  const [getSecondUserDataInfo, { loading: sec_loading, error: sec_error, data: secondUserData }] = useLazyQuery<GitHubData>(
-      userInfoQuery
+  const [allSecondUserRepos, setSecondUserAllRepos] = useState<IRepository[]>(
+    []
   );
+  const [
+    totalSecondUserRepCount,
+    setSecondUserTotalRepCount,
+  ] = useState<number>(0);
+
+  const [
+    getSecondUserDataInfo,
+    { loading: sec_loading, error: sec_error, data: secondUserData },
+  ] = useLazyQuery<GitHubData>(userInfoQuery);
 
   const [
     getSecondUserOtherDataInfo,
@@ -74,7 +80,10 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   useEffect(() => {
     if (secondRepData) {
       setSecondUserTotalRepCount(secondRepData.user.repositories.totalCount);
-      setSecondUserAllRepos((prev) => [...prev, ...secondRepData.user.repositories.nodes]);
+      setSecondUserAllRepos((prev) => [
+        ...prev,
+        ...secondRepData.user.repositories.nodes,
+      ]);
     }
     if (secondRepData)
       if (secondRepData.user.repositories.pageInfo.hasNextPage) {
@@ -88,7 +97,6 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   }, [secondRepData]);
 
   //--------------------------------------//
-
 
   // useEffect(() => {
   //   getDataInfo({
@@ -120,17 +128,17 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
     if (secondLogin) {
       setSecondLogin(secondLogin);
-      secondToken && setAccessToken(secondToken)
+      secondToken && setAccessToken(secondToken);
 
-      getSecondUserDataInfo({variables: {login :secondLogin}})
+      getSecondUserDataInfo({ variables: { login: secondLogin } });
       getSecondUserOtherDataInfo({
         variables: { login: secondLogin, cursor: null },
-      })
+      });
     }
   };
 
-  console.log(secondUserData, secondRepData)
-  console.log(data, repData)
+  // console.log(secondUserData, secondRepData)
+  console.log(data, repData, error);
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (

@@ -6,7 +6,7 @@ import { Languages } from "../LanguagesStats/Languages";
 import { Pagination } from "../Pagination/Pagination";
 import { Collaborators } from "./Collaborators/Collaborators";
 import RepositoriesSection from "./Repositories/RepositoriesSection";
-import {log} from "util";
+import { log } from "util";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
@@ -19,10 +19,10 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   repositories,
   totalCount,
   name,
-    login
+  login,
 }) => {
   const [repoName, setRepoName] = useState<string>("");
-  const [repPerPage] = useState<number>(20);
+  const [repPerPage] = useState<number>(18);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const getRepositories = () => {
@@ -58,19 +58,28 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   const paginate = (num: number) => {
     setCurrentPage(num);
   };
-//
+  //
   return (
-      <>
-
+    <>
       <Languages
-          login={login}
+        login={login}
         repos={repositories.map((rep) => ({
           name: rep.name,
           langs: rep.languages,
         }))}
       />
-  <RepositoriesSection repPerPage={repPerPage} paginate={paginate} currentPage={currentPage} repositories={repositories} login={login} totalCount={totalCount} repoName={repoName} setRepoName={setRepoName} getRepositories={getRepositories} />
-        {/*<>Кусок для графика активностей Алексея</> */}
-      </>
+      <RepositoriesSection
+        repPerPage={repPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+        repositories={repositories}
+        login={login}
+        totalCount={totalCount}
+        repoName={repoName}
+        setRepoName={setRepoName}
+        getRepositories={getRepositories}
+      />
+      {/*<>Кусок для графика активностей Алексея</> */}
+    </>
   );
-}
+};
