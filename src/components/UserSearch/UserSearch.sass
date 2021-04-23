@@ -39,7 +39,7 @@
 
 .search-user-wrapper
   position: fixed
-  border: 1px solid #b47266
+  border: 1px solid $main-color-brown
   top: 50%
   left: 50%
   transform: translate(-50%, -55%)
@@ -68,14 +68,8 @@
   transform: none
 
 
-
-.search-user-container
-  transform: translateY(-20px)
-
-
 .search-two-users-container
   display: flex
-  transform: translateY(-20px)
 
 
 
@@ -92,18 +86,18 @@
   transition: $form-transition
   border: 2px solid #fff
   box-sizing: border-box
-  width: 300px
+  width: 280px
 
   &::placeholder
     color: $font-color-black
     opacity: .5
 
   &:hover, button
-    border: 2px groove rgba(212, 154, 107, 0.6)
+    border: 2px groove rgba(215, 115, 41, 0.6)
 
   &:focus,
   &:focus-visible
-    border: 2px groove rgba(212, 127, 58, 0.8)
+    border: 2px groove $main-color-brown
 
 
 .users-access-tokens-container
@@ -122,7 +116,7 @@
   transition: $form-transition
 
 .more-options-info-wrapper-active
-  height: 160px
+  height: 135px
 
 
 .more-options-container
@@ -138,20 +132,20 @@
   p
     font-size: 22px
     margin-left: 5px
-    color: #cb681c
+    color: $main-color-brown
 
 .treangle-close
   width: 0
   height: 0
   border-style: solid
   border-width: 7.5px 0 7.5px 10px
-  border-color: transparent transparent transparent #cb681c
+  border-color: transparent transparent transparent $main-color-brown
 
 .treangle-open
   width: 0
   height: 0
   border-style: solid
   border-width: 10px 7.5px 0 7.5px
-  border-color: #cb681c transparent transparent transparent
+  border-color: $main-color-brown transparent transparent transparent
 
 

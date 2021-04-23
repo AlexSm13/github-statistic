@@ -35,7 +35,6 @@ const UserInfo: React.FC<UserInfoType> = ({
       </section>
       <section className={"user-start-info"}>
         <h1 className={"title"}>Основная информация</h1>
-
         <label>
           <p className={"user-info-description"}>Имя:</p>
           <p>{infoParse(name)}</p>

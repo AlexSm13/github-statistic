@@ -5,9 +5,11 @@ $font-monserat: 'Monserat', sans-serif
 $box-shadow: 2px 2px 12px #cccccc
 $border: 2px solid #cccccc
 $form-transition: all .1s linear
+$form-transition-slow: all .2s linear
 $font-color-white: #fffcfc
 $main-color-red: #e85884
 $main-color-green: #1b9320
+$main-color-brown: #dc7120
 
 
 
@@ -22,20 +24,27 @@ body
   background-color: $backgroung
 
 .container
-  margin: 40px auto
+  margin: 10px auto
   max-width: 1080px
-  backdrop-filter: blur(10px)
-  background-color: rgba(255, 255, 255, 0.75)
-
-  padding: 20px
+  padding: 10px
   border: 1px solid #ccc
   //box-shadow: 2px 2px 10px #ccc
   border-radius: 15px
 
+@mixin section-container
+  backdrop-filter: blur(5px)
+  margin-top: 40px
+  background-color: rgba(255, 255, 255, 0.75)
+  border: 1px solid $main-color-brown
+  padding: 20px
+  //box-shadow: 2px 2px 10px #ccc
+  border-radius: 15px
+
+
 .title
   font-weight: 300
   font-family: $font-monserat
-  border-bottom: $border
+  border-bottom: 2px solid $main-color-brown
   font-size: 26px
 
 .bg-wrapper

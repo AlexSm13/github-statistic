@@ -13,6 +13,7 @@ type RepositoryInfoType = {
 
 type AllRepositoriesType = {
   repos: RepositoryInfoType[];
+  login: string;
 };
 
 type OurMapType = {
@@ -36,7 +37,7 @@ type MapLanguage = {
 
 const medals = [firstPlace, secondPlace, thirdPlace];
 
-export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
+export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
   const getGraphStats = () => {
     if (!repos.length) return "Подгружаем...";
 
@@ -130,19 +131,23 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
 
   return (
     <>
-      <h3>Языки</h3>
-      <div className={"languages-info-container"}>
-        <div className="languages-numbers">
-          <div className={"languages-numbers-stats-header"}>
-            <div className={"languages-numbers-stats-name-header"}>Язык</div>
-            <div className={"languages-numbers-stats-count-header"}>Репо-в</div>
-            <div className={"languages-numbers-stats-percent-header"}>%</div>
+      <section className={"user-statistic-container"}>
+        <h1 className={"title"}>Статистика по языкам ({login})</h1>
+        <div className={"languages-info-container"}>
+          <div className="languages-numbers">
+            <div className={"languages-numbers-stats-header"}>
+              <div className={"languages-numbers-stats-name-header"}>Язык</div>
+              <div className={"languages-numbers-stats-count-header"}>
+                Репо-в
+              </div>
+              <div className={"languages-numbers-stats-percent-header"}>%</div>
+            </div>
+            <hr />
+            {getNumbersStats()}
           </div>
-          <hr />
-          {getNumbersStats()}
+          <div className="languages-graph">{getGraphStats()}</div>
         </div>
-        <div className="languages-graph">{getGraphStats()}</div>
-      </div>
+      </section>
     </>
   );
 };

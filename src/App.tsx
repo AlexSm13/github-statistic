@@ -8,6 +8,8 @@ import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
+import { Token } from "graphql";
+import { log } from "util";
 
 type GitHubData = {
   user: IUserInfo;
@@ -22,7 +24,7 @@ type OthersReposes = {
 const myLogin = "KuzmichAlexander";
 
 type AppType = {
-  setAccessToken: (t1?: string, t2?: string) => void;
+  setAccessToken: (t1?: string) => void;
 };
 
 export const App: React.FC<AppType> = ({ setAccessToken }) => {
@@ -39,19 +41,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     { data: repData, loading: loadingRepos },
   ] = useLazyQuery<OthersReposes>(getOthersRepositories);
 
-  // useEffect(() => {
-  //   getDataInfo({
-  //     //пока так чтобы каждый раз не вбивать
-  //     // этого в будущем не будет (ахаххахахах), поэтому норм
-  //     variables: { login: myLogin },
-  //   });
-  //   getOtherDataInfo({
-  //     variables: { login: myLogin, cursor: null },
-  //   });
-  // }, []);
-
   useEffect(() => {
-    console.log(repData);
     if (repData) {
       setTotalCount(repData.user.repositories.totalCount);
       setAllRepos((prev) => [...prev, ...repData.user.repositories.nodes]);
@@ -67,9 +57,57 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
       }
   }, [repData]);
 
-  const loginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLogin(event.target.value);
-  };
+  //---------Для второго юзера------------//
+  const [secondLogin, setSecondLogin] = useState<string>("");
+  const [allSecondUserRepos, setSecondUserAllRepos] = useState<IRepository[]>(
+    []
+  );
+  const [
+    totalSecondUserRepCount,
+    setSecondUserTotalRepCount,
+  ] = useState<number>(0);
+
+  const [
+    getSecondUserDataInfo,
+    { loading: sec_loading, error: sec_error, data: secondUserData },
+  ] = useLazyQuery<GitHubData>(userInfoQuery);
+
+  const [
+    getSecondUserOtherDataInfo,
+    { data: secondRepData, loading: secondLoadingRepos },
+  ] = useLazyQuery<OthersReposes>(getOthersRepositories);
+
+  useEffect(() => {
+    if (secondRepData) {
+      setSecondUserTotalRepCount(secondRepData.user.repositories.totalCount);
+      setSecondUserAllRepos((prev) => [
+        ...prev,
+        ...secondRepData.user.repositories.nodes,
+      ]);
+    }
+    if (secondRepData)
+      if (secondRepData.user.repositories.pageInfo.hasNextPage) {
+        getSecondUserOtherDataInfo({
+          variables: {
+            login: secondLogin,
+            cursor: secondRepData.user.repositories.pageInfo.endCursor,
+          },
+        });
+      }
+  }, [secondRepData]);
+
+  //--------------------------------------//
+
+  // useEffect(() => {
+  //   getDataInfo({
+  //     //пока так чтобы каждый раз не вбивать
+  //     // этого в будущем не будет (ахаххахахах), поэтому норм
+  //     variables: { login: myLogin },
+  //   });
+  //   getOtherDataInfo({
+  //     variables: { login: myLogin, cursor: null },
+  //   });
+  // }, []);
 
   const getData = (
     login: string,
@@ -77,16 +115,32 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     secondLogin?: string,
     secondToken?: string
   ) => {
-    setAccessToken(token, secondToken);
+    setLogin(login);
+    token && setAccessToken(token);
+
     setAllRepos([]);
     getDataInfo({
       variables: { login },
     });
     getOtherDataInfo({
-      variables: { login: login, cursor: null },
+      variables: { login, cursor: null },
     });
+
+    if (secondLogin) {
+      setSecondLogin(secondLogin);
+      secondToken && setAccessToken(secondToken);
+
+      getSecondUserDataInfo({ variables: { login: secondLogin } });
+      getSecondUserOtherDataInfo({
+        variables: { login: secondLogin, cursor: null },
+      });
+    }
   };
 
+  // console.log(secondUserData, secondRepData)
+  console.log(data, repData, error);
+
+  //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
     <div className={"bg-wrapper"}>
       <UserSearch
@@ -126,6 +180,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
             ) : null}
             {allRepos.length ? (
               <MainStatistics
+                login={data.user.login}
                 repositories={allRepos}
                 totalCount={totalCount}
                 name={data.user.name}

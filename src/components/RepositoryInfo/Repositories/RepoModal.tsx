@@ -1,7 +1,8 @@
-import React from "react";
-import { infoParse } from "../UserInfo/UserInfo";
-import IssueAndPullStatistic from "./IssueAndPullStatistic";
-import { IRepository } from "../../models/IRepository";
+import React, { LegacyRef, RefObject, useEffect, useRef } from "react";
+import { infoParse } from "../../UserInfo/UserInfo";
+import IssueAndPullStatistic from "../IssueAndPullStatistic";
+import { IRepository } from "../../../models/IRepository";
+import CountUp from "react-countup";
 
 type RepoModalType = {
   modalToggle: () => void;
@@ -16,6 +17,17 @@ export const RepoModal: React.FC<RepoModalType> = ({
   getLanguages,
   getGraph,
 }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      const showModal = document.querySelector(".more-info");
+      const modalWrapper = document.querySelector(".more-info-wrapper");
+      if (showModal && modalWrapper) {
+        showModal.classList.add("modal-show-animation");
+        modalWrapper.classList.add("modal-wrapper-animation");
+      }
+    }, 0);
+  });
+
   return (
     <div>
       <div className={"more-info-wrapper"} onClick={modalToggle}>
@@ -51,11 +63,15 @@ export const RepoModal: React.FC<RepoModalType> = ({
               </div>
               <div className={"rep-info"}>
                 <span className={"label"}>Всего pull-request:</span>
-                <span className={"data"}>{info.pullRequests.totalCount}</span>
+                <span className={"data"}>
+                  <CountUp end={info.pullRequests.totalCount} />
+                </span>
               </div>
               <div className={"rep-info"}>
                 <span className={"label"}>Всего issue:</span>
-                <span className={"data"}>{info.issues.totalCount}</span>
+                <span className={"data"}>
+                  <CountUp end={info.issues.totalCount} />
+                </span>
               </div>
               <hr />
               <h3>Языки</h3>

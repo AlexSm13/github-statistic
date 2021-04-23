@@ -1,5 +1,6 @@
 import React from "react";
 import { Collaborator } from "../../../models/IRepository";
+import { UserShortInfo } from "./UserShortInfo";
 
 type CollaboratorsType = {
   collaborators: {
@@ -13,7 +14,7 @@ type FriendType = {
   repNames: string[];
   count: number;
   userName: string;
-  avatarUrl?: string;
+  avatarUrl: string;
 };
 
 export const Collaborators: React.FC<CollaboratorsType> = ({
@@ -24,8 +25,6 @@ export const Collaborators: React.FC<CollaboratorsType> = ({
   }
 
   const getHomies = () => {
-    // const allHomies: { [id: string]: FriendType } = {};
-
     const allHomies = collaborators.reduce(
       (ourMap: { [id: string]: FriendType }, current) => {
         current.edges.forEach((collaborator) => {
@@ -48,26 +47,21 @@ export const Collaborators: React.FC<CollaboratorsType> = ({
       {}
     );
 
-    console.log(allHomies);
     return Object.values(allHomies).map((homie) => {
       return (
-        <div className={"homie"}>
-          <div className={"homie-avatar"}>
-            <img src={homie.avatarUrl} alt="картинка" />
-          </div>
-          <div className={"homie-description"}>
-            <div className="homie-name">{homie.userName}</div>
-            <div className="homie-login">{homie.userLogin}</div>
-          </div>
-        </div>
+        <UserShortInfo
+          userLogin={homie.userLogin}
+          userName={homie.userName}
+          avatarUrl={homie.avatarUrl}
+        />
       );
     });
   };
 
   return (
-    <div>
-      <h3>Часто работает с:</h3>
-      <div className={"homies-container"}>{getHomies()}</div>
+    <div className={"repositories-info"}>
+      <button>Посмотреть на Homies</button>
+      {/*<div className={"homies-container"}>{getHomies()}</div>*/}
     </div>
   );
 };
