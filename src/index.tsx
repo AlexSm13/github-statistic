@@ -9,10 +9,9 @@ import token from "./token/Index";
 
 let accessToken = "";
 let accessSecondToken = "";
-function setAccessToken(t1?: string, t2?: string) {
+function setAccessToken(t1?: string) {
   // @ts-ignore
   if (t1) client.link.options.headers.authorization = `Bearer ${t1}`;
-  if (t2) accessSecondToken = t2;
 }
 
 function clientFactory(token: string) {}
