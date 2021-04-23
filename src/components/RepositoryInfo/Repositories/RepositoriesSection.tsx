@@ -18,7 +18,7 @@ type RepositoriesSectionType = {
 
 const RepositoriesSection: React.FC<RepositoriesSectionType> = ({repositories, login, totalCount, repoName, setRepoName, getRepositories, repPerPage, currentPage, paginate}) => {
     return (
-        <section className={'user-statistic-container'}>
+        <section className={'user-statistic-container no-blur-section'}>
             <h1 className={"title"}>Статистика по репозиториям ({login})</h1>
             <div className={"repositories-flex-container"}>
                 <div className={"repositories-info"}>
