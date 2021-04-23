@@ -13,6 +13,7 @@ type RepositoryInfoType = {
 
 type AllRepositoriesType = {
   repos: RepositoryInfoType[];
+  login: string
 };
 
 type OurMapType = {
@@ -36,7 +37,7 @@ type MapLanguage = {
 
 const medals = [firstPlace, secondPlace, thirdPlace];
 
-export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
+export const Languages: React.FC<AllRepositoriesType> = ({ repos , login}) => {
   const getGraphStats = () => {
     if (!repos.length) return "Подгружаем...";
 
@@ -130,7 +131,8 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
 
   return (
     <>
-      <h3>Языки</h3>
+      <section className={'user-statistic-container'}>
+        <h1 className={"title"}>Статистика по языкам ({login})</h1>
       <div className={"languages-info-container"}>
         <div className="languages-numbers">
           <div className={"languages-numbers-stats-header"}>
@@ -143,6 +145,8 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos }) => {
         </div>
         <div className="languages-graph">{getGraphStats()}</div>
       </div>
+      </section>
+
     </>
   );
 };

@@ -24,7 +24,7 @@ const Search: React.FC<SearchType> = ({
       <form className={"search-form"} onSubmit={getData}>
         <input
           placeholder={placeholder}
-          className={"search-form-input"}
+          className={"user-search-input"}
           onChange={valueChange}
           value={value}
           type="text"

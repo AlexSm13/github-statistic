@@ -172,6 +172,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
             ) : null}
             {allRepos.length ? (
               <MainStatistics
+                login={data.user.login}
                 repositories={allRepos}
                 totalCount={totalCount}
                 name={data.user.name}

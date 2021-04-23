@@ -1,7 +1,7 @@
 import React from "react";
-import { infoParse } from "../UserInfo/UserInfo";
-import IssueAndPullStatistic from "./IssueAndPullStatistic";
-import { IRepository } from "../../models/IRepository";
+import { infoParse } from "../../UserInfo/UserInfo";
+import IssueAndPullStatistic from "../IssueAndPullStatistic";
+import { IRepository } from "../../../models/IRepository";
 
 type RepoModalType = {
   modalToggle: () => void;

@@ -32,7 +32,15 @@ export const getOthersRepositories = gql`
           updatedAt
           createdAt
           name
-
+          collaborators { 
+          edges {
+            node {
+              login
+              name
+              avatarUrl
+              }
+            }
+          }
           url
           sshUrl
           description

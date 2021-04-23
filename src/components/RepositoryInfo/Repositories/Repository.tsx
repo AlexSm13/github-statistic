@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { IRepository } from "../../models/IRepository";
-import starIcon from "../../images/star.svg";
-import forkIcon from "../../images/fork.svg";
-import copyIcon from "../../images/copy.svg";
+import { IRepository } from "../../../models/IRepository";
+import starIcon from "../../../images/star.svg";
+import forkIcon from "../../../images/fork.svg";
+import copyIcon from "../../../images/copy.svg";
 import { Doughnut } from "react-chartjs-2";
-import { getBGColors } from "../../consts/consts";
+import { getBGColors } from "../../../consts/consts";
 import { RepoModal } from "./RepoModal";
 
 type RepositoryInfoType = {

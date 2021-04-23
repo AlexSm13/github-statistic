@@ -1,89 +1,93 @@
-.statistic-info-container
+.user-statistic-container
+  @include section-container
+  padding-top: 10px
+
+
+.repositories-info
+  flex: 1
+  padding: 5px 20px
+
+.repositories-flex-container
   display: flex
-  margin: 20px 0
-  align-items: stretch
+  align-items: center
 
-  .repositories-info
-    flex: 2
+.repositories
+  //background-color: #f7fff8
+  //border: 1px solid #c8c8c8
+  border-radius: 10px
+  margin-left: 20px
+  padding: 15px
+  box-shadow: 2px 2px 12px $main-color-red
+  border: 1px solid $main-color-red
+  width: 100%
+  flex: 5
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-around
 
-  .repositories
-    //background-color: #f7fff8
-    //border: 1px solid #c8c8c8
+  .repository
+    width: 45%
+    min-width: 260px
+    min-height: 120px
+    background-color: #ffffff
+    padding: 10px
+
     border-radius: 10px
-    margin-left: 20px
-    padding: 15px
-    box-shadow: 2px 2px 12px $main-color-red
-    border: 1px solid $main-color-red
-    width: 100%
-    flex: 5
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-around
+    margin-bottom: 20px
+    box-shadow: 4px 6px 6px #e3e3e3
+    transition: $form-transition
+    text-align: center
+    box-sizing: border-box
 
-    .repository
-      width: 45%
-      min-width: 260px
-      min-height: 120px
-      background-color: #ffffff
-      padding: 10px
+    .info-flex
+      display: flex
+      align-items: center
+      justify-content: space-between
 
-      border-radius: 10px
-      margin-bottom: 20px
-      box-shadow: 4px 6px 6px #e3e3e3
-      transition: $form-transition
-      text-align: center
-      box-sizing: border-box
+    .info-container
+      display: flex
+      align-items: center
 
-      .info-flex
-        display: flex
-        align-items: center
-        justify-content: space-between
+      img
+        width: 20px
+        height: 20px
 
-      .info-container
-        display: flex
-        align-items: center
+      .copy-url-container
+        background-size: contain
+        position: relative
 
-        img
-          width: 20px
-          height: 20px
+        &:hover .copy-url
+          opacity: 1
 
-        .copy-url-container
-          background-size: contain
-          position: relative
+        .copy-url
+          position: absolute
+          opacity: 0
+          transition: $form-transition
+          background-color: #41ba69
+          color: $font-color-white
+          font-size: 18px
+          z-index: 3
+          padding: 5px 7px
+          border-radius: 10px
+          border: 2px solid $font-color-white
+          transform: translateY(-25%)
 
-          &:hover .copy-url
-            opacity: 1
+      img,
+      .label
+        margin: 3px 8px
 
-          .copy-url
-            position: absolute
-            opacity: 0
-            transition: $form-transition
-            background-color: #41ba69
-            color: $font-color-white
-            font-size: 18px
-            z-index: 3
-            padding: 5px 7px
-            border-radius: 10px
-            border: 2px solid $font-color-white
-            transform: translateY(-25%)
+    h3
+      font-family: $font-monserat
+      font-weight: 500
+      font-size: 24px
+      color: $font-color-black
+      margin-left: 8px
+      text-align: left
 
-        img,
-        .label
-          margin: 3px 8px
-
-      h3
-        font-family: $font-monserat
-        font-weight: 500
-        font-size: 24px
-        color: $font-color-black
-        margin-left: 8px
-        text-align: left
-
-      &:hover
-        cursor: pointer
-        transform: scale(1.1) translate(-10px, -10px)
-        box-shadow: $box-shadow
-
+    &:hover
+      cursor: pointer
+      transform: scale(1.1) translate(-10px, -10px)
+      box-shadow: $box-shadow
 
 
 .more-info-wrapper

@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { IRepository } from "../../models/IRepository";
-import { Repository } from "./Repository";
+import { Repository } from "./Repositories/Repository";
 import Search from "../Search/Search";
 import { Languages } from "../LanguagesStats/Languages";
 import { Pagination } from "../Pagination/Pagination";
 import { Collaborators } from "./Collaborators/Collaborators";
+import RepositoriesSection from "./Repositories/RepositoriesSection";
+import {log} from "util";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
   totalCount: number;
   name: string;
+  login: string;
 };
 
 export const MainStatistics: React.FC<RepositoryInfoData> = ({
   repositories,
   totalCount,
   name,
+    login
 }) => {
   const [repoName, setRepoName] = useState<string>("");
   const [repPerPage] = useState<number>(20);
@@ -54,48 +58,19 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
   const paginate = (num: number) => {
     setCurrentPage(num);
   };
-
-  console.log(repositories);
-
+//
   return (
-    <section>
-      <h1 className={"title"}>Статистика пользователя:</h1>
+      <>
+
       <Languages
+          login={login}
         repos={repositories.map((rep) => ({
           name: rep.name,
           langs: rep.languages,
         }))}
       />
-
-      <div className={"statistic-info-container"}>
-        <div className={"repositories-info"}>
-          <h3>Всего репозиториев: {totalCount}</h3>
-          <code>(публичных)</code>
-          <Search
-            maxWidth={"100%"}
-            placeholder={"Имя репозитория"}
-            getData={getRepositories}
-            value={repoName}
-            valueChange={(e) => setRepoName(e.target.value)}
-          />
-          {/*<Collaborators collaborators={repositories.map(rep => ({edges: rep.collaborators.edges, repName: rep.name}))} />*/}
-        </div>
-        <div className={"repositories"}>
-          <Pagination
-            totalRep={repositories.length}
-            repPerPage={repPerPage}
-            paginate={paginate}
-            currentPage={currentPage}
-          />
-          {repositories.length ? (
-            getRepositories()
-          ) : (
-            <h1 className={"title"}>
-              Пользователь {name} как-то выживет без репозиториев :(
-            </h1>
-          )}
-        </div>
-      </div>
-    </section>
+  <RepositoriesSection repPerPage={repPerPage} paginate={paginate} currentPage={currentPage} repositories={repositories} login={login} totalCount={totalCount} repoName={repoName} setRepoName={setRepoName} getRepositories={getRepositories} />
+        {/*<>Кусок для графика активностей Алексея</> */}
+      </>
   );
-};
+}
