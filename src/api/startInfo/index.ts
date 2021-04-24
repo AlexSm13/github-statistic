@@ -159,6 +159,24 @@ export const getOthersRepositories = gql`
               createdAt
             }
           }
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history {
+                  totalCount
+                  nodes {
+                    committedDate
+                    message
+                    author {
+                      user {
+                        login
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

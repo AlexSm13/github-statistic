@@ -17,6 +17,11 @@ export interface IRepository {
   languages: Language;
   pullRequests: PullRequest;
   issues: Issue;
+  defaultBranchRef: {
+    target: {
+      history: Commits;
+    };
+  };
 }
 
 export interface CollaboratorsType {
@@ -73,4 +78,19 @@ export interface Issue {
     closedAt: string;
     createdAt: string;
   }[];
+}
+
+export interface Commits {
+  totalCount: number;
+  nodes: Commit[];
+}
+
+export interface Commit {
+  committedDate: string;
+  message: string;
+  author: {
+    user: {
+      login: string;
+    };
+  };
 }

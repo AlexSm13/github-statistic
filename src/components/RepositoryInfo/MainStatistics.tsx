@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { IRepository } from "../../models/IRepository";
 import { Repository } from "./Repositories/Repository";
-import Search from "../Search/Search";
 import { Languages } from "../LanguagesStats/Languages";
-import { Pagination } from "../Pagination/Pagination";
-import { Collaborators } from "./Collaborators/Collaborators";
 import RepositoriesSection from "./Repositories/RepositoriesSection";
-import { log } from "util";
+import { Commits } from "../CommitStatistic/CommitStatistic";
 
 type RepositoryInfoData = {
   repositories: IRepository[];
@@ -79,7 +76,13 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
         setRepoName={setRepoName}
         getRepositories={getRepositories}
       />
-      {/*<>Кусок для графика активностей Алексея</> */}
+      <Commits
+        login={login}
+        repos={repositories.map((rep) => ({
+          name: rep.name,
+          commits: rep.defaultBranchRef.target.history,
+        }))}
+      />
     </>
   );
 };
