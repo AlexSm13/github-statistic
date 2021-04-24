@@ -9,7 +9,8 @@ $form-transition-slow: all .2s linear
 $font-color-white: #fffcfc
 $main-color-red: #e85884
 $main-color-green: #1b9320
-$main-color-brown: #dc7120
+$main-color-brown: #dc6220
+$main-color-blue: #1b8dcb
 
 
 
@@ -89,6 +90,28 @@ body
     transform: translateX(50px) scale(0.3)
   100%
     transform: translateX(0) scale(1)
+
+
+.more-info-show-button
+  display: block
+  margin-left: auto
+  padding: 8px
+  border-radius: 15px
+  font-size: 18px
+  font-family: $font-monserat
+  border: none
+  outline: none
+  background-color: $main-color-brown
+  color: $font-color-white
+  cursor: pointer
+  transition: $form-transition
+
+
+  &:hover
+
+    //background-color: #ce5210
+    background-color: darken($main-color-brown, 5%)
+
 
 
 @import "components/Search/search"

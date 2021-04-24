@@ -19,7 +19,7 @@ export const userInfoQuery = gql`
   }
 `;
 
-//сделать 2 вариант запроса без колабораторов
+//TODO сделать 2 вариант запроса без колабораторов
 export const getOthersRepositoriesWithoutToken = gql`
   query($login: String!, $cursor: String) {
     user(login: $login) {

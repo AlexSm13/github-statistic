@@ -60,7 +60,7 @@ export const Collaborators: React.FC<CollaboratorsType> = ({
 
   return (
     <div className={"repositories-info"}>
-      <button>Посмотреть на Homies</button>
+      <button className={"more-info-show-button"}>Посмотреть на Homies</button>
       {/*<div className={"homies-container"}>{getHomies()}</div>*/}
     </div>
   );
