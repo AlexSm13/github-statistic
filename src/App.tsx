@@ -36,6 +36,8 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     userInfoQuery
   );
 
+
+
   const [
     getOtherDataInfo,
     { data: repData, loading: loadingRepos },

@@ -34,7 +34,6 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
         <div className={"repositories-info"}>
           <h3>Всего репозиториев: {totalCount}</h3>
           <Search
-            maxWidth={"100%"}
             placeholder={"Имя репозитория"}
             getData={getRepositories}
             value={repoName}

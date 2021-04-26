@@ -5,7 +5,6 @@ import { App } from "./App";
 import { ApolloProvider } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 import { InMemoryCache } from "@apollo/client";
-import token from "./token/Index";
 
 let accessToken = "";
 let accessSecondToken = "";
@@ -19,7 +18,7 @@ function clientFactory(token: string) {}
 const client = new ApolloClient({
   uri: "https://api.github.com/graphql",
   headers: {
-    authorization: `Bearer ${token}`,
+    authorization: `Bearer ${process.env.REACT_APP_KEY}`,
   },
   cache: new InMemoryCache(),
 });

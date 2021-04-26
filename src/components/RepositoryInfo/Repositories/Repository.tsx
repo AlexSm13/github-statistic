@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { IRepository } from "../../../models/IRepository";
 import starIcon from "../../../images/star.svg";
 import forkIcon from "../../../images/fork.svg";
@@ -12,9 +12,20 @@ type RepositoryInfoType = {
   info: IRepository;
 };
 
+let TimeoutType: ReturnType<typeof setTimeout>;
+
 export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const [moreInfo, setMoreInfo] = useState<boolean>(false);
   const [isCloned, setIsCloned] = useState<boolean>(false);
+  const showClonedDialog = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return (() => {
+      if(showClonedDialog.current) {
+        clearInterval(showClonedDialog.current)
+      }
+    })
+  }, [])
 
   const modalToggle = () => {
     const showModal = document.querySelector(".more-info");
@@ -23,13 +34,13 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
       showModal.classList.remove("modal-show-animation");
       modalWrapper.classList.remove("modal-wrapper-animation");
     }
-    setTimeout(() => setMoreInfo(!moreInfo), 100);
+    setTimeout(() => setMoreInfo(prev => !prev), 100);
   };
-
+  
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
     e.stopPropagation();
     setIsCloned(true);
-    setTimeout(() => setIsCloned(false), 2000);
+    showClonedDialog.current = setTimeout(() => setIsCloned(false), 1500);
     navigator.clipboard.writeText(info.sshUrl);
   };
 
