@@ -12,8 +12,6 @@ type RepositoryInfoType = {
   info: IRepository;
 };
 
-let TimeoutType: ReturnType<typeof setTimeout>;
-
 export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const [moreInfo, setMoreInfo] = useState<boolean>(false);
   const [isCloned, setIsCloned] = useState<boolean>(false);
@@ -36,7 +34,7 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
     }
     setTimeout(() => setMoreInfo(prev => !prev), 100);
   };
-  
+
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
     e.stopPropagation();
     setIsCloned(true);

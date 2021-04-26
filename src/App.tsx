@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Search from "./components/Search/Search";
 import UserInfo from "./components/UserInfo/UserInfo";
 import { getOthersRepositories, userInfoQuery } from "./api/startInfo";
 import { useLazyQuery } from "@apollo/client";
@@ -8,8 +7,6 @@ import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
-import { Token } from "graphql";
-import { log } from "util";
 
 type GitHubData = {
   user: IUserInfo;
@@ -24,7 +21,7 @@ type OthersReposes = {
 const myLogin = "KuzmichAlexander";
 
 type AppType = {
-  setAccessToken: (t1?: string) => void;
+  setAccessToken: (token?: string) => void;
 };
 
 export const App: React.FC<AppType> = ({ setAccessToken }) => {
@@ -35,8 +32,6 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [getDataInfo, { loading, error, data }] = useLazyQuery<GitHubData>(
     userInfoQuery
   );
-
-
 
   const [
     getOtherDataInfo,
@@ -139,8 +134,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   };
 
-  // console.log(secondUserData, secondRepData)
-  console.log(data, repData, error);
+  //console.log(data, repData, error);
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
