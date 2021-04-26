@@ -1,89 +1,100 @@
-.statistic-info-container
+.user-statistic-container
+  @include section-container
+  padding-top: 10px
+
+.no-blur-section
+  backdrop-filter: none
+  background-color: rgba(255, 255, 255, 0.8)
+
+.repositories-info
+  flex: 1
+  padding: 5px 0
+
+.repositories-flex-container
   display: flex
-  margin: 20px 0
-  align-items: stretch
+  align-items: end
+  justify-content: space-between
 
-  .repositories-info
-    flex: 2
+.repositories
+  //background-color: #f7fff8
+  //border: 1px solid #c8c8c8
+  border-radius: 15px
+  padding: 15px
+  //box-shadow: 2px 2px 12px $main-color-red
+  //border: 1px solid $main-color-red
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
 
-  .repositories
-    background-color: #f7fff8
-    border: 1px solid #c8c8c8
+  .repository
+    width: 30%
+    min-width: 260px
+    min-height: 120px
+    background-color: #ffffff
+    padding: 10px
+
     border-radius: 10px
-    margin-left: 20px
-    padding: 15px
-    box-shadow: inset 1px 1px 6px #e3e3e3
-    width: 100%
-    flex: 5
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-around
+    margin-bottom: 20px
+    box-shadow: 4px 6px 6px #e3e3e3
+    transition: $form-transition
+    text-align: center
+    box-sizing: border-box
 
-    .repository
-      width: 45%
-      min-width: 260px
-      min-height: 120px
-      background-color: #ffffff
-      padding: 10px
+    .info-flex
+      display: flex
+      align-items: center
+      justify-content: space-between
 
-      border-radius: 10px
-      margin-bottom: 20px
-      box-shadow: 4px 6px 6px #e3e3e3
-      transition: $form-transition
-      text-align: center
-      box-sizing: border-box
+    .info-container
+      display: flex
+      align-items: center
 
-      .info-flex
-        display: flex
-        align-items: center
-        justify-content: space-between
+      img
+        width: 20px
+        height: 20px
 
-      .info-container
-        display: flex
-        align-items: center
+      .copy-url-container
+        background-size: contain
+        position: relative
 
-        img
-          width: 20px
-          height: 20px
+        &:hover .copy-url
+          opacity: 1
 
-        .copy-url-container
-          background-size: contain
-          position: relative
+        .copy-url
+          position: absolute
+          opacity: 0
+          transition: $form-transition
+          background-color: #33ad33
+          color: $font-color-white
+          font-size: 18px
+          z-index: 3
+          padding: 5px 7px
+          border-radius: 10px
+          border: 2px solid $font-color-white
+          transform: translateY(-25%)
 
-          &:hover .copy-url
-            opacity: 1
+      img,
+      .label
+        margin: 3px 8px
 
-          .copy-url
-            position: absolute
-            opacity: 0
-            transition: $form-transition
-            background-color: #41ba69
-            color: $font-color-white
-            font-size: 18px
-            z-index: 3
-            padding: 5px 7px
-            border-radius: 10px
-            border: 2px solid $font-color-white
-            transform: translateY(-25%)
+    h3
+      font-family: $font-monserat
+      font-weight: 500
+      font-size: 24px
+      color: $font-color-black
+      margin-left: 8px
+      text-align: left
 
-        img,
-        .label
-          margin: 3px 8px
+    &:hover
+      cursor: pointer
+      transform: scale(1.1) translate(-10px, -10px)
+      box-shadow: $box-shadow
 
-      h3
-        font-family: $font-monserat
-        font-weight: 500
-        font-size: 24px
-        color: $font-color-black
-        margin-left: 8px
-        text-align: left
+.modal-show-animation
+  transform: translate(-50%, -50%) scale(1) !important
 
-      &:hover
-        cursor: pointer
-        transform: scale(1.1) translate(-10px, -10px)
-        box-shadow: $box-shadow
-
-
+.modal-wrapper-animation
+  opacity: 1 !important
 
 .more-info-wrapper
   z-index: 1000
@@ -92,7 +103,11 @@
   bottom: 0
   left: 0
   right: 0
+  opacity: 0
   background-color: rgba(0, 0, 0, .5)
+  backdrop-filter: blur(10px)
+  transition: $form-transition-slow
+
 
   //filter: blur(2px)
 
@@ -103,14 +118,23 @@
     padding: 15px 25px
     top: 50%
     left: 50%
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%) scale(0)
     max-width: 1080px
+    max-height: 70%
     width: 90%
-    max-height: 90%
     min-height: 300px
     background-color: #fff
     box-sizing: border-box
     overflow-y: auto
+    transition: $form-transition-slow
+
+    &::-webkit-scrollbar-track
+      background-color: #ffffff
+
+    &::-webkit-scrollbar-thumb
+      background-color: #c2c2c2
+      border-radius: 25px
+      border: 4px solid #ffffff
 
     hr
       margin: 15px 0
@@ -190,4 +214,14 @@
         width: 95%
 
   .repository-statistic
+    width: 100%
+    margin: 15px auto
+
+@media (max-width: 950px)
+  .repositories
+    .repository
+      width: 45% !important
+
+  .repository-statistic
+    width: 100%
     margin: 15px auto

@@ -1,0 +1,49 @@
+.pagination-container
+  margin: 15px 0
+  width: 100%
+
+  ul
+    display: flex
+    justify-content: center
+    flex-wrap: wrap
+
+
+    .pagination-item
+      width: 40px
+      height: 40px
+      list-style: none
+      color: $font-color-white
+      border: 2px solid $main-color-brown
+      border-right: none
+      transition: $form-transition
+      position: relative
+      cursor: pointer
+
+      &:last-child
+        border-right: 2px solid $main-color-brown
+
+
+      &:hover
+        background-color: #fff4de
+
+      .pagination-link
+        display: block
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        color: $main-color-green
+
+
+
+
+
+.active-link
+  background-color: $main-color-brown
+  &:hover
+    background-color: #fca252 !important
+
+  p
+    color: $font-color-white
+
+

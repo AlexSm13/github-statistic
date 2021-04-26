@@ -6,6 +6,7 @@ export interface IRepository {
   sshUrl: string;
   description: string;
   stargazerCount: number;
+  collaborators: CollaboratorsType;
   owner: {
     login: string;
     url: string;
@@ -16,6 +17,23 @@ export interface IRepository {
   languages: Language;
   pullRequests: PullRequest;
   issues: Issue;
+  defaultBranchRef: {
+    target: {
+      history: Commits;
+    };
+  };
+}
+
+export interface CollaboratorsType {
+  edges: Collaborator[];
+}
+
+export interface Collaborator {
+  node: {
+    name: string;
+    login: string;
+    avatarUrl: string;
+  };
 }
 
 export interface Fork {
@@ -60,4 +78,19 @@ export interface Issue {
     closedAt: string;
     createdAt: string;
   }[];
+}
+
+export interface Commits {
+  totalCount: number;
+  nodes: Commit[];
+}
+
+export interface Commit {
+  committedDate: string;
+  message: string;
+  author: {
+    user: {
+      login: string;
+    };
+  };
 }

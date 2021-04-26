@@ -7,7 +7,7 @@
     font-weight: 300
 
   .search-form
-    margin-top: 30px
+    margin: 10px 0
     display: flex
     position: relative
 
@@ -21,19 +21,7 @@
       letter-spacing: 1px
       border: none
       transition: $form-transition
-      border-bottom: 2px groove rgba(136, 101, 39, .3)
-
-      &::placeholder
-        color: $font-color-black
-        opacity: .5
-
-      &:hover, button
-        border-bottom: 2px groove rgba(136, 101, 39, 0.5)
-
-      &:focus,
-      &:focus-visible
-        border-bottom: 2px groove rgba(136, 101, 39, 0.8)
-
+      border-bottom: 2px groove $main-color-brown
 
     button
       position: absolute

@@ -1,0 +1,19 @@
+@mixin chart-flex-container
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.timespan-change-button
+  letter-spacing: 0.7px
+  display: inline-block
+  margin-left: 10px
+
+.chart-flex-container
+  margin-top: 5px
+  @include chart-flex-container
+
+  .buttons-flex-container
+    @include chart-flex-container
+
+
+

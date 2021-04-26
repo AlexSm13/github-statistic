@@ -4,27 +4,25 @@ import React from "react";
 type SearchType = {
   value: string;
   valueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  getData: (event: React.FormEvent<EventTarget>) => void;
+  getData?: (event: React.FormEvent<EventTarget>) => void;
   title?: string;
   placeholder: string;
-  maxWidth?: string;
 };
 
 const Search: React.FC<SearchType> = ({
   value,
-  maxWidth = "100%",
   valueChange,
   getData,
   title,
   placeholder,
 }) => {
   return (
-    <div className={"search-container"} style={{ maxWidth }}>
+    <div className={"search-container"}>
       <h2>{title}</h2>
       <form className={"search-form"} onSubmit={getData}>
         <input
           placeholder={placeholder}
-          className={"search-form-input"}
+          className={"user-search-input"}
           onChange={valueChange}
           value={value}
           type="text"

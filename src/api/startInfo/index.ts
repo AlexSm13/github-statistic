@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-const userInfoQuery = gql`
+export const userInfoQuery = gql`
   query($login: String!) {
     user(login: $login) {
       login
@@ -15,7 +15,23 @@ const userInfoQuery = gql`
       }
       email
       bio
-      repositories(last: 100, orderBy: { field: UPDATED_AT, direction: ASC }) {
+    }
+  }
+`;
+
+//TODO сделать 2 вариант запроса без колабораторов
+export const getOthersRepositoriesWithoutToken = gql`
+  query($login: String!, $cursor: String) {
+    user(login: $login) {
+      repositories(
+        first: 15
+        after: $cursor
+        orderBy: { field: UPDATED_AT, direction: DESC }
+      ) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
         totalCount
         nodes {
           updatedAt
@@ -27,7 +43,101 @@ const userInfoQuery = gql`
           stargazerCount
           owner {
             login
-            url
+          }
+          forkCount
+          forks(last: 60) {
+            totalCount
+            nodes {
+              name
+            }
+          }
+          isFork
+          languages(last: 10) {
+            totalSize
+            totalCount
+            edges {
+              size
+              node {
+                name
+              }
+            }
+          }
+          pullRequests(last: 50) {
+            totalCount
+            nodes {
+              author {
+                login
+              }
+              number
+              title
+              closedAt
+              createdAt
+            }
+          }
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history {
+                  totalCount
+                  nodes {
+                    committedDate
+                    message
+                    author {
+                      user {
+                        login
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          issues(last: 50) {
+            totalCount
+            nodes {
+              author {
+                login
+              }
+              number
+              title
+              closedAt
+              createdAt
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getOthersRepositories = gql`
+  query($login: String!, $cursor: String) {
+    user(login: $login) {
+      repositories(first: 100, after: $cursor) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        totalCount
+        nodes {
+          updatedAt
+          createdAt
+          name
+          collaborators {
+            edges {
+              node {
+                login
+                name
+                avatarUrl
+              }
+            }
+          }
+          url
+          sshUrl
+          description
+          stargazerCount
+          owner {
+            login
           }
           forkCount
           forks(last: 60) {
@@ -71,10 +181,26 @@ const userInfoQuery = gql`
               createdAt
             }
           }
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history {
+                  totalCount
+                  nodes {
+                    committedDate
+                    message
+                    author {
+                      user {
+                        login
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
   }
 `;
-
-export { userInfoQuery };

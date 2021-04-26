@@ -5,7 +5,14 @@ $font-monserat: 'Monserat', sans-serif
 $box-shadow: 2px 2px 12px #cccccc
 $border: 2px solid #cccccc
 $form-transition: all .1s linear
+$form-transition-slow: all .2s linear
 $font-color-white: #fffcfc
+$main-color-red: #e85884
+$main-color-green: #1b9320
+$main-color-brown: #dc6220
+$main-color-blue: #1b8dcb
+
+
 
 
 *
@@ -18,19 +25,33 @@ body
   background-color: $backgroung
 
 .container
-  margin: 40px auto
+  margin: 10px auto
   max-width: 1080px
-  background-color: #fff
-  padding: 20px
+  padding: 10px
   border: 1px solid #ccc
-  box-shadow: 2px 2px 10px #ccc
+  //box-shadow: 2px 2px 10px #ccc
   border-radius: 15px
+
+@mixin section-container
+  backdrop-filter: blur(5px)
+  margin-top: 40px
+  background-color: rgba(255, 255, 255, 0.75)
+  border: 1px solid $main-color-brown
+  padding: 20px
+  //box-shadow: 2px 2px 10px #ccc
+  border-radius: 15px
+
 
 .title
   font-weight: 300
   font-family: $font-monserat
-  border-bottom: $border
+  border-bottom: 2px solid $main-color-brown
   font-size: 26px
+
+.bg-wrapper
+  background-image: url('./images/background/desert-part2.jpg')
+  width: 100%
+  height: 3000px
 
 .spinner
   width: 100px
@@ -71,8 +92,51 @@ body
     transform: translateX(0) scale(1)
 
 
+.more-info-show-button
+  display: block
+  margin-left: auto
+  padding: 8px
+  border-radius: 15px
+  font-size: 18px
+  font-family: $font-monserat
+  border: none
+  outline: none
+  background-color: $main-color-brown
+  color: $font-color-white
+  cursor: pointer
+  transition: $form-transition
+
+
+  &:hover
+
+    //background-color: #ce5210
+    background-color: darken($main-color-brown, 5%)
+
+
+
+::-webkit-scrollbar
+  width: 14px
+
+
+::-webkit-scrollbar-thumb
+  background-color: #c2c2c2
+  border-radius: 25px
+  border: 4px solid #ac9891
+
+::-webkit-scrollbar-track
+  background-color: #ac9891
+  opacity: .5
+
+
+
+
+
 @import "components/Search/search"
 @import "components/UserInfo/user-inro"
 @import "components/RepositoryInfo/MainStatistics"
 @import "components/NotFound/NotFound"
 @import "components/LanguagesStats/Languages"
+@import "components/CommitStatistic/CommitStatistic"
+@import "components/Pagination/Pagination"
+@import "components/RepositoryInfo/Collaborators/Collaborators"
+@import "components/UserSearch/UserSearch"

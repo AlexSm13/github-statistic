@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { IRepository } from "../../models/IRepository";
-import starIcon from "../../images/star.svg";
-import forkIcon from "../../images/fork.svg";
-import copyIcon from "../../images/copy.svg";
+import React, { useEffect, useRef, useState } from "react";
+import { IRepository } from "../../../models/IRepository";
+import starIcon from "../../../images/star.svg";
+import forkIcon from "../../../images/fork.svg";
+import copyIcon from "../../../images/copy.svg";
 import { Doughnut } from "react-chartjs-2";
-import { infoParse } from "../UserInfo/UserInfo";
-import { getBGColors } from "../../consts/consts";
-import IssueAndPullStatistic from "./IssueAndPullStatistic";
+import { getBGColors } from "../../../consts/consts";
 import { RepoModal } from "./RepoModal";
+import CountUp from "react-countup";
 
 type RepositoryInfoType = {
   info: IRepository;
@@ -16,15 +15,30 @@ type RepositoryInfoType = {
 export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const [moreInfo, setMoreInfo] = useState<boolean>(false);
   const [isCloned, setIsCloned] = useState<boolean>(false);
+  const showClonedDialog = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (showClonedDialog.current) {
+        clearInterval(showClonedDialog.current);
+      }
+    };
+  }, []);
 
   const modalToggle = () => {
-    setMoreInfo(!moreInfo);
+    const showModal = document.querySelector(".more-info");
+    const modalWrapper = document.querySelector(".more-info-wrapper");
+    if (showModal && modalWrapper) {
+      showModal.classList.remove("modal-show-animation");
+      modalWrapper.classList.remove("modal-wrapper-animation");
+    }
+    setTimeout(() => setMoreInfo((prev) => !prev), 100);
   };
 
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
     e.stopPropagation();
     setIsCloned(true);
-    setTimeout(() => setIsCloned(false), 2000);
+    showClonedDialog.current = setTimeout(() => setIsCloned(false), 1500);
     navigator.clipboard.writeText(info.sshUrl);
   };
 
@@ -32,11 +46,15 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
     return (
       <>
         {info.languages.edges.map((data) => {
+          const langPersent = parseFloat(
+            ((data.size / info.languages.totalSize) * 100).toFixed(2)
+          );
+          if (langPersent < 1) return;
           return (
             <div key={data.node.name} className={"rep-info"}>
               <span className={"label"}>{data.node.name}</span>
               <span className={"data"}>
-                {((data.size / info.languages.totalSize) * 100).toFixed(2)} %
+                <CountUp end={langPersent} decimals={2} />%
               </span>
             </div>
           );
@@ -86,8 +104,8 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
           <span>{info.forkCount}</span>
         </div>
         <div className={"info-container"}>
-          <span className={"label"}>Создан:</span>
-          <span>{new Date(info.createdAt).toLocaleDateString()}</span>
+          <span className={"label"}>Обновлен:</span>
+          <span>{new Date(info.updatedAt).toLocaleDateString()}</span>
         </div>
       </div>
       {moreInfo ? (

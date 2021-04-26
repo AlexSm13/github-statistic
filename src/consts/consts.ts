@@ -15,3 +15,10 @@ export const getBGColors = (count: number) => {
   colors.length = count;
   return colors;
 };
+
+const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+
+export function formatSizeUnits(bytes: number): string {
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString());
+  return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
+}

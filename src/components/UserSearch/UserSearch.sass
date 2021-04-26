@@ -1,0 +1,151 @@
+.custom-checkbox-label
+  font-size: 20px
+  font-weight: 300
+  cursor: pointer
+
+
+.custom-checkbox
+  position: absolute
+  z-index: -1
+  opacity: 0
+
+
+.custom-checkbox+label
+  display: inline-flex
+  align-items: center
+  user-select: none
+
+
+.custom-checkbox+label::before
+  content: ''
+  display: inline-block
+  width: 0.9em
+  height: 0.9em
+  flex-shrink: 0
+  flex-grow: 0
+  border: 1px solid #ffffff
+  background-color: #fff
+  border-radius: 0.25em
+  margin-right: 0.5em
+  background-repeat: no-repeat
+  background-position: center center
+  background-size: 50% 50%
+
+
+.custom-checkbox:checked+label::before
+  border-color: #cb681c
+  background-color:  #cb681c
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e")
+
+.search-user-wrapper
+  position: fixed
+  border: 1px solid $main-color-brown
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -55%)
+  width: 500px
+  background-color: rgba(255, 255, 255, 0.65)
+  border-radius: 20px
+  backdrop-filter: blur(10px)
+  padding: 20px
+  transition: $form-transition
+
+  h1
+    text-align: center
+    font-size: 38px
+    font-weight: 700
+
+.search-two-users-wrapper
+  width: 700px
+
+
+
+
+
+.search-users-wrapper-withUserInfo
+  position: relative
+  top: 20px
+  transform: translateX(-50%)
+
+
+.search-two-users-container
+  display: flex
+
+
+
+.user-search-input
+  flex: 5
+  outline: none
+  font-size: 20px
+  font-weight: 400
+  font-family: $font-monserat
+  background-color: rgba(255, 255, 255, .9)
+  letter-spacing: 1px
+  padding: 5px 10px
+  border-radius: 10px
+  transition: $form-transition
+  border: 2px solid #fff
+  box-sizing: border-box
+  width: 280px
+
+  &::placeholder
+    color: $font-color-black
+    opacity: .5
+
+  &:hover, button
+    border: 2px groove rgba(215, 115, 41, 0.6)
+
+  &:focus,
+  &:focus-visible
+    border: 2px groove $main-color-brown
+
+
+.users-access-tokens-container
+  display: flex
+  margin: 10px 0
+  align-items: center
+  justify-content: space-around
+
+.two-users-access-token-input-width
+  width: 300px
+  flex: none
+
+.more-options-info-wrapper
+  height: 0
+  overflow: hidden
+  transition: $form-transition
+
+.more-options-info-wrapper-active
+  height: 135px
+
+
+.more-options-container
+  display: flex
+  align-items: center
+  cursor: pointer
+  //transform: scale(.8)
+
+  &:hover p
+    text-decoration: underline
+
+
+  p
+    font-size: 22px
+    margin-left: 5px
+    color: $main-color-brown
+
+.treangle-close
+  width: 0
+  height: 0
+  border-style: solid
+  border-width: 7.5px 0 7.5px 10px
+  border-color: transparent transparent transparent $main-color-brown
+
+.treangle-open
+  width: 0
+  height: 0
+  border-style: solid
+  border-width: 10px 7.5px 0 7.5px
+  border-color: $main-color-brown transparent transparent transparent
+
+
