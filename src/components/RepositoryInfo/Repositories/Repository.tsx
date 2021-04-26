@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IRepository } from "../../../models/IRepository";
 import starIcon from "../../../images/star.svg";
 import forkIcon from "../../../images/fork.svg";
@@ -18,12 +18,12 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
   const showClonedDialog = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    return (() => {
-      if(showClonedDialog.current) {
-        clearInterval(showClonedDialog.current)
+    return () => {
+      if (showClonedDialog.current) {
+        clearInterval(showClonedDialog.current);
       }
-    })
-  }, [])
+    };
+  }, []);
 
   const modalToggle = () => {
     const showModal = document.querySelector(".more-info");
@@ -32,7 +32,7 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
       showModal.classList.remove("modal-show-animation");
       modalWrapper.classList.remove("modal-wrapper-animation");
     }
-    setTimeout(() => setMoreInfo(prev => !prev), 100);
+    setTimeout(() => setMoreInfo((prev) => !prev), 100);
   };
 
   const copyToClipboard = (e: React.FormEvent<EventTarget>) => {
@@ -104,8 +104,8 @@ export const Repository: React.FC<RepositoryInfoType> = ({ info }) => {
           <span>{info.forkCount}</span>
         </div>
         <div className={"info-container"}>
-          <span className={"label"}>Создан:</span>
-          <span>{new Date(info.createdAt).toLocaleDateString()}</span>
+          <span className={"label"}>Обновлен:</span>
+          <span>{new Date(info.updatedAt).toLocaleDateString()}</span>
         </div>
       </div>
       {moreInfo ? (

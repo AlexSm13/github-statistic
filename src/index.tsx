@@ -6,10 +6,15 @@ import { ApolloProvider } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 import { InMemoryCache } from "@apollo/client";
 
-function setAccessToken(userToken?: string) {
+const setAccessToken = (userToken?: string) => {
+  let token = "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";
+  if (userToken) {
+    token = userToken;
+  }
+  if (!userToken) return;
   // @ts-ignore
-  if (userToken) client.link.options.headers.authorization = `Bearer ${t1}`;
-}
+  client.link.options.headers.authorization = `Bearer ${token}`;
+};
 
 const client = new ApolloClient({
   uri: "https://api.github.com/graphql",

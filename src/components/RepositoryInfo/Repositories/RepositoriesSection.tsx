@@ -3,6 +3,7 @@ import Search from "../../Search/Search";
 import { Collaborators } from "../Collaborators/Collaborators";
 import { Pagination } from "../../Pagination/Pagination";
 import { IRepository } from "../../../models/IRepository";
+import CountUp from "react-countup";
 
 type RepositoriesSectionType = {
   login: string;
@@ -14,6 +15,7 @@ type RepositoriesSectionType = {
   repPerPage: number;
   paginate: (n: number) => void;
   currentPage: number;
+  loadedReposCount: number;
 };
 
 const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
@@ -26,13 +28,20 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
   repPerPage,
   currentPage,
   paginate,
+  loadedReposCount,
 }) => {
   return (
     <section className={"user-statistic-container no-blur-section"}>
       <h1 className={"title"}>Статистика по репозиториям ({login})</h1>
       <div className={"repositories-flex-container"}>
         <div className={"repositories-info"}>
-          <h3>Всего репозиториев: {totalCount}</h3>
+          <h3>
+            Подгружено репозиториев:
+            <CountUp
+              start={loadedReposCount * 0.7}
+              end={loadedReposCount}
+            /> из {totalCount}
+          </h3>
           <Search
             placeholder={"Имя репозитория"}
             getData={getRepositories}
@@ -42,7 +51,7 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
         </div>
 
         <div className={"repositories-info"}>
-          {repositories[0].collaborators.edges ? (
+          {repositories[0].collaborators ? (
             <Collaborators
               collaborators={repositories.map((rep) => ({
                 edges: rep.collaborators.edges,

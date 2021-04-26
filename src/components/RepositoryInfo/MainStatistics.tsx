@@ -75,6 +75,7 @@ export const MainStatistics: React.FC<RepositoryInfoData> = ({
         repoName={repoName}
         setRepoName={setRepoName}
         getRepositories={getRepositories}
+        loadedReposCount={repositories.length}
       />
       <Commits
         login={login}

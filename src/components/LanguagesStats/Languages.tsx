@@ -123,7 +123,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
               {formatSizeUnits(lang.size)
                 .split(" ")
                 .map((i, index) => {
-                  if (!index) return <CountUp end={+i} />;
+                  if (!index) return <CountUp key={Math.random()} end={+i} />;
                   return " " + i;
                 })}
             </div>
