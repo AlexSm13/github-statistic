@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Search from "./components/Search/Search";
 import UserInfo from "./components/UserInfo/UserInfo";
-import { getOthersRepositories, userInfoQuery } from "./api/startInfo";
+import {
+  getOthersRepositories,
+  getOthersRepositoriesWithoutToken,
+  userInfoQuery,
+} from "./api/startInfo";
 import { useLazyQuery } from "@apollo/client";
 import { IRepositories, IUserInfo } from "./models/IUserInfo";
 import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
-import { Token } from "graphql";
-import { log } from "util";
 
 type GitHubData = {
   user: IUserInfo;
@@ -24,11 +25,12 @@ type OthersReposes = {
 const myLogin = "KuzmichAlexander";
 
 type AppType = {
-  setAccessToken: (t1?: string) => void;
+  setAccessToken: (token?: string) => void;
 };
 
 export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [login, setLogin] = useState<string>("");
+  const [firstToken, setFirstToken] = useState<string>("");
   const [allRepos, setAllRepos] = useState<IRepository[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
 
@@ -39,7 +41,9 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [
     getOtherDataInfo,
     { data: repData, loading: loadingRepos },
-  ] = useLazyQuery<OthersReposes>(getOthersRepositories);
+  ] = useLazyQuery<OthersReposes>(
+    firstToken ? getOthersRepositories : getOthersRepositoriesWithoutToken
+  );
 
   useEffect(() => {
     if (repData) {
@@ -59,6 +63,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
   //---------Для второго юзера------------//
   const [secondLogin, setSecondLogin] = useState<string>("");
+  const [secondToken, setSecondToken] = useState<string>("");
   const [allSecondUserRepos, setSecondUserAllRepos] = useState<IRepository[]>(
     []
   );
@@ -75,7 +80,9 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [
     getSecondUserOtherDataInfo,
     { data: secondRepData, loading: secondLoadingRepos },
-  ] = useLazyQuery<OthersReposes>(getOthersRepositories);
+  ] = useLazyQuery<OthersReposes>(
+    secondToken ? getOthersRepositories : getOthersRepositoriesWithoutToken
+  );
 
   useEffect(() => {
     if (secondRepData) {
@@ -115,8 +122,10 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     secondLogin?: string,
     secondToken?: string
   ) => {
+    console.log(login, "токен тут ======", token, "sfdfdsf");
     setLogin(login);
-    token && setAccessToken(token);
+    setAccessToken(token);
+    token && setFirstToken(token);
 
     setAllRepos([]);
     getDataInfo({
@@ -128,7 +137,9 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
     if (secondLogin) {
       setSecondLogin(secondLogin);
-      secondToken && setAccessToken(secondToken);
+      setAccessToken(secondToken);
+
+      secondToken && setSecondToken(secondToken);
 
       getSecondUserDataInfo({ variables: { login: secondLogin } });
       getSecondUserOtherDataInfo({
@@ -137,8 +148,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   };
 
-  // console.log(secondUserData, secondRepData)
-  console.log(data, repData, error);
+  //console.log(data, repData, error);
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
@@ -178,7 +188,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
                 <p>LOADING</p>
               </div>
             ) : null}
-            {allRepos.length ? (
+            {data && allRepos.length ? (
               <MainStatistics
                 login={data.user.login}
                 repositories={allRepos}

@@ -18,13 +18,9 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   classContainer,
 }) => {
   const [userLogin, setUserLogin] = useState<string>("KuzmichAlexander");
-  const [secondUserLogin, setSecondUserLogin] = useState<string>("AlexSm13");
-  const [userToken, setUserToken] = useState<string>(
-    "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"
-  );
-  const [secondUserToken, setSecondUserToken] = useState<string>(
-    "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"
-  );
+  const [secondUserLogin, setSecondUserLogin] = useState<string>("");
+  const [userToken, setUserToken] = useState<string>("");
+  const [secondUserToken, setSecondUserToken] = useState<string>("");
   const [secondUserRequirement, setSecondUserRequirement] = useState<boolean>(
     false
   );
@@ -33,10 +29,16 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   const secondUserChange = () => {
     setSecondUserRequirement((prev) => !prev);
   };
-
+  console.log(userToken);
   const formSubmit = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    getUserInfo(userLogin, userToken, secondUserLogin, secondUserToken);
+    console.log(userToken.length);
+    getUserInfo(
+      userLogin,
+      userToken,
+      secondUserLogin.trim(),
+      secondUserToken.trim()
+    );
   };
 
   return (
@@ -90,15 +92,6 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
               </div>
             </div>
           ) : null}
-
-          {/*<Search*/}
-
-          {/*    maxWidth={"442px"}*/}
-          {/*    title={"Поисковик статистики"}*/}
-          {/*    placeholder={"login Github"}*/}
-          {/*    value={userLogin}*/}
-          {/*    valueChange={(e) => setUserLogin(e.target.value)}*/}
-          {/*/>*/}
         </div>
 
         <input

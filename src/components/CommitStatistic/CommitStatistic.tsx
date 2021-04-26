@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Commits as CommitsData } from "../../models/IRepository";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
+import CountUp from "react-countup";
+
+enum timeSpan {
+  DAY = "DAY",
+  MOUNT = "MOUNT",
+  YEAR = "YEAR",
+}
+
+type TimeSpanType = keyof typeof timeSpan;
 
 type RepositoryInfoType = {
   name: string;
@@ -27,7 +36,7 @@ type OurMapType = {
 };
 
 export const Commits: React.FC<AllRepositoriesType> = ({ repos, login }) => {
-  const [sortType, setSortType] = useState<string>("day");
+  const [sortType, setSortType] = useState<TimeSpanType>(timeSpan.DAY);
   const [commitData, setCommitData] = useState<CommitData[]>([]);
   const [totalCommitsCount, setTotalCommitsCount] = useState<number>(0);
 
@@ -58,15 +67,15 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login }) => {
 
   const getCorrectDateKey = (date: string): string => {
     switch (sortType) {
-      case "day":
+      case timeSpan.DAY:
         return new Date(date).toLocaleDateString();
-      case "month":
+      case timeSpan.MOUNT:
         return (
           new Date(date).toLocaleString("default", { month: "long" }) +
           " " +
           new Date(date).getFullYear()
         );
-      case "year":
+      case timeSpan.YEAR:
         return new Date(date).getFullYear().toString();
       default:
         return date;
@@ -101,8 +110,13 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login }) => {
       labels: Object.keys(sortCommits),
       datasets: [
         {
+          backgroundColor:
+            sortType === timeSpan.DAY
+              ? "rgba(0, 0, 0, .05)"
+              : "rgba(33, 33, 33, .15)",
           label: "Количество коммитов",
-          borderWidth: 2,
+          borderColor: "rgba(33, 33, 33, .32)",
+          borderWidth: 3,
           data: Object.values(sortCommits).map((commit) => commit.count),
         },
       ],
@@ -119,30 +133,46 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login }) => {
         ],
       },
     };
-
-    return (
-      <div>
-        <div>
-          <Bar data={data} options={options} />
-        </div>
-      </div>
-    );
+    if (sortType === timeSpan.DAY) {
+      return <Line data={data} options={options} />;
+    }
+    return <Bar data={data} options={options} />;
   };
 
-  const changeSortType = (type: string) => {
+  const changeSortType = (type: TimeSpanType) => {
     setSortType(type);
   };
 
   return (
-    <>
-      <h3>Коммиты</h3>
-      <div>Всего сделано коммитов: {totalCommitsCount}</div>
-      <div>
-        <button onClick={() => changeSortType("day")}>День</button>
-        <button onClick={() => changeSortType("month")}>Месяц</button>
-        <button onClick={() => changeSortType("year")}>Год</button>
+    <div className={"user-statistic-container"}>
+      <h1 className={"title"}>Активности</h1>
+      <div className={"chart-flex-container"}>
+        <h3>
+          Всего сделано коммитов:{" "}
+          <CountUp end={totalCommitsCount} start={totalCommitsCount * 0.7} />
+        </h3>
+        <div className={"buttons-flex-container"}>
+          <button
+            className={"more-info-show-button timespan-change-button"}
+            onClick={() => changeSortType(timeSpan.DAY)}
+          >
+            День
+          </button>
+          <button
+            className={"more-info-show-button timespan-change-button"}
+            onClick={() => changeSortType(timeSpan.MOUNT)}
+          >
+            Месяц
+          </button>
+          <button
+            className={"more-info-show-button timespan-change-button"}
+            onClick={() => changeSortType(timeSpan.YEAR)}
+          >
+            Год
+          </button>
+        </div>
       </div>
       {getCommitStats()}
-    </>
+    </div>
   );
 };

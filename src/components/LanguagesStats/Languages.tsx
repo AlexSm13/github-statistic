@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Language } from "../../models/IRepository";
 import { Bar } from "react-chartjs-2";
 import firstPlace from "../../images/topLangs/medal-1.svg";
 import secondPlace from "../../images/topLangs/medal-2.svg";
 import thirdPlace from "../../images/topLangs/medal-3.svg";
 import CountUp from "react-countup";
+import { LanguageModal } from "./LanguageModal";
+import { formatSizeUnits } from "../../consts/consts";
 
 type RepositoryInfoType = {
   name: string;
@@ -38,6 +40,8 @@ type MapLanguage = {
 const medals = [firstPlace, secondPlace, thirdPlace];
 
 export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
+  const [moreInfo, setMoreInfo] = useState<boolean>(false);
+
   const getGraphStats = () => {
     if (!repos.length) return "Подгружаем...";
 
@@ -101,7 +105,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
       .map((lang, index) => {
         return (
           <div key={lang.langName} className={"languages-numbers-stats"}>
-            <div className={"languages-numbers-stats-name"}>
+            <div className={"languages-numbers-stats-name lang-table-row"}>
               {index < 3 ? (
                 <div className={"top-lang-medal"}>
                   <img src={medals[index]} alt={`${index + 1}`} />
@@ -109,11 +113,19 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
               ) : null}
               {lang.langName}
             </div>
-            <div className={"languages-numbers-stats-count"}>
+            <div className={"lang-table-row"}>
               <CountUp start={lang.count / 10} end={lang.count} />
             </div>
-            <div className={"languages-numbers-stats-percent"}>
+            <div className={"lang-table-row"}>
               {Math.trunc((lang.count / reposCount) * 100)}
+            </div>
+            <div className={"lang-table-row"}>
+              {formatSizeUnits(lang.size)
+                .split(" ")
+                .map((i, index) => {
+                  if (!index) return <CountUp key={Math.random()} end={+i} />;
+                  return " " + i;
+                })}
             </div>
             <div className={"languages-repositories"}>
               <p className={"font-weight-bold"}>Репозитории</p>
@@ -129,25 +141,33 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
       });
   };
 
+  const modalToggle = () => {
+    const showModal = document.querySelector(".languages-numbers");
+    const modalWrapper = document.querySelector(".more-info-wrapper");
+    if (showModal && modalWrapper) {
+      showModal.classList.remove("modal-show-animation");
+      modalWrapper.classList.remove("modal-wrapper-animation");
+    }
+    setTimeout(() => setMoreInfo(!moreInfo), 100);
+  };
+
   return (
     <>
-      <section className={"user-statistic-container"}>
+      <section className={"user-statistic-container no-blur-section"}>
         <h1 className={"title"}>Статистика по языкам ({login})</h1>
         <div className={"languages-info-container"}>
-          <div className="languages-numbers">
-            <div className={"languages-numbers-stats-header"}>
-              <div className={"languages-numbers-stats-name-header"}>Язык</div>
-              <div className={"languages-numbers-stats-count-header"}>
-                Репо-в
-              </div>
-              <div className={"languages-numbers-stats-percent-header"}>%</div>
-            </div>
-            <hr />
-            {getNumbersStats()}
-          </div>
           <div className="languages-graph">{getGraphStats()}</div>
         </div>
+        <button className={"more-info-show-button"} onClick={modalToggle}>
+          Подробнее
+        </button>
       </section>
+      {moreInfo ? (
+        <LanguageModal
+          getNumbersStats={getNumbersStats}
+          modalToggle={modalToggle}
+        />
+      ) : null}
     </>
   );
 };

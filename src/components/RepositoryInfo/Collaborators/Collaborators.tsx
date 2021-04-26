@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Collaborator } from "../../../models/IRepository";
 import { UserShortInfo } from "./UserShortInfo";
+import { RepoModal } from "../Repositories/RepoModal";
+import { CollaboratorsModal } from "./CollaboratorsModal";
 
 type CollaboratorsType = {
   collaborators: {
@@ -20,6 +22,18 @@ type FriendType = {
 export const Collaborators: React.FC<CollaboratorsType> = ({
   collaborators,
 }) => {
+  const [moreInfo, setMoreInfo] = useState<boolean>(false);
+
+  const modalToggle = () => {
+    const showModal = document.querySelector(".more-info");
+    const modalWrapper = document.querySelector(".more-info-wrapper");
+    if (showModal && modalWrapper) {
+      showModal.classList.remove("modal-show-animation");
+      modalWrapper.classList.remove("modal-wrapper-animation");
+    }
+    setTimeout(() => setMoreInfo((prev) => !prev), 100);
+  };
+
   if (!collaborators.length) {
     return <h3>Интроверт... что сказать</h3>;
   }
@@ -60,7 +74,12 @@ export const Collaborators: React.FC<CollaboratorsType> = ({
 
   return (
     <div className={"repositories-info"}>
-      <button>Посмотреть на Homies</button>
+      <button onClick={modalToggle} className={"more-info-show-button"}>
+        Посмотреть на Homies
+      </button>
+      {moreInfo ? (
+        <CollaboratorsModal getHomies={getHomies} modalToggle={modalToggle} />
+      ) : null}
       {/*<div className={"homies-container"}>{getHomies()}</div>*/}
     </div>
   );

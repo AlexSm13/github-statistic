@@ -5,25 +5,24 @@ import { App } from "./App";
 import { ApolloProvider } from "@apollo/client";
 import { ApolloClient } from "@apollo/client";
 import { InMemoryCache } from "@apollo/client";
-import token from "./token/Index";
 
-let accessToken = "";
-let accessSecondToken = "";
-function setAccessToken(t1?: string) {
+const setAccessToken = (userToken?: string) => {
+  let token = "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";
+  if (userToken) {
+    token = userToken;
+  }
+  if (!userToken) return;
   // @ts-ignore
-  if (t1) client.link.options.headers.authorization = `Bearer ${t1}`;
-}
-
-function clientFactory(token: string) {}
+  client.link.options.headers.authorization = `Bearer ${token}`;
+};
 
 const client = new ApolloClient({
   uri: "https://api.github.com/graphql",
   headers: {
-    authorization: `Bearer ${token}`,
+    authorization: `Bearer ${process.env.REACT_APP_KEY}`,
   },
   cache: new InMemoryCache(),
 });
-//console.log()
 
 ReactDOM.render(
   <ApolloProvider client={client}>

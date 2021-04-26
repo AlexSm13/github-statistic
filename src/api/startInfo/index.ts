@@ -19,11 +19,15 @@ export const userInfoQuery = gql`
   }
 `;
 
-//сделать 2 вариант запроса без колабораторов
+//TODO сделать 2 вариант запроса без колабораторов
 export const getOthersRepositoriesWithoutToken = gql`
   query($login: String!, $cursor: String) {
     user(login: $login) {
-      repositories(first: 100, after: $cursor) {
+      repositories(
+        first: 15
+        after: $cursor
+        orderBy: { field: UPDATED_AT, direction: DESC }
+      ) {
         pageInfo {
           endCursor
           hasNextPage
@@ -68,6 +72,24 @@ export const getOthersRepositoriesWithoutToken = gql`
               title
               closedAt
               createdAt
+            }
+          }
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history {
+                  totalCount
+                  nodes {
+                    committedDate
+                    message
+                    author {
+                      user {
+                        login
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
           issues(last: 50) {
