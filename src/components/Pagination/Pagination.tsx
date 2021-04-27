@@ -5,7 +5,7 @@ type PaginationType = {
   totalRep: number;
   paginate: (currentPage: number, isSecondSection: boolean) => void;
   currentPage: number;
-  secondSection: boolean
+  secondSection: boolean;
 };
 
 export const Pagination: React.FC<PaginationType> = ({
@@ -13,7 +13,7 @@ export const Pagination: React.FC<PaginationType> = ({
   paginate,
   totalRep,
   currentPage,
-    secondSection
+  secondSection,
 }) => {
   const repNumbers: number[] = [];
   const parts = Math.ceil(totalRep / repPerPage);

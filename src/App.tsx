@@ -13,8 +13,7 @@ import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
 
 // @ts-ignore
-import { animateScroll as scroll } from 'react-scroll'
-
+import { animateScroll as scroll } from "react-scroll";
 
 type GitHubData = {
   user: IUserInfo;
@@ -36,15 +35,15 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [allRepos, setAllRepos] = useState<IRepository[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
 
-  const [offsetY, setOffsetY] = useState<number>(0)
+  const [offsetY, setOffsetY] = useState<number>(0);
   const handleScroll = () => {
-    setOffsetY(window.pageYOffset)
-  }
+    setOffsetY(window.pageYOffset);
+  };
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [])
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const [getDataInfo, { loading, error, data }] = useLazyQuery<GitHubData>(
     userInfoQuery
@@ -76,9 +75,9 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   useEffect(() => {
     if (data) {
       const scrollTo = window.pageYOffset + window.innerHeight - 550;
-      setTimeout(() => scroll.scrollTo(scrollTo), 0)
+      setTimeout(() => scroll.scrollTo(scrollTo), 0);
     }
-  }, [data])
+  }, [data]);
 
   //---------Для второго юзера------------//
   const [secondLogin, setSecondLogin] = useState<string>("");
@@ -161,8 +160,11 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
-      <>
-      <div style={{transform: `translateY(${offsetY * 0.3 - 120}px)`}} className={"bg-wrapper"}></div>
+    <>
+      <div
+        style={{ transform: `translateY(${offsetY * 0.3 - 120}px)` }}
+        className={"bg-wrapper"}
+      ></div>
       <UserSearch
         classContainer={
           data
@@ -171,7 +173,13 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         }
         getUserInfo={getData}
       />
-      <div style={{ display: data ? "block" : "none", width: data && secondUserData && "95%" }} className={"container"}>
+      <div
+        style={{
+          display: data ? "block" : "none",
+          width: data && secondUserData && "95%",
+        }}
+        className={"container"}
+      >
         {loading ? (
           <div className={"spinner"}>
             <div className={"ball"} />
@@ -182,13 +190,8 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
         {data && data.user ? (
           <div className={secondUserData ? "second-user-flex-container" : ""}>
-            <UserInfo
-                data={data.user}
-            />
-            {secondUserData ?
-                <UserInfo
-                    data={secondUserData.user}
-                /> : null}
+            <UserInfo data={data.user} />
+            {secondUserData ? <UserInfo data={secondUserData.user} /> : null}
 
             {loadingRepos ? (
               <div className={"spinner"}>
@@ -196,23 +199,27 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
                 <p>LOADING</p>
               </div>
             ) : null}
-          </div>) : null }
-        {data && allRepos.length && secondUserData && allSecondUserRepos ?
-                  <MainStatistics
-                      login={data.user.login}
-                      repositories={allRepos}
-                      totalCount={totalCount}
-                      name={data.user.name}
-                      secondName={secondUserData.user.name}
-                      secondLogin={secondUserData.user.login}
-                      secondTotalCount={totalSecondUserRepCount}
-                      secondRepositories={allSecondUserRepos}
-                  /> : data && allRepos.length ? <MainStatistics
-                    login={data.user.login}
-                    repositories={allRepos}
-                    totalCount={totalCount}
-                    name={data.user.name}
-                /> : null }
+          </div>
+        ) : null}
+        {data && allRepos.length && secondUserData && allSecondUserRepos ? (
+          <MainStatistics
+            login={data.user.login}
+            repositories={allRepos}
+            totalCount={totalCount}
+            name={data.user.name}
+            secondName={secondUserData.user.name}
+            secondLogin={secondUserData.user.login}
+            secondTotalCount={totalSecondUserRepCount}
+            secondRepositories={allSecondUserRepos}
+          />
+        ) : data && allRepos.length ? (
+          <MainStatistics
+            login={data.user.login}
+            repositories={allRepos}
+            totalCount={totalCount}
+            name={data.user.name}
+          />
+        ) : null}
       </div>
     </>
   );

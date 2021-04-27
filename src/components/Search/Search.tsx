@@ -7,7 +7,7 @@ type SearchType = {
   getData?: (ss: boolean) => void;
   title?: string;
   placeholder: string;
-  secondSection: boolean
+  secondSection: boolean;
 };
 
 const Search: React.FC<SearchType> = ({
@@ -16,14 +16,13 @@ const Search: React.FC<SearchType> = ({
   getData,
   title,
   placeholder,
-                                        secondSection
+  secondSection,
 }) => {
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     // @ts-ignore
-    getData(secondSection)
-  }
+    getData(secondSection);
+  };
 
   return (
     <div className={"search-container"}>

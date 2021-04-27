@@ -1,13 +1,11 @@
 import React from "react";
-import {IUserInfo} from "../../models/IUserInfo";
+import { IUserInfo } from "../../models/IUserInfo";
 
 type UserInfoType = {
-  data: IUserInfo
+  data: IUserInfo;
 };
 
-const UserInfo: React.FC<UserInfoType> = ({
-  data
-}) => {
+const UserInfo: React.FC<UserInfoType> = ({ data }) => {
   if (!data.login) {
     return <div>Нет данных</div>;
   }

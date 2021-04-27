@@ -10,13 +10,15 @@ type RepositoriesSectionType = {
   totalCount: number;
   repoName: string;
   setRepoName: Dispatch<SetStateAction<string>>;
-  getRepositories: (requestFromSecondUserSection: boolean) => JSX.Element | JSX.Element[];
+  getRepositories: (
+    requestFromSecondUserSection: boolean
+  ) => JSX.Element | JSX.Element[];
   repositories: IRepository[];
   repPerPage: number;
   paginate: (n: number, flag: boolean) => void;
   currentPage: number;
   loadedReposCount: number;
-  secondSection: boolean
+  secondSection: boolean;
 };
 
 const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
@@ -30,7 +32,7 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
   currentPage,
   paginate,
   loadedReposCount,
-    secondSection
+  secondSection,
 }) => {
   return (
     <section className={"user-statistic-container no-blur-section"}>

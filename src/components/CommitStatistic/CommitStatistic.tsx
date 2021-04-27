@@ -38,46 +38,60 @@ type OurMapType = {
   };
 };
 
-export const Commits: React.FC<AllRepositoriesType> = ({ repos, login, secondRepos, secondLogin }) => {
+export const Commits: React.FC<AllRepositoriesType> = ({
+  repos,
+  login,
+  secondRepos,
+  secondLogin,
+}) => {
   const [sortType, setSortType] = useState<TimeSpanType>(timeSpan.DAY);
   const [firstCommitData, setFirstCommitData] = useState<CommitData[]>([]);
   const [secondCommitData, setSecondCommitData] = useState<CommitData[]>([]);
-  const [totalFirstCommitsCount, setTotalFirstCommitsCount] = useState<number>(0);
-  const [totalSecondCommitsCount, setTotalSecondCommitsCount] = useState<number>(0);
+  const [totalFirstCommitsCount, setTotalFirstCommitsCount] = useState<number>(
+    0
+  );
+  const [
+    totalSecondCommitsCount,
+    setTotalSecondCommitsCount,
+  ] = useState<number>(0);
 
+  const getAllCommitsData = (
+    reps: RepositoryInfoType[],
+    searchLogin: string
+  ): CommitData[] => {
+    return reps
+      .reduce((acc: CommitData[], repository) => {
+        repository.commits.nodes
+          .filter((commit) => commit.author.user?.login === searchLogin)
+          .forEach((commit) => {
+            acc.push({
+              repoName: repository.name,
+              committedDate: commit.committedDate,
+              message: commit.message,
+            });
+          });
 
-  const getAllCommitsData = (repos: RepositoryInfoType[], searchLogin: string): CommitData[] => {
-    return repos
-        .reduce((acc: CommitData[], repository) => {
-          repository.commits.nodes
-              .filter((commit) => commit.author.user?.login === searchLogin)
-              .forEach((commit) => {
-                acc.push({
-                  repoName: repository.name,
-                  committedDate: commit.committedDate,
-                  message: commit.message,
-                });
-              });
-
-          return acc;
-        }, [])
-        .sort(
-            (a, b) =>
-                new Date(a.committedDate).getTime() -
-                new Date(b.committedDate).getTime()
-        );
-  }
+        return acc;
+      }, [])
+      .sort(
+        (a, b) =>
+          new Date(a.committedDate).getTime() -
+          new Date(b.committedDate).getTime()
+      );
+  };
 
   useEffect(() => {
-    const commits = getAllCommitsData(repos, login)
+    const commits = getAllCommitsData(repos, login);
 
     setFirstCommitData(commits);
     setTotalFirstCommitsCount(commits.length);
   }, [repos, login]);
 
   useEffect(() => {
-
-    const commits = secondRepos && secondLogin ? getAllCommitsData(secondRepos, secondLogin) : [];
+    const commits =
+      secondRepos && secondLogin
+        ? getAllCommitsData(secondRepos, secondLogin)
+        : [];
 
     setSecondCommitData(commits);
     setTotalSecondCommitsCount(commits.length);
@@ -121,16 +135,11 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login, secondRep
   };
 
   const sortLabels = (labels: string[]): string[] => {
-
-    labels.sort(
-        (a, b) =>
-            new Date(a).getTime() -
-            new Date(b).getTime()
-    )
+    labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
     const data = labels.map((label) => getCorrectDateKey(label));
     return Array.from(new Set([...data]));
-  }
+  };
 
   const getCommitStats = () => {
     if (!firstCommitData.length) return "Подгружаем...";
@@ -148,36 +157,37 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login, secondRep
             sortType === timeSpan.DAY
               ? "rgba(0, 0, 0, .05)"
               : "rgba(33, 33, 33, .15)",
-          label: `Количество коммитов ${!secondRepos || !secondRepos.length ? '' : login}`,
+          label: `Количество коммитов ${
+            !secondRepos || !secondRepos.length ? "" : login
+          }`,
           borderColor: "rgba(33, 33, 33, .32)",
           borderWidth: 3,
           data: Object.keys(sortFirstCommits).map((key) => {
-            return {x: key, y: sortFirstCommits[key].count}
-          })
+            return { x: key, y: sortFirstCommits[key].count };
+          }),
         },
       ],
     };
 
     if (secondCommitData.length) {
-
       const newLabels = new Set([
-          ...Object.values(sortFirstCommits).map(commit => commit.date),
-        ...Object.values(sortSecondCommits).map(commit => commit.date)
-      ])
+        ...Object.values(sortFirstCommits).map((commit) => commit.date),
+        ...Object.values(sortSecondCommits).map((commit) => commit.date),
+      ]);
 
       data.labels = sortLabels(Array.from(newLabels));
       data.datasets.push({
         backgroundColor:
-            sortType === timeSpan.DAY
-                ? "rgba(0, 0, 0, .05)"
-                : "rgba(99, 99, 99, .15)",
+          sortType === timeSpan.DAY
+            ? "rgba(0, 0, 0, .05)"
+            : "rgba(255,123,0,0.15)",
         label: `Количество коммитов ${secondLogin}`,
-        borderColor: "rgba(99, 99, 99, .32)",
+        borderColor: "rgba(255,123,0,0.32)",
         borderWidth: 3,
         data: Object.keys(sortSecondCommits).map((key) => {
-          return {x: key, y: sortSecondCommits[key].count}
+          return { x: key, y: sortSecondCommits[key].count };
         }),
-      })
+      });
     }
 
     const options = {
@@ -206,15 +216,22 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login, secondRep
       <h1 className={"title"}>Активности</h1>
       <div className={"chart-flex-container"}>
         <h3>
-          Всего сделано коммитов {!secondRepos || !secondRepos.length ? '' : login }:{" "}
-          <CountUp end={totalFirstCommitsCount} start={totalFirstCommitsCount * 0.7} />
+          Всего сделано коммитов{" "}
+          {!secondRepos || !secondRepos.length ? "" : login}:{" "}
+          <CountUp
+            end={totalFirstCommitsCount}
+            start={totalFirstCommitsCount * 0.7}
+          />
         </h3>
-        {secondRepos && secondRepos.length ?
-            <h3>
-              Всего сделано коммитов {secondLogin}:{" "}
-              <CountUp end={totalSecondCommitsCount} start={totalSecondCommitsCount * 0.7} />
-            </h3>
-            : null}
+        {secondRepos && secondRepos.length ? (
+          <h3>
+            Всего сделано коммитов {secondLogin}:{" "}
+            <CountUp
+              end={totalSecondCommitsCount}
+              start={totalSecondCommitsCount * 0.7}
+            />
+          </h3>
+        ) : null}
         <div className={"buttons-flex-container"}>
           <button
             className={"more-info-show-button timespan-change-button"}
