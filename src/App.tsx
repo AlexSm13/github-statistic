@@ -12,6 +12,10 @@ import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
 
+// @ts-ignore
+import { animateScroll as scroll } from 'react-scroll'
+
+
 type GitHubData = {
   user: IUserInfo;
 };
@@ -68,6 +72,13 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         });
       }
   }, [repData]);
+
+  useEffect(() => {
+    if (data) {
+      const scrollTo = window.pageYOffset + window.innerHeight - 550;
+      setTimeout(() => scroll.scrollTo(scrollTo), 0)
+    }
+  }, [data])
 
   //---------Для второго юзера------------//
   const [secondLogin, setSecondLogin] = useState<string>("");
@@ -144,14 +155,14 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   };
 
-  console.log(repData, secondRepData)
+  //console.log(allRepos, allSecondUserRepos)
 
   //console.log(data, repData, error);
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
       <>
-      <div style={{transform: `translateY(${offsetY * 0.3 - 20}px)`}} className={"bg-wrapper"}></div>
+      <div style={{transform: `translateY(${offsetY * 0.3 - 120}px)`}} className={"bg-wrapper"}></div>
       <UserSearch
         classContainer={
           data
@@ -160,7 +171,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         }
         getUserInfo={getData}
       />
-      <div style={{ display: data ? "block" : "none" }} className={"container"}>
+      <div style={{ display: data ? "block" : "none", width: data && secondUserData && "95%" }} className={"container"}>
         {loading ? (
           <div className={"spinner"}>
             <div className={"ball"} />
@@ -170,33 +181,38 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         {login && error ? <NotFound /> : null}
 
         {data && data.user ? (
-          <>
+          <div className={secondUserData ? "second-user-flex-container" : ""}>
             <UserInfo
-              websiteUrl={data.user.websiteUrl}
-              company={data.user.company}
-              organization={data.user.organization}
-              location={data.user.location}
-              email={data.user.email}
-              name={data.user.name}
-              imgURL={data.user.avatarUrl}
-              login={data.user.login}
+                data={data.user}
             />
+            {secondUserData ?
+                <UserInfo
+                    data={secondUserData.user}
+                /> : null}
+
             {loadingRepos ? (
               <div className={"spinner"}>
                 <div className={"ball"} />
                 <p>LOADING</p>
               </div>
             ) : null}
-            {data && allRepos.length ? (
-              <MainStatistics
-                login={data.user.login}
-                repositories={allRepos}
-                totalCount={totalCount}
-                name={data.user.name}
-              />
-            ) : null}
-          </>
-        ) : null}
+          </div>) : null }
+        {data && allRepos.length && secondUserData && allSecondUserRepos ?
+                  <MainStatistics
+                      login={data.user.login}
+                      repositories={allRepos}
+                      totalCount={totalCount}
+                      name={data.user.name}
+                      secondName={secondUserData.user.name}
+                      secondLogin={secondUserData.user.login}
+                      secondTotalCount={totalSecondUserRepCount}
+                      secondRepositories={allSecondUserRepos}
+                  /> : data && allRepos.length ? <MainStatistics
+                    login={data.user.login}
+                    repositories={allRepos}
+                    totalCount={totalCount}
+                    name={data.user.name}
+                /> : null }
       </div>
     </>
   );

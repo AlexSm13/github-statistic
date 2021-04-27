@@ -16,6 +16,8 @@ type RepositoryInfoType = {
 type AllRepositoriesType = {
   repos: RepositoryInfoType[];
   login: string;
+  secondRepos: RepositoryInfoType[];
+  secondLogin: string;
 };
 
 type OurMapType = {
@@ -39,7 +41,7 @@ type MapLanguage = {
 
 const medals = [firstPlace, secondPlace, thirdPlace];
 
-export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
+export const Languages: React.FC<AllRepositoriesType> = ({ repos, login, secondRepos, secondLogin }) => {
   const [moreInfo, setMoreInfo] = useState<boolean>(false);
 
   const getGraphStats = () => {

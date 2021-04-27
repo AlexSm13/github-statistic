@@ -1,27 +1,14 @@
 import React from "react";
+import {IUserInfo} from "../../models/IUserInfo";
 
 type UserInfoType = {
-  login: any;
-  imgURL: string;
-  name: string;
-  location: string;
-  email: string;
-  websiteUrl: string;
-  organization: { name: string };
-  company: string;
+  data: IUserInfo
 };
 
 const UserInfo: React.FC<UserInfoType> = ({
-  websiteUrl,
-  login,
-  imgURL,
-  company,
-  organization,
-  name,
-  email,
-  location,
+  data
 }) => {
-  if (!login) {
+  if (!data.login) {
     return <div>Нет данных</div>;
   }
 
@@ -29,37 +16,41 @@ const UserInfo: React.FC<UserInfoType> = ({
     <div className={"user-info-container"}>
       <section className={"loginAvatar-container"}>
         <div className={"avatar"}>
-          <img src={imgURL} alt="Avatar" />
+          <img src={data.avatarUrl} alt="Avatar" />
         </div>
-        <h1>{login}</h1>
+        <h1>{data.login}</h1>
       </section>
       <section className={"user-start-info"}>
         <h1 className={"title"}>Основная информация</h1>
         <label>
           <p className={"user-info-description"}>Имя:</p>
-          <p>{infoParse(name)}</p>
+          <p>{infoParse(data.name)}</p>
         </label>
         <label>
           <p className={"user-info-description"}>Организация:</p>
           <p style={{ display: "flex" }}>
-            {organization
-              ? infoParse(organization.name)
-              : company
-              ? infoParse(company)
+            {data.organization
+              ? infoParse(data.organization.name)
+              : data.company
+              ? infoParse(data.company)
               : infoParse()}
           </p>
         </label>
         <label>
           <p className={"user-info-description"}>Местоположение:</p>
-          <p>{infoParse(location)}</p>
+          <p>{infoParse(data.location)}</p>
         </label>
         <label>
           <p className={"user-info-description"}>Email:</p>
-          <p>{infoParse(email)}</p>
+          <p>{infoParse(data.email)}</p>
         </label>
         <label>
           <p className={"user-info-description"}>Сайт:</p>
-          <p>{infoParse(websiteUrl)}</p>
+          <p>{infoParse(data.websiteUrl)}</p>
+        </label>
+        <label>
+          <p className={"user-info-description"}>Био:</p>
+          <p>{infoParse(data.bio)}</p>
         </label>
       </section>
     </div>

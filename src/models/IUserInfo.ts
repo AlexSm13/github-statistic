@@ -13,7 +13,6 @@ export interface IUserInfo {
   };
   email: string;
   bio: string;
-  // repositories: IRepositories
 }
 
 export interface IRepositories {

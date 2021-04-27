@@ -4,9 +4,10 @@ import React from "react";
 type SearchType = {
   value: string;
   valueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  getData?: (event: React.FormEvent<EventTarget>) => void;
+  getData?: (ss: boolean) => void;
   title?: string;
   placeholder: string;
+  secondSection: boolean
 };
 
 const Search: React.FC<SearchType> = ({
@@ -15,11 +16,19 @@ const Search: React.FC<SearchType> = ({
   getData,
   title,
   placeholder,
+                                        secondSection
 }) => {
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    // @ts-ignore
+    getData(secondSection)
+  }
+
   return (
     <div className={"search-container"}>
       <h2>{title}</h2>
-      <form className={"search-form"} onSubmit={getData}>
+      <form className={"search-form"} onSubmit={handleSubmit}>
         <input
           placeholder={placeholder}
           className={"user-search-input"}

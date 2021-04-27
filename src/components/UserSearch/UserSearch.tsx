@@ -18,7 +18,7 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   classContainer,
 }) => {
   const [userLogin, setUserLogin] = useState<string>("KuzmichAlexander");
-  const [secondUserLogin, setSecondUserLogin] = useState<string>("");
+  const [secondUserLogin, setSecondUserLogin] = useState<string>("AlexSm13");
   const [userToken, setUserToken] = useState<string>("");
   const [secondUserToken, setSecondUserToken] = useState<string>("");
   const [secondUserRequirement, setSecondUserRequirement] = useState<boolean>(
