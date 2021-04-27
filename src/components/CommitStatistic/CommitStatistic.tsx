@@ -5,7 +5,7 @@ import CountUp from "react-countup";
 
 enum timeSpan {
   DAY = "DAY",
-  MOUNT = "MOUNT",
+  MONTH = "MONTH",
   YEAR = "YEAR",
 }
 
@@ -69,7 +69,7 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login }) => {
     switch (sortType) {
       case timeSpan.DAY:
         return new Date(date).toLocaleDateString();
-      case timeSpan.MOUNT:
+      case timeSpan.MONTH:
         return (
           new Date(date).toLocaleString("default", { month: "long" }) +
           " " +
@@ -155,18 +155,21 @@ export const Commits: React.FC<AllRepositoriesType> = ({ repos, login }) => {
           <button
             className={"more-info-show-button timespan-change-button"}
             onClick={() => changeSortType(timeSpan.DAY)}
+            disabled={sortType === timeSpan.DAY}
           >
             День
           </button>
           <button
             className={"more-info-show-button timespan-change-button"}
-            onClick={() => changeSortType(timeSpan.MOUNT)}
+            onClick={() => changeSortType(timeSpan.MONTH)}
+            disabled={sortType === timeSpan.MONTH}
           >
             Месяц
           </button>
           <button
             className={"more-info-show-button timespan-change-button"}
             onClick={() => changeSortType(timeSpan.YEAR)}
+            disabled={sortType === timeSpan.YEAR}
           >
             Год
           </button>

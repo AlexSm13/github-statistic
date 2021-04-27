@@ -22,8 +22,6 @@ type OthersReposes = {
   };
 };
 
-const myLogin = "KuzmichAlexander";
-
 type AppType = {
   setAccessToken: (token?: string) => void;
 };
@@ -33,6 +31,16 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [firstToken, setFirstToken] = useState<string>("");
   const [allRepos, setAllRepos] = useState<IRepository[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
+
+  const [offsetY, setOffsetY] = useState<number>(0)
+  const handleScroll = () => {
+    setOffsetY(window.pageYOffset)
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [])
 
   const [getDataInfo, { loading, error, data }] = useLazyQuery<GitHubData>(
     userInfoQuery
@@ -105,24 +113,12 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
   //--------------------------------------//
 
-  // useEffect(() => {
-  //   getDataInfo({
-  //     //пока так чтобы каждый раз не вбивать
-  //     // этого в будущем не будет (ахаххахахах), поэтому норм
-  //     variables: { login: myLogin },
-  //   });
-  //   getOtherDataInfo({
-  //     variables: { login: myLogin, cursor: null },
-  //   });
-  // }, []);
-
   const getData = (
     login: string,
     token?: string,
     secondLogin?: string,
     secondToken?: string
   ) => {
-    console.log(login, "токен тут ======", token, "sfdfdsf");
     setLogin(login);
     setAccessToken(token);
     token && setFirstToken(token);
@@ -148,11 +144,14 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   };
 
+  console.log(repData, secondRepData)
+
   //console.log(data, repData, error);
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
-    <div className={"bg-wrapper"}>
+      <>
+      <div style={{transform: `translateY(${offsetY * 0.3 - 20}px)`}} className={"bg-wrapper"}></div>
       <UserSearch
         classContainer={
           data
@@ -199,6 +198,6 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
           </>
         ) : null}
       </div>
-    </div>
+    </>
   );
 };
