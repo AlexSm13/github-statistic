@@ -11,9 +11,9 @@ import { MainStatistics } from "./components/RepositoryInfo/MainStatistics";
 import NotFound from "./components/NotFound/NotFound";
 import { IRepository } from "./models/IRepository";
 import { UserSearch } from "./components/UserSearch/UserSearch";
-
 // @ts-ignore
 import { animateScroll as scroll } from "react-scroll";
+import { AnimateBackground } from "./components/AnimateBackground/AnimateBackground";
 
 type GitHubData = {
   user: IUserInfo;
@@ -35,17 +35,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   const [allRepos, setAllRepos] = useState<IRepository[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
 
-  const [offsetY, setOffsetY] = useState<number>(0);
-  const handleScroll = () => {
-    setOffsetY(window.pageYOffset);
-  };
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const [getDataInfo, { loading, error, data }] = useLazyQuery<GitHubData>(
+  let [getDataInfo, { loading, error, data }] = useLazyQuery<GitHubData>(
     userInfoQuery
   );
 
@@ -57,6 +47,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   );
 
   useEffect(() => {
+    setAccessToken(firstToken);
     if (repData) {
       setTotalCount(repData.user.repositories.totalCount);
       setAllRepos((prev) => [...prev, ...repData.user.repositories.nodes]);
@@ -72,16 +63,13 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
       }
   }, [repData]);
 
-  useEffect(() => {
-    if (data) {
-      const scrollTo = window.pageYOffset + window.innerHeight - 550;
-      setTimeout(() => scroll.scrollTo(scrollTo), 0);
-    }
-  }, [data]);
-
   //---------Для второго юзера------------//
   const [secondLogin, setSecondLogin] = useState<string>("");
   const [secondToken, setSecondToken] = useState<string>("");
+  const [
+    hasSecondUserDataInState,
+    setHasSecondUserDataInState,
+  ] = useState<boolean>(false);
   const [allSecondUserRepos, setSecondUserAllRepos] = useState<IRepository[]>(
     []
   );
@@ -90,7 +78,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     setSecondUserTotalRepCount,
   ] = useState<number>(0);
 
-  const [
+  let [
     getSecondUserDataInfo,
     { loading: sec_loading, error: sec_error, data: secondUserData },
   ] = useLazyQuery<GitHubData>(userInfoQuery);
@@ -103,6 +91,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   );
 
   useEffect(() => {
+    setAccessToken(secondToken);
     if (secondRepData) {
       setSecondUserTotalRepCount(secondRepData.user.repositories.totalCount);
       setSecondUserAllRepos((prev) => [
@@ -129,9 +118,14 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     secondLogin?: string,
     secondToken?: string
   ) => {
+    console.log(token, secondToken);
+    resetData();
+
     setLogin(login);
     setAccessToken(token);
     token && setFirstToken(token);
+
+    console.log(login, token, secondLogin, secondToken);
 
     setAllRepos([]);
     getDataInfo({
@@ -142,6 +136,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     });
 
     if (secondLogin) {
+      setHasSecondUserDataInState(true);
       setSecondLogin(secondLogin);
       setAccessToken(secondToken);
 
@@ -154,17 +149,29 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   };
 
-  //console.log(allRepos, allSecondUserRepos)
+  const resetData = () => {
+    setHasSecondUserDataInState(false);
+    setSecondLogin("");
+    setSecondUserTotalRepCount(0);
+    setSecondUserAllRepos([]);
+    setSecondToken("");
+  };
+
+  useEffect(() => {
+    if (data) {
+      const scrollTo = window.pageYOffset + window.innerHeight - 550;
+      setTimeout(() => scroll.scrollTo(scrollTo), 0);
+    }
+  }, [data]);
+
+  console.log(allRepos, allSecondUserRepos);
 
   //console.log(data, repData, error);
 
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
     <>
-      <div
-        style={{ transform: `translateY(${offsetY * 0.3 - 120}px)` }}
-        className={"bg-wrapper"}
-      ></div>
+      <AnimateBackground />
       <UserSearch
         classContainer={
           data
@@ -176,7 +183,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
       <div
         style={{
           display: data ? "block" : "none",
-          width: data && secondUserData && "95%",
+          width: data && secondUserData && "90%",
         }}
         className={"container"}
       >
@@ -189,19 +196,38 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         {login && error ? <NotFound /> : null}
 
         {data && data.user ? (
-          <div className={secondUserData ? "second-user-flex-container" : ""}>
-            <UserInfo data={data.user} />
-            {secondUserData ? <UserInfo data={secondUserData.user} /> : null}
-
+          <>
+            <div
+              className={
+                secondUserData && hasSecondUserDataInState
+                  ? "second-user-flex-container"
+                  : ""
+              }
+            >
+              <UserInfo
+                data={data.user}
+                hasSecondUser={hasSecondUserDataInState}
+              />
+              {secondUserData && hasSecondUserDataInState ? (
+                <UserInfo
+                  data={secondUserData.user}
+                  hasSecondUser={hasSecondUserDataInState}
+                />
+              ) : null}
+            </div>
             {loadingRepos ? (
               <div className={"spinner"}>
                 <div className={"ball"} />
                 <p>LOADING</p>
               </div>
             ) : null}
-          </div>
+          </>
         ) : null}
-        {data && allRepos.length && secondUserData && allSecondUserRepos ? (
+        {data &&
+        allRepos.length &&
+        hasSecondUserDataInState &&
+        secondUserData &&
+        allSecondUserRepos ? (
           <MainStatistics
             login={data.user.login}
             repositories={allRepos}

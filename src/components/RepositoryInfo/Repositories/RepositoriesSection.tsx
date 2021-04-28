@@ -35,7 +35,10 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
   secondSection,
 }) => {
   return (
-    <section className={"user-statistic-container no-blur-section"}>
+    <section
+      style={{ flex: 1 }}
+      className={"user-statistic-container no-blur-section"}
+    >
       <h1 className={"title"}>Статистика по репозиториям ({login})</h1>
       <div className={"repositories-flex-container"}>
         <div className={"repositories-info"}>
@@ -67,14 +70,6 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
         </div>
       </div>
 
-      <Pagination
-        totalRep={repositories.length}
-        repPerPage={repPerPage}
-        paginate={paginate}
-        currentPage={currentPage}
-        secondSection={secondSection}
-      />
-
       <div className={"repositories"}>
         {repositories.length ? (
           getRepositories(secondSection)
@@ -84,6 +79,13 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
           </h1>
         )}
       </div>
+      <Pagination
+        totalRep={repositories.length}
+        repPerPage={repPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+        secondSection={secondSection}
+      />
     </section>
   );
 };

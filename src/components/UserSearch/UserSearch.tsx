@@ -18,7 +18,7 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   classContainer,
 }) => {
   const [userLogin, setUserLogin] = useState<string>("KuzmichAlexander");
-  const [secondUserLogin, setSecondUserLogin] = useState<string>("AlexSm13");
+  const [secondUserLogin, setSecondUserLogin] = useState<string>("");
   const [userToken, setUserToken] = useState<string>("");
   const [secondUserToken, setSecondUserToken] = useState<string>("");
   const [secondUserRequirement, setSecondUserRequirement] = useState<boolean>(
@@ -29,7 +29,8 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
   const secondUserChange = () => {
     setSecondUserRequirement((prev) => !prev);
   };
-  console.log(userToken);
+
+  console.log(userToken, userLogin);
   const formSubmit = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
     console.log(userToken.length);

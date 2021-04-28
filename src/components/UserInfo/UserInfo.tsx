@@ -3,15 +3,22 @@ import { IUserInfo } from "../../models/IUserInfo";
 
 type UserInfoType = {
   data: IUserInfo;
+  hasSecondUser: boolean;
 };
 
-const UserInfo: React.FC<UserInfoType> = ({ data }) => {
+const UserInfo: React.FC<UserInfoType> = ({ data, hasSecondUser }) => {
   if (!data.login) {
     return <div>Нет данных</div>;
   }
 
   return (
-    <div className={"user-info-container"}>
+    <div
+      style={{
+        flexDirection: hasSecondUser ? "column" : "row",
+        boxSizing: "border-box",
+      }}
+      className={"user-info-container"}
+    >
       <section className={"loginAvatar-container"}>
         <div className={"avatar"}>
           <img src={data.avatarUrl} alt="Avatar" />

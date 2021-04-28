@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Commits as CommitsData } from "../../models/IRepository";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar, Line, Scatter } from "react-chartjs-2";
 import CountUp from "react-countup";
 
 enum timeSpan {
@@ -44,6 +44,7 @@ export const Commits: React.FC<AllRepositoriesType> = ({
   secondRepos,
   secondLogin,
 }) => {
+  console.log(login, repos, secondLogin, secondRepos);
   const [sortType, setSortType] = useState<TimeSpanType>(timeSpan.DAY);
   const [firstCommitData, setFirstCommitData] = useState<CommitData[]>([]);
   const [secondCommitData, setSecondCommitData] = useState<CommitData[]>([]);
@@ -153,6 +154,7 @@ export const Commits: React.FC<AllRepositoriesType> = ({
       labels: Array.from(labels),
       datasets: [
         {
+          tension: 0,
           backgroundColor:
             sortType === timeSpan.DAY
               ? "rgba(0, 0, 0, .05)"
@@ -177,6 +179,7 @@ export const Commits: React.FC<AllRepositoriesType> = ({
 
       data.labels = sortLabels(Array.from(newLabels));
       data.datasets.push({
+        tension: 0,
         backgroundColor:
           sortType === timeSpan.DAY
             ? "rgba(0, 0, 0, .05)"
