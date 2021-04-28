@@ -22,3 +22,18 @@ export function formatSizeUnits(bytes: number): string {
   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString());
   return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
 }
+
+export const MONTHS = [
+  "Январь",
+  "Февраль",
+  "Март",
+  "Апрель",
+  "Май",
+  "Июнь",
+  "Июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь",
+];

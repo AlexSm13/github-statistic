@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Commits as CommitsData } from "../../models/IRepository";
 import { Bar, Line, Scatter } from "react-chartjs-2";
 import CountUp from "react-countup";
+import { MONTHS } from "../../consts/consts";
 
 enum timeSpan {
   DAY = "DAY",
@@ -44,13 +45,20 @@ export const Commits: React.FC<AllRepositoriesType> = ({
   secondRepos,
   secondLogin,
 }) => {
-  console.log(login, repos, secondLogin, secondRepos);
   const [sortType, setSortType] = useState<TimeSpanType>(timeSpan.DAY);
   const [firstCommitData, setFirstCommitData] = useState<CommitData[]>([]);
   const [secondCommitData, setSecondCommitData] = useState<CommitData[]>([]);
   const [totalFirstCommitsCount, setTotalFirstCommitsCount] = useState<number>(
     0
   );
+  const [changeMonth, setChangeMonth] = useState<number>(new Date().getMonth());
+  const [allYears, setAllYears] = useState<number[]>([]);
+  const [changeYear, setChangeYear] = useState<number>(
+    new Date().getFullYear()
+  );
+
+  const [showAllCommits, setShowAllCommits] = useState<boolean>(false);
+
   const [
     totalSecondCommitsCount,
     setTotalSecondCommitsCount,
@@ -60,17 +68,20 @@ export const Commits: React.FC<AllRepositoriesType> = ({
     reps: RepositoryInfoType[],
     searchLogin: string
   ): CommitData[] => {
+    let currYears = new Set<number>();
     return reps
       .reduce((acc: CommitData[], repository) => {
         repository.commits.nodes
           .filter((commit) => commit.author.user?.login === searchLogin)
           .forEach((commit) => {
+            currYears.add(new Date(commit.committedDate).getFullYear());
             acc.push({
               repoName: repository.name,
               committedDate: commit.committedDate,
               message: commit.message,
             });
           });
+        setAllYears(Array.from(currYears).sort());
 
         return acc;
       }, [])
@@ -142,12 +153,32 @@ export const Commits: React.FC<AllRepositoriesType> = ({
     return Array.from(new Set([...data]));
   };
 
+  const getSortCommitsForDate = (commitsData: OurMapType): OurMapType => {
+    return Object.keys(commitsData)
+      .filter((key) => {
+        const date = new Date(commitsData[key].date);
+        return (
+          date.getFullYear() === changeYear && date.getMonth() === changeMonth
+        );
+      })
+      .reduce((obj: OurMapType, key) => {
+        obj[key] = commitsData[key];
+        return obj;
+      }, {});
+  };
+
   const getCommitStats = () => {
     if (!firstCommitData.length) return "Подгружаем...";
     if (secondRepos && !secondCommitData.length) return "Подгружаем...";
 
-    const sortFirstCommits = getOurMap(firstCommitData);
-    const sortSecondCommits = getOurMap(secondCommitData);
+    let sortFirstCommits = getOurMap(firstCommitData);
+    let sortSecondCommits = getOurMap(secondCommitData);
+
+    if (sortType === timeSpan.DAY && !showAllCommits) {
+      sortFirstCommits = getSortCommitsForDate(sortFirstCommits);
+      sortSecondCommits = getSortCommitsForDate(sortSecondCommits);
+    }
+
     const labels: Set<string> = new Set([...Object.keys(sortFirstCommits)]);
 
     const data = {
@@ -156,13 +187,11 @@ export const Commits: React.FC<AllRepositoriesType> = ({
         {
           tension: 0,
           backgroundColor:
-            sortType === timeSpan.DAY
-              ? "rgba(0, 0, 0, .05)"
-              : "rgba(33, 33, 33, .15)",
+            sortType === timeSpan.DAY ? "transparent" : "rgba(33, 33, 33, .15)",
           label: `Количество коммитов ${
             !secondRepos || !secondRepos.length ? "" : login
           }`,
-          borderColor: "rgba(33, 33, 33, .32)",
+          borderColor: "rgba(27, 141, 203, .7)",
           borderWidth: 3,
           data: Object.keys(sortFirstCommits).map((key) => {
             return { x: key, y: sortFirstCommits[key].count };
@@ -181,11 +210,9 @@ export const Commits: React.FC<AllRepositoriesType> = ({
       data.datasets.push({
         tension: 0,
         backgroundColor:
-          sortType === timeSpan.DAY
-            ? "rgba(0, 0, 0, .05)"
-            : "rgba(255,123,0,0.15)",
+          sortType === timeSpan.DAY ? "transparent" : "rgba(255,123,0,0.15)",
         label: `Количество коммитов ${secondLogin}`,
-        borderColor: "rgba(255,123,0,0.32)",
+        borderColor: "rgba(255, 123, 0, .7)",
         borderWidth: 3,
         data: Object.keys(sortSecondCommits).map((key) => {
           return { x: key, y: sortSecondCommits[key].count };
@@ -259,6 +286,43 @@ export const Commits: React.FC<AllRepositoriesType> = ({
           </button>
         </div>
       </div>
+      {sortType === timeSpan.DAY ? (
+        <>
+          <div className={"select-flex-container"}>
+            <select
+              value={changeMonth}
+              onChange={(e) => setChangeMonth(+e.target.value)}
+            >
+              {MONTHS.map((month, index) => {
+                return <option value={index}>{month}</option>;
+              })}
+            </select>
+            <select
+              value={changeYear}
+              onChange={(e) => setChangeYear(+e.target.value)}
+            >
+              {allYears.map((year) => {
+                return <option value={year}>{year}</option>;
+              })}
+            </select>
+          </div>
+          <div className={"chart-checkbox"}>
+            <input
+              type="checkbox"
+              className="custom-checkbox"
+              id="allData"
+              name="allData"
+            />
+            <label
+              onClick={() => setShowAllCommits((prev) => !prev)}
+              className={"custom-checkbox-label"}
+              htmlFor="allData"
+            >
+              Показать все коммиты
+            </label>
+          </div>
+        </>
+      ) : null}
       {getCommitStats()}
     </div>
   );

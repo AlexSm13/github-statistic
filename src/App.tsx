@@ -187,14 +187,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         }}
         className={"container"}
       >
-        {loading ? (
-          <div className={"spinner"}>
-            <div className={"ball"} />
-            <p>LOADING</p>
-          </div>
-        ) : null}
         {login && error ? <NotFound /> : null}
-
         {data && data.user ? (
           <>
             <div
@@ -213,6 +206,12 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
                   data={secondUserData.user}
                   hasSecondUser={hasSecondUserDataInState}
                 />
+              ) : null}
+              {loading ? (
+                <div className={"spinner"}>
+                  <div className={"ball"} />
+                  <p>Подгружаем...</p>
+                </div>
               ) : null}
             </div>
             {loadingRepos ? (

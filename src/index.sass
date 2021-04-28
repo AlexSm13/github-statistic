@@ -48,8 +48,11 @@ body
 .bg-wrapper
   position: absolute
   background-image: url('./images/background/desert.jpg')
+  background-size: cover
+  background-repeat: no-repeat
   width: 100%
   height: 3000px
+  background-position: center
   z-index: -1
   transition: $form-transition
 
@@ -59,42 +62,51 @@ body
   justify-content: space-between
 
 .spinner
-  width: 100px
-  height: 50px
-  position: absolute
-  top: 0
-  bottom: 0
-  right: 0
-  left: 0
-  margin: auto
+  background-color: rgba(255, 255, 255, 0.7)
+  backdrop-filter: blur(5px)
+
+  margin: 40px auto
+  padding: 20px
   text-align: center
+  width: 200px
+  border-radius: 15px
+  height: 40px
 
   .ball
     width: 20px
     height: 20px
-    background-color: blue
+    background-color: $main-color-brown
     border-radius: 50%
     display: inline-block
     animation: motion 3s infinite
 
   p
-    color: blue
+    color: $main-color-brown
     margin-top: 5px
-    font-family: sans-serif
     letter-spacing: 3px
-    font-size: 10px
+    font-size: 14px
 
 @keyframes motion
   0%
     transform: translateX(0) scale(1)
+    background-color: $main-color-brown
+
   25%
     transform: translateX(-50px) scale(0.3)
+    background-color: darken($main-color-brown, 10%)
+
   50%
     transform: translateX(0) scale(1)
+    background-color: $main-color-brown
+
   75%
     transform: translateX(50px) scale(0.3)
+    background-color: darken($main-color-brown, 10%)
+
   100%
     transform: translateX(0) scale(1)
+    background-color: $main-color-brown
+
 
 
 .more-info-show-button
