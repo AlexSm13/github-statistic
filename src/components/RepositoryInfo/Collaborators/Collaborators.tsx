@@ -55,7 +55,6 @@ export const Collaborators: React.FC<CollaboratorsType> = ({
             };
           }
         });
-
         return ourMap;
       },
       {}

@@ -16,6 +16,8 @@ type RepositoryInfoType = {
 type AllRepositoriesType = {
   repos: RepositoryInfoType[];
   login: string;
+  secondRepos?: RepositoryInfoType[];
+  secondLogin?: string;
 };
 
 type OurMapType = {
@@ -39,15 +41,18 @@ type MapLanguage = {
 
 const medals = [firstPlace, secondPlace, thirdPlace];
 
-export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
+export const Languages: React.FC<AllRepositoriesType> = ({
+  repos,
+  login,
+  secondRepos,
+  secondLogin,
+}) => {
   const [moreInfo, setMoreInfo] = useState<boolean>(false);
+  const [typeUser, setTypeUser] = useState<"first" | "second">("first");
 
-  const getGraphStats = () => {
-    if (!repos.length) return "Подгружаем...";
-
+  const getAllLangs = (rep: RepositoryInfoType[]): { [id: string]: number } => {
     const allLangs: { [id: string]: number } = {};
-
-    repos.forEach((rep) => {
+    rep.forEach((rep) => {
       const repLangs: string[] = rep.langs.edges.map(
         (repos) => repos.node.name
       );
@@ -61,22 +66,58 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
       });
     });
 
+    return allLangs;
+  };
+
+  const getGraphStats = () => {
+    if (!repos.length) return "Подгружаем...";
+
+    const firstAllLangs = getAllLangs(repos);
+    const secondAllLangs = secondRepos && getAllLangs(secondRepos);
+    const labels: Set<string> = new Set([...Object.keys(firstAllLangs)]);
+
     const data = {
-      labels: Object.keys(allLangs),
+      labels: Array.from(labels),
       datasets: [
         {
-          label: "Количество языков",
-          data: Object.values(allLangs),
+          label: `Количество языков ${
+            !secondRepos || !secondRepos.length ? "" : login
+          }`,
+          data: Object.keys(firstAllLangs).map((key) => {
+            return { x: key, y: firstAllLangs[key] };
+          }),
+          borderColor: "rgba(33, 33, 33, .32)",
+          backgroundColor: "rgba(33, 33, 33, .15)",
         },
       ],
     };
+
+    if (secondAllLangs) {
+      const newLabels = new Set([
+        ...Object.keys(firstAllLangs),
+        ...Object.keys(secondAllLangs),
+      ]);
+
+      data.labels = Array.from(newLabels);
+      data.datasets.push({
+        label: `Количество коммитов ${secondLogin}`,
+        data: Object.keys(secondAllLangs).map((key) => {
+          return { x: key, y: secondAllLangs[key] };
+        }),
+        borderColor: "rgba(255,123,0,0.32)",
+        backgroundColor: "rgba(255,123,0,0.15)",
+      });
+    }
 
     return <Bar data={data} />;
   };
 
   const getNumbersStats = () => {
-    if (!repos.length) return "Подгружаем...";
-    const languages = repos
+    const data =
+      typeUser === "first" ? [...repos] : secondRepos ? [...secondRepos] : [];
+
+    if (!data.length) return "Подгружаем...";
+    const languages = data
       .map((repository) => {
         return { name: repository.name, languages: repository.langs.edges };
       })
@@ -98,7 +139,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
 
         return ourMap;
       }, {});
-    const reposCount = repos.length;
+    const reposCount = data.length;
     const values = Object.values(languages);
     return values
       .sort((a, b) => b.count - a.count)
@@ -141,7 +182,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
       });
   };
 
-  const modalToggle = () => {
+  const modalToggle = (type?: "first" | "second") => {
     const showModal = document.querySelector(".languages-numbers");
     const modalWrapper = document.querySelector(".more-info-wrapper");
     if (showModal && modalWrapper) {
@@ -149,18 +190,33 @@ export const Languages: React.FC<AllRepositoriesType> = ({ repos, login }) => {
       modalWrapper.classList.remove("modal-wrapper-animation");
     }
     setTimeout(() => setMoreInfo(!moreInfo), 100);
+    type && setTypeUser(type);
   };
 
   return (
     <>
       <section className={"user-statistic-container no-blur-section"}>
-        <h1 className={"title"}>Статистика по языкам ({login})</h1>
+        <h1 className={"title"}>
+          Статистика по языкам ({login}{" "}
+          {secondRepos && secondRepos.length ? " и " + secondLogin : ""})
+        </h1>
         <div className={"languages-info-container"}>
           <div className="languages-graph">{getGraphStats()}</div>
         </div>
-        <button className={"more-info-show-button"} onClick={modalToggle}>
-          Подробнее
+        <button
+          className={"more-info-show-button"}
+          onClick={() => modalToggle("first")}
+        >
+          Подробнее {!secondRepos || !secondRepos.length ? "" : login}
         </button>
+        {secondRepos && secondRepos.length ? (
+          <button
+            className={"more-info-show-button"}
+            onClick={() => modalToggle("second")}
+          >
+            Подробнее {secondLogin}
+          </button>
+        ) : null}
       </section>
       {moreInfo ? (
         <LanguageModal

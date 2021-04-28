@@ -10,12 +10,15 @@ type RepositoriesSectionType = {
   totalCount: number;
   repoName: string;
   setRepoName: Dispatch<SetStateAction<string>>;
-  getRepositories: () => JSX.Element | JSX.Element[];
+  getRepositories: (
+    requestFromSecondUserSection: boolean
+  ) => JSX.Element | JSX.Element[];
   repositories: IRepository[];
   repPerPage: number;
-  paginate: (n: number) => void;
+  paginate: (n: number, flag: boolean) => void;
   currentPage: number;
   loadedReposCount: number;
+  secondSection: boolean;
 };
 
 const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
@@ -29,9 +32,13 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
   currentPage,
   paginate,
   loadedReposCount,
+  secondSection,
 }) => {
   return (
-    <section className={"user-statistic-container no-blur-section"}>
+    <section
+      style={{ flex: 1 }}
+      className={"user-statistic-container no-blur-section"}
+    >
       <h1 className={"title"}>Статистика по репозиториям ({login})</h1>
       <div className={"repositories-flex-container"}>
         <div className={"repositories-info"}>
@@ -47,6 +54,7 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
             getData={getRepositories}
             value={repoName}
             valueChange={(e) => setRepoName(e.target.value)}
+            secondSection={secondSection}
           />
         </div>
 
@@ -62,22 +70,22 @@ const RepositoriesSection: React.FC<RepositoriesSectionType> = ({
         </div>
       </div>
 
-      <Pagination
-        totalRep={repositories.length}
-        repPerPage={repPerPage}
-        paginate={paginate}
-        currentPage={currentPage}
-      />
-
       <div className={"repositories"}>
         {repositories.length ? (
-          getRepositories()
+          getRepositories(secondSection)
         ) : (
           <h1 className={"title"}>
             Пользователь {login} как-то выживет без репозиториев :(
           </h1>
         )}
       </div>
+      <Pagination
+        totalRep={repositories.length}
+        repPerPage={repPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+        secondSection={secondSection}
+      />
     </section>
   );
 };

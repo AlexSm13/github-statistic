@@ -29,9 +29,13 @@ $main-color-blue: #1b8dcb
 body
   background-color: $backgroung
 
+#root
+  position: relative
+  height: 100vh
+
 .container
   margin: 10px auto
-  max-width: 1080px
+  width: 1080px
   padding: 10px
   border-radius: 15px
 
@@ -48,6 +52,11 @@ body
   height: 3000px
   z-index: -1
   transition: $form-transition
+
+.second-user-flex-container
+  display: flex
+  align-items: stretch
+  justify-content: space-between
 
 .spinner
   width: 100px

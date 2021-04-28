@@ -3,8 +3,9 @@ import React, { MouseEventHandler } from "react";
 type PaginationType = {
   repPerPage: number;
   totalRep: number;
-  paginate: (currentPage: number) => void;
+  paginate: (currentPage: number, isSecondSection: boolean) => void;
   currentPage: number;
+  secondSection: boolean;
 };
 
 export const Pagination: React.FC<PaginationType> = ({
@@ -12,6 +13,7 @@ export const Pagination: React.FC<PaginationType> = ({
   paginate,
   totalRep,
   currentPage,
+  secondSection,
 }) => {
   const repNumbers: number[] = [];
   const parts = Math.ceil(totalRep / repPerPage);
@@ -25,7 +27,7 @@ export const Pagination: React.FC<PaginationType> = ({
       <ul>
         {repNumbers.map((number) => (
           <li
-            onClick={() => paginate(number)}
+            onClick={() => paginate(number, secondSection)}
             key={number}
             className={`pagination-item ${
               number === currentPage ? "active-link" : ""
