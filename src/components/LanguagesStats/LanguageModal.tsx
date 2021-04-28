@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 type LanguageModalType = {
   modalToggle: () => void;
-  getNumbersStats: () => string | JSX.Element[];
+  getNumbersStats: () => null | JSX.Element[];
 };
 
 export const LanguageModal: React.FC<LanguageModalType> = ({

@@ -171,7 +171,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
   //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
     <>
-      <AnimateBackground />
+      <AnimateBackground firstUserLogin={login} secondUserLogin={secondLogin} />
       <UserSearch
         classContainer={
           data
