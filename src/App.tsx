@@ -217,7 +217,7 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
             {loadingRepos ? (
               <div className={"spinner"}>
                 <div className={"ball"} />
-                <p>LOADING</p>
+                <p>Подгружаем...</p>
               </div>
             ) : null}
           </>

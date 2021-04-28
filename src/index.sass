@@ -35,7 +35,7 @@ body
 
 .container
   margin: 10px auto
-  width: 1080px
+  max-width: 1080px
   padding: 10px
   border-radius: 15px
 
@@ -149,8 +149,12 @@ body
   background-color: #ac9891
   opacity: .5
 
+@media (max-width: 800px)
+  .second-user-flex-container
+    overflow-x: scroll
 
-
+    &::-webkit-scrollbar
+      display: none
 
 
 @import "components/Search/search"
