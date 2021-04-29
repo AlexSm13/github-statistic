@@ -118,14 +118,11 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     secondLogin?: string,
     secondToken?: string
   ) => {
-    console.log(token, secondToken);
     resetData();
 
     setLogin(login);
     setAccessToken(token);
     token && setFirstToken(token);
-
-    console.log(login, token, secondLogin, secondToken);
 
     setAllRepos([]);
     getDataInfo({
@@ -164,14 +161,9 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   }, [data]);
 
-  console.log(allRepos, allSecondUserRepos);
-
-  //console.log(data, repData, error);
-
-  //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
     <>
-      <AnimateBackground firstUserLogin={login} secondUserLogin={secondLogin} />
+      <AnimateBackground />
       <UserSearch
         classContainer={
           data

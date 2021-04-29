@@ -7,8 +7,7 @@ import { ApolloClient } from "@apollo/client";
 import { InMemoryCache } from "@apollo/client";
 
 const setAccessToken = (userToken?: string) => {
-  console.log("токен в INDEX.TSX", userToken);
-  let token = "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";
+  let token = process.env.REACT_APP_KEY
   if (userToken) {
     token = userToken;
   }

@@ -30,10 +30,8 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
     setSecondUserRequirement((prev) => !prev);
   };
 
-  console.log(userToken, userLogin);
   const formSubmit = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    console.log(userToken.length);
     getUserInfo(
       userLogin,
       userToken,
