@@ -118,14 +118,11 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     secondLogin?: string,
     secondToken?: string
   ) => {
-    console.log(token, secondToken);
     resetData();
 
     setLogin(login);
     setAccessToken(token);
     token && setFirstToken(token);
-
-    console.log(login, token, secondLogin, secondToken);
 
     setAllRepos([]);
     getDataInfo({
@@ -164,22 +161,19 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
     }
   }, [data]);
 
-  console.log(allRepos, allSecondUserRepos);
-
-  //console.log(data, repData, error);
-
-  //У нас есть secondUserData и secondRepData, чтобы рисовать инфу для второго логина
   return (
     <>
-      <AnimateBackground />
+      <AnimateBackground hasData={!!data} />
       <UserSearch
         classContainer={
-          data
+          data || error || sec_error
             ? "search-user-wrapper search-users-wrapper-withUserInfo"
             : "search-user-wrapper"
         }
         getUserInfo={getData}
       />
+      {(login && error) || (secondLogin && sec_error) ? <NotFound /> : null}
+
       <div
         style={{
           display: data ? "block" : "none",
@@ -187,14 +181,6 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         }}
         className={"container"}
       >
-        {loading ? (
-          <div className={"spinner"}>
-            <div className={"ball"} />
-            <p>LOADING</p>
-          </div>
-        ) : null}
-        {login && error ? <NotFound /> : null}
-
         {data && data.user ? (
           <>
             <div
@@ -214,11 +200,17 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
                   hasSecondUser={hasSecondUserDataInState}
                 />
               ) : null}
+              {loading ? (
+                <div className={"spinner"}>
+                  <div className={"ball"} />
+                  <p>Подгружаем...</p>
+                </div>
+              ) : null}
             </div>
             {loadingRepos ? (
               <div className={"spinner"}>
                 <div className={"ball"} />
-                <p>LOADING</p>
+                <p>Подгружаем...</p>
               </div>
             ) : null}
           </>

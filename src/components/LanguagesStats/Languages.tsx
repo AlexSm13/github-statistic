@@ -70,7 +70,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({
   };
 
   const getGraphStats = () => {
-    if (!repos.length) return "Подгружаем...";
+    if (!repos.length) return null;
 
     const firstAllLangs = getAllLangs(repos);
     const secondAllLangs = secondRepos && getAllLangs(secondRepos);
@@ -116,7 +116,7 @@ export const Languages: React.FC<AllRepositoriesType> = ({
     const data =
       typeUser === "first" ? [...repos] : secondRepos ? [...secondRepos] : [];
 
-    if (!data.length) return "Подгружаем...";
+    if (!data.length) return null;
     const languages = data
       .map((repository) => {
         return { name: repository.name, languages: repository.langs.edges };
@@ -183,6 +183,8 @@ export const Languages: React.FC<AllRepositoriesType> = ({
   };
 
   const modalToggle = (type?: "first" | "second") => {
+    //@ts-ignore
+    type && !type.nativeEvent && setTypeUser(type);
     const showModal = document.querySelector(".languages-numbers");
     const modalWrapper = document.querySelector(".more-info-wrapper");
     if (showModal && modalWrapper) {
@@ -190,7 +192,6 @@ export const Languages: React.FC<AllRepositoriesType> = ({
       modalWrapper.classList.remove("modal-wrapper-animation");
     }
     setTimeout(() => setMoreInfo(!moreInfo), 100);
-    type && setTypeUser(type);
   };
 
   return (

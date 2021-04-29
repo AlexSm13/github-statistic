@@ -30,16 +30,28 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
     setSecondUserRequirement((prev) => !prev);
   };
 
-  console.log(userToken, userLogin);
+  const checkValidation = (): boolean => {
+    let isInputsEmpty: boolean = false;
+    for (let i = 0; i <= 3; i++) {
+      const input = document.getElementById(`input${i}`);
+
+      // @ts-ignore
+      if (input && !input.value) {
+        if ((secondUserRequirement && i === 1) || i === 0) {
+          isInputsEmpty = true;
+          input.classList.add("message-warn");
+        }
+      }
+    }
+
+    return isInputsEmpty;
+  };
+
   const formSubmit = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    console.log(userToken.length);
-    getUserInfo(
-      userLogin,
-      userToken,
-      secondUserLogin.trim(),
-      secondUserToken.trim()
-    );
+    if (!checkValidation()) {
+      getUserInfo(userLogin, userToken, secondUserLogin, secondUserToken);
+    }
   };
 
   return (
@@ -68,9 +80,13 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
                   secondUserRequirement ? "first-login" : "login Github"
                 }
                 className={"user-search-input"}
-                onChange={(e) => setUserLogin(e.target.value)}
+                onChange={(e) => {
+                  setUserLogin(e.target.value);
+                  e.target.classList.remove("message-warn");
+                }}
                 value={userLogin}
                 type="text"
+                id={"input0"}
               />
               <button type={"submit"}>
                 <img src={searchIcon} alt="Поиск" />
@@ -83,9 +99,13 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
                 <input
                   placeholder={"second-login"}
                   className={"user-search-input"}
-                  onChange={(e) => setSecondUserLogin(e.target.value)}
+                  onChange={(e) => {
+                    setSecondUserLogin(e.target.value);
+                    e.target.classList.remove("message-warn");
+                  }}
                   value={secondUserLogin}
                   type="text"
+                  id={"input1"}
                 />
                 <button type={"submit"}>
                   <img src={searchIcon} alt="Поиск" />
@@ -137,7 +157,10 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
                   ? "two-users-access-token-input-width"
                   : ""
               }`}
-              onChange={(e) => setUserToken(e.target.value)}
+              onChange={(e) => {
+                setUserToken(e.target.value);
+                e.target.classList.remove("message-warn");
+              }}
               value={userToken}
               type="text"
             />
@@ -147,7 +170,10 @@ export const UserSearch: React.FC<UserSeacrhType> = ({
                 className={
                   "user-search-input two-users-access-token-input-width"
                 }
-                onChange={(e) => setSecondUserToken(e.target.value)}
+                onChange={(e) => {
+                  setSecondUserToken(e.target.value);
+                  e.target.classList.remove("message-warn");
+                }}
                 value={secondUserToken}
                 type="text"
               />
