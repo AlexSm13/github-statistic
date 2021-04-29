@@ -163,15 +163,17 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
 
   return (
     <>
-      <AnimateBackground />
+      <AnimateBackground hasData={!!data} />
       <UserSearch
         classContainer={
-          data
+          data || error || sec_error
             ? "search-user-wrapper search-users-wrapper-withUserInfo"
             : "search-user-wrapper"
         }
         getUserInfo={getData}
       />
+      {(login && error) || (secondLogin && sec_error) ? <NotFound /> : null}
+
       <div
         style={{
           display: data ? "block" : "none",
@@ -179,7 +181,6 @@ export const App: React.FC<AppType> = ({ setAccessToken }) => {
         }}
         className={"container"}
       >
-        {login && error ? <NotFound /> : null}
         {data && data.user ? (
           <>
             <div
